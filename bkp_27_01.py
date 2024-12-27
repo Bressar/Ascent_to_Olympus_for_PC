@@ -630,10 +630,10 @@ class Tela_Jogo:
 
 # Até aqui funciona!!
 
-    def dado_de_rolagem_implementacao(self):
+    def casa_evento_001(self):
          # Canvas para o dado
         self.canvas = tk.Canvas(self.root, width=80, height=80, bg="black", highlightthickness=0)
-        self.canvas.place(x=450, y=300, anchor='n') # posição do dado
+        self.canvas.place(x=550, y=200, anchor='n') # posição do dado
         self.widgets_casa_atual.append(self.canvas)  # Adiciona o canvas à lista
         # Carrega o GIF com PIL
         self.gif = Image.open(self.imagem_dado)
@@ -655,7 +655,7 @@ class Tela_Jogo:
             pass  # Final do GIF
         # Configuraçºão do Canvas - tamanhao do Dado
         self.canvas = tk.Canvas(self.root, width=80, height=80, bg="black", highlightthickness=0)
-        self.canvas.place(x=450, y=300, anchor='n')  # posição do dado     
+        self.canvas.place(x=550, y=200, anchor='n')  # posição do dado     
         # Exibir o primeiro quadro
         self.image_on_canvas = self.canvas.create_image(0, 0, anchor="nw", image=self.frames[0])        
         # Inicializa o índice do quadro
@@ -664,7 +664,7 @@ class Tela_Jogo:
         self.animacao_ativa = True    
         # Exibe a animação
         self.play_gif()
-        
+         
         # Botão de rolagem de dados
         botao_rolar_dados = ctk.CTkButton(
         self.canvas_abre,
@@ -677,109 +677,12 @@ class Tela_Jogo:
         font=("Gelio Greek Diner", 18),
         command=lambda: (self.rolar_dado(), self.atualizar_tela()) # ROLAR DADO!!!
         )
-        botao_rolar_dados.place(x=450, y=390, anchor='n')
+        botao_rolar_dados.place(x=550, y=290, anchor='n')
         self.widgets_casa_atual.append(botao_rolar_dados)  # Adiciona o botão à lista
         
         
-
-    def casa_evento_001(self):
-        # exibe o dado e chama suas funções
-        self.dado_de_rolagem_implementacao()
         
         
-        # OU...             
-        self.label_ou = ctk.CTkLabel(
-            self.root,
-            text= "OR", 
-            text_color= "white",  
-            bg_color="black",  
-            font=("Gelio Fasolada", 21),
-            )  # Alinha o texto à esquerda (west))            
-        self.label_ou.place(x=550, y=390, anchor="n") # relx=0.5, y=10, anchor="n"
-        self.widgets_casa_atual.append(self.label_ou)
-        
-        
-        
-        #Imagem da carta inicial
-        try:
-            # Carrega a imagem usando PIL
-            img = Image.open(self.back_end.cartas_player[0]['imagem']) # carta inicial do player
-            # Calcula as novas dimensões (80% do tamanho original)
-            width, height = img.size
-            new_size = (int(width * 0.8), int(height * 0.8))
-            img_resized = img.resize(new_size, Image.Resampling.LANCZOS)
-            # Converte a imagem redimensionada para PhotoImage
-            self.image_carta_exibida = ImageTk.PhotoImage(img_resized)
-            # Cria um Label para exibir a imagem no Canvas
-            self.label_imagem_carta = tk.Label(self.canvas_abre, image=self.image_carta_exibida, bg="black")
-            self.label_imagem_carta.place(x=650, y=255, anchor="center")
-            # Adiciona o Label à lista de widgets dinâmicos
-            self.widgets_casa_atual.append(self.label_imagem_carta)
-
-        except Exception as e:
-            print(f'Sem imagens nessa carta, usando a imagem default -> {e}')
-            # Carrega a imagem default usando PIL
-            img = Image.open("images/carta_aphrodite_layout.png")
-            width, height = img.size
-            new_size = (int(width * 0.8), int(height * 0.8))
-            img_resized = img.resize(new_size, Image.Resampling.LANCZOS)
-            self.image_carta_exibida = ImageTk.PhotoImage(img_resized)
-            # Cria um Label para exibir a imagem default no Canvas
-            self.label_imagem_carta = tk.Label(self.canvas_abre, image=self.image_carta_exibida, bg="black")
-            self.label_imagem_carta.place(x=650, y=255, anchor="center")
-            # Adiciona o Label à lista de widgets dinâmicos
-            self.widgets_casa_atual.append(self.label_imagem_carta)
-
-
-        # Botão de usar uma CARTA
-        botao_usar_carta = ctk.CTkButton(
-        self.canvas_abre,
-        fg_color='black',
-        width= 100,
-        border_width= 1,
-        border_color= "white",
-        hover_color='red',
-        text="Use a card!",
-        font=("Gelio Greek Diner", 18),
-        command=lambda: (self.usar_carta_inicial()) # usa a carta de inicio
-        )
-        botao_usar_carta.place(x=650, y=390, anchor='n')
-        self.widgets_casa_atual.append(botao_usar_carta)  # Adiciona o botão à lista
-        
-        
-        
-    def usar_carta_inicial(self):
-         # Limpar os widgets da casa atual para evitar sobreposição
-        self.limpar_widgets_casa_atual()
-        
-        try:
-            # Carregar a imagem usando PIL
-            img = Image.open(self.back_end.cartas_player[0]['imagem'])
-            # Converter a imagem para PhotoImage
-            self.image_carta_player = ImageTk.PhotoImage(img)
-            # Criar o Label com a imagem
-            self.label_imagem_carta = tk.Label(self.canvas_abre, image=self.image_carta_player, bg="black")
-            self.label_imagem_carta.place(x=440, y=265, anchor="center")
-            # Adicionar o Label à lista de widgets dinâmicos
-            self.widgets_casa_atual.append(self.label_imagem_carta)
-        except Exception as e:
-            print(f"Erro ao carregar a imagem da carta: {e}")           
-            self.label_imagem_carta = tk.Label(self.canvas_abre, image=self.back_end.cartas_player[0]['imagem'], bg="black")
-            self.label_imagem_carta.place(x=440, y=265, anchor="center")
-            self.widgets_casa_atual.append(self.label_imagem_carta)
-            
-
-        
-         # label do nome da casa exibida
-        label_descricao_carta_exibida = ctk.CTkLabel(
-            self.root,
-            text=self.back_end.cartas_player[0]['action_p'],  # Substitui pelo texto dinâmico, 
-            text_color="white",  
-            fg_color="black",  # Cor de fundo
-            font=("Cambria", 17), 
-        )
-        label_descricao_carta_exibida.place(x=650, y=220, anchor ="center")
-        self.widgets_casa_atual.append(label_descricao_carta_exibida)
         
         
 

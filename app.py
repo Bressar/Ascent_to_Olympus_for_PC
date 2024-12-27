@@ -1,4 +1,7 @@
 # Versão do Jogo Grécia, para desktop
+# Funcionalidades do jogo
+# criado:  18/12/24
+# atualizado: 27/12/24
 
 # import os
 # import shutil # para salvar as imagens dos cartões
