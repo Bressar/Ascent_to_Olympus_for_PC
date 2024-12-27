@@ -13,6 +13,7 @@ from PIL import Image, ImageDraw, ImageFont, ImageTk
 
 from back_end import Back_End
 from tela_jogo import Tela_Jogo
+# from cartas import Cartas
 
 
 class Telas:
@@ -25,8 +26,12 @@ class Telas:
         self.back_end = Back_End()
         self.back_end.load_fonts()
 
-        # Passa a referência de Telas para Tela_Jogo
-        self.tela_jogo = Tela_Jogo(root, self, interface_jogo, self.back_end)  
+        # Cria a instância de Cartas
+        # self.cartas = Cartas(root, self, interface_jogo, self.back_end, None)  # Passa `None` para `tela_jogo` por enquanto
+
+        # Passa a instância de Cartas para Tela_Jogo
+        self.tela_jogo = Tela_Jogo(root, self, interface_jogo, self.back_end)  # Passa a instância de Cartas
+        
         
 
 # até aqui!      
@@ -519,7 +524,7 @@ Use cards to overcome obstacles. Collect up to 3 cards."""
         self.widgets_dinamicos.append(label_descricao_player)
 
      
-      # Titulo carta              
+    # Titulo carta              
         label_titulo_carta = ctk.CTkLabel(
             self.root,
             text= (f'Your initial card is: {self.back_end.carta_inicial[0]["nome"]}'), # Variável de sistema

@@ -40,7 +40,14 @@ a card to start""",
             "imagem_pequena": "images/carta_persephone_p.png"
         }]
         # Só pode ter 1 carta no inicio
-        self.cartas_player = [  ] # cartas do jogador na partida, máximo 3 cartas
+        self.cartas_player = [ {
+            "nome": "Persephone",
+            "action": "Go back 1, 2, or 3 spaces",
+            "action_p": """Return and select
+a card to start""",
+            "imagem": "images/carta_persephone.png",
+            "imagem_pequena": "images/carta_persephone_p.png"
+        }  ] # cartas do jogador na partida, máximo 3 cartas
                 
         self.cores_layout = {
             'branco': "#FFFFFF", # branco
@@ -363,6 +370,7 @@ or advance
     {"numero": 119, "texto": "Griffins", "imagem": "imagens_casas/casa_119.png"},
     {"numero": 120, "texto": "", "imagem": "imagens_casas/casa_120.png"}
 ]
+ 
        
     # escolha a carta inicial
     def escolher_carta(self):
@@ -441,7 +449,9 @@ or advance
             print(f"- {carta['nome']}: {carta['action']}")
             print(f"- {carta['imagem']}: {carta['imagem_pequena']}")
       
-        
+
+
+       
     def load_font(self, font_path):  # Método para carregar fontes personalizadas
         FR_PRIVATE = 0x10
         FR_NOT_ENUM = 0x20
@@ -470,125 +480,56 @@ or advance
                   f"Imagem do personagem: {self.personagem_escolhido_imagem}")
         else:
             print(f"Personagem {nome_personagem} não encontrado!")
-         
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    def exibir_casas_BE(self, lista_maior):
-        # O número sorteado define de onde os 8 itens devem começar
-        # Vamos garantir que o número esteja entre 1 e 120
-        if self.casa_atual < 1 or self.casa_atual> 120:
-            raise ValueError("O número deve estar entre 1 e 120.")
-        
-        # Calcular o índice de início para a exibição de 8 itens
-        inicio = self.casa_atual - 1  # O índice começa de 0, então subtrai 1
-        
-        # Garantir que o início não ultrapasse o limite de 120 elementos
-        fim = inicio + 8
-        
-        # Se o fim ultrapassar 120, ajustamos para pegar até o fim da lista
-        if fim > len(lista_maior):
-            fim = len(lista_maior)
-            
-         # Calcular o início para garantir que sempre mostremos 8 elementos (se possível)
-        if fim - inicio < 8:  # Se o número de elementos a ser exibido for menor que 8
-            inicio = max(fim - 8, 0)  # Ajusta o início para que tenha 8 itens (ou menos no final)
-        
-        
-        # Pega os 8 itens ou até o fim da lista
-        lista_exibida = lista_maior[inicio:fim]
-        
-        # Retorna os 8 itens para serem exibidos
-        return lista_exibida
-    
-       
-    def atualizar_tijolos_BE(self):
-        if self.casa_atual <= 16:
-            self.tijolos_cor_atual = self.tijolos_cor["azul"]
-        elif self.casa_atual <= 32:
-            self.tijolos_cor_atual = self.tijolos_cor["verde"]
-        elif self.casa_atual <= 48:
-            self.tijolos_cor_atual = self.tijolos_cor["amarelo"]
-        elif self.casa_atual <= 64:
-            self.tijolos_cor_atual = self.tijolos_cor["laranja"]
-        elif self.casa_atual <= 80:
-            self.tijolos_cor_atual = self.tijolos_cor["vermelho"]
-        elif self.casa_atual <= 96:
-            self.tijolos_cor_atual = self.tijolos_cor["rosa"]
-        elif self.casa_atual <= 112:
-            self.tijolos_cor_atual = self.tijolos_cor["roxo"]
-        elif self.casa_atual <= 120:
-            self.tijolos_cor_atual = self.tijolos_cor["agua"]
-            
-            
-    def atualizar_cor_layout_BE(self):
-        if self.casa_atual <= 16:
-            self.cor_layout_atual = self.cores_layout["azul"]
-        elif self.casa_atual <= 32:
-            self.cor_layout_atual = self.cores_layout["verde"]
-        elif self.casa_atual <= 48:
-            self.cor_layout_atual = self.cores_layout["amarelo"]
-        elif self.casa_atual <= 64:
-            self.cor_layout_atual = self.cores_layout["laranja"]
-        elif self.casa_atual <= 80:
-            self.cor_layout_atual = self.cores_layout["vermelho"]
-        elif self.casa_atual <= 96:
-            self.cor_layout_atual = self.cores_layout["rosa"]
-        elif self.casa_atual <= 112:
-            self.cor_layout_atual = self.cores_layout["roxo"]
-        elif self.casa_atual <= 120:
-            self.cor_layout_atual = self.cores_layout["agua"]
-
      
-    def rolar_dado_BE(self):
-        # sorteia um número entre 1 e 6
-        # Atualiza a posição od jogador
-        # + 15 pontos para cada casa avançada
-        numero_sorteado = random.randint(1, 6)
-        print(f'Número sorteado: {numero_sorteado}')
-        self.casa_atual += numero_sorteado
-        print(f'Casa atual {self.casa_atual}')
-        self.atualizar_tijolos()
-        self.atualizar_cor_layout()
-        self.atualizar_tijolos()
-        
+         
+    def remove_carta_usada(self, nome_carta):
+        # Itera sobre as cartas do jogador para encontrar a carta com o nome fornecido
+        print(f'Cartas do player antes de usar a carta: {self.cartas_player}') #Debug
+        for carta in self.cartas_player:
+            if carta['nome'] == nome_carta:
+                self.cartas_player.remove(carta)  # Remove a carta do jogador
+                print(f"Carta '{nome_carta}' removida com sucesso!")
+                return self.cartas_player  # Retorna a lista de cartas atualizada
+        print(f"Carta '{nome_carta}' não encontrada!")
+        print(f'Cartas do player depois de usar a carta: {self.cartas_player}') #Debug
+        return self.cartas_player  # Retorna a lista de cartas sem alterações
     
-        
-       # self.notificar_observadores()  # Notifica as mudanças
-        
-        
-        
-        #self.pontos += (numero_sorteado * 15)
-        #self.atualizar_numeros_tabuleiro()
+    
+    def avanca_casa_cartas(self, numero_de_avanco=0, numero_retorna=0):
+        print(f'Casa atual antes de usar a carta: {self.casa_atual}')#Debug
+        # Atualiza a casa atual com base nos avanços e retornos
+        self.casa_atual += numero_de_avanco  # Avança a casa
+        self.casa_atual -= numero_retorna   # Retorna a casa (subtração)
+        # Para que a casa nunca seja negativa
+        if self.casa_atual < 1:
+            self.casa_atual = 1  # Garantir que a casa atual nunca seja menor que 1
+        print(f'Casa atual depois de usar a carta: {self.casa_atual}')#Debug
+        return self.casa_atual  # Retorna a casa atualizada
 
-        # if numero_sorteado == 1:
-        #     self.imagem_dado = "images/dado1.png"
-        # elif numero_sorteado == 2:
-        #     self.imagem_dado = "images/dado2.png"
-        # elif numero_sorteado == 3:
-        #     self.imagem_dado = "images/dado3.png"
-        # elif numero_sorteado == 4:
-        #     self.imagem_dado = "images/dado4.png"
-        # elif numero_sorteado == 5:
-        #     self.imagem_dado = "images/dado5.png"
-        # else:
-        #     self.imagem_dado = "images/dado6.png"
 
-        # # Atualiza a lista de posições exibidas
-        # self.obter_numeros_exibidos()   
+    def adicionar_carta_a_cartas_player(self, nome_carta):
+        # Localiza a carta correspondente pelo nome
+        carta_selecionada = next((carta for carta in self.cartas_deuses if carta["nome"] == nome_carta), None)
+        
+        if not carta_selecionada:
+            print(f"Erro: Carta com nome '{nome_carta}' não encontrada.")
+            return
+        
+        # Verifica se a carta já está na lista
+        if any(carta["nome"] == nome_carta for carta in self.cartas_player):
+            print(f"Erro: A carta '{nome_carta}' já está na lista.")
+            return
+
+        # Verifica se a lista está cheia
+        if len(self.cartas_player) >= 3:
+            # Remove o primeiro item (substituição)
+            carta_removida = self.cartas_player.pop(0)
+            print(f"A lista está cheia. Substituindo a carta '{carta_removida['nome']}' pela nova carta '{nome_carta}'.")
+
+        # Adiciona a nova carta à lista
+        self.cartas_player.append(carta_selecionada)
+        print(f"Carta '{nome_carta}' adicionada com sucesso. Lista atual:")
+        for carta in self.cartas_player:
+            print(f"- {carta['nome']}: {carta['action']}")
+
+

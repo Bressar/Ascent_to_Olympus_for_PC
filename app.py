@@ -21,6 +21,7 @@ import customtkinter as ctk
 from customtkinter import CTkImage, CTkFont 
 from telas_iniciais import Telas
 from tela_jogo import Tela_Jogo
+# from cartas import Cartas
 
 
 class Interface_Jogo:
