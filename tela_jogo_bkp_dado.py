@@ -28,30 +28,24 @@ class Tela_Jogo:
         self.label_carta_menu1 = None
         self.label_carta_menu2 = None
         self.label_carta_menu3 = None
-        self.imagem_dado = "images/dado_grego.gif"
-        
-        self.widgets_casa_atual = [] # widgets por casa
-
                 
     def atualizar_cor(self, nova_cor):
         self.cor_Layout = nova_cor
         self.atualizar_tela()
         #self.atualizar_interface()   
    
-        
     def play_gif(self):
-        if self.current_frame < len(self.frames):
-            self.canvas.itemconfig(self.image_on_canvas, image=self.frames[self.current_frame])
-            self.current_frame += 1
-            self.root.after(500, self.play_gif)  # Controla a velocidade da animação
-        else:
-            self.current_frame = 0  # Reinicia o índice para repetir
+       # Atualiza o quadro no Canvas
+        self.canvas.itemconfig(self.image_on_canvas, image=self.frames[self.current_frame])
         
-            
-            
+        # Avança para o próximo quadro
+        self.current_frame = (self.current_frame + 1) % len(self.frames)
         
+        # Define um intervalo para o próximo quadro (em milissegundos)
+        self.root.after(500, self.play_gif)  # meio frame por segundo
     
-     # DADO DE ROLAGEM velho....
+    
+     # DADO DE ROLAGEM
      
     def rolagem_de_dados(self):
         # Carrega o GIF com PIL
@@ -96,43 +90,21 @@ class Tela_Jogo:
         )
         botao_rolar_dados.place(x=150, y=185)
         self.widgets_dinamicos.append(botao_rolar_dados)
-    
-    
-    def limpar_widgets_casa_atual(self):
-        """Limpa os widgets da casa atual, incluindo o canvas e a imagem do dado."""
-        # Remover todos os widgets da lista widgets_casa_atual
-        for widget in self.widgets_casa_atual:
-            widget.destroy()
-
-        # Se o canvas ainda estiver presente, destrua-o
-        if hasattr(self, 'canvas') and self.canvas:
-            self.canvas.destroy()
-            self.canvas = None
-
-        # Certifique-se de que nenhuma imagem estática ou GIF fique referenciada
-        if hasattr(self, 'image_on_canvas') and self.image_on_canvas:
-            self.image_on_canvas = None
-
-        # Limpa a lista de widgets dinâmicos da casa atual
-        self.widgets_casa_atual = []
-
         
-    
-    
-    def limpar_widgets_casa_atual_velho(self):
-        """Limpa os widgets da casa atual, incluindo o canvas e a imagem do dado."""
-        # Remover todos os widgets do canvas, incluindo a imagem do dado
-        for widget in self.widgets_casa_atual:
-            widget.destroy()  # Remove o widget do canvas
-        self.widgets_casa_atual = []  # Limpa a lista
-
-
-    # def limpar_widgets_casa_atual_1(self):
-    #     """Remove todos os widgets dinâmicos da casa atual."""
-    #     for widget in self.widgets_casa_atual:
-    #         if widget.winfo_exists():  # Verifica se o widget ainda existe
-    #             widget.destroy()
-    #     self.widgets_casa_atual = []  # Limpa a lista
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
         
        
     def tela_game(self):
@@ -148,7 +120,7 @@ class Tela_Jogo:
         self.img_tijolinho = self.canvas_abre.create_image(400, 25, image=self.image_tijolinho)
         
         
-       # self.rolagem_de_dados() # rola o dado teste
+        self.rolagem_de_dados() # rola o dado teste
         
 
        
@@ -200,29 +172,49 @@ class Tela_Jogo:
         self.label_pontos.place(x=190, y=60, ) # relx=0.5, y=10, anchor="n"
         self.widgets_dinamicos.append(self.label_pontos)
         
-        
-        # Você está na CASA numero_X
-        self.label_esta_na_casa = ctk.CTkLabel(
-            self.root,
-            text= f"You are\non space:",
-            text_color=self.cor_Layout,  
-            bg_color="black",  
-            font=("Gelio Fasolada", 18),
-            )            
-        self.label_esta_na_casa .place(x=200, y=140, anchor='center') # relx=0.5, y=10, anchor="n"
-        self.widgets_dinamicos.append(self.label_esta_na_casa )
-        
-        
-        self.label_numero_casa_atual = ctk.CTkLabel(
-            self.root,
-            text= f"{self.back_end.casa_atual}",
-            text_color='white',  
-            bg_color="black",  
-            font=("Gelio Fasolada", 22),
-            )            
-        self.label_numero_casa_atual .place(x=200, y=180, anchor='center') # relx=0.5, y=10, anchor="n"
-        self.widgets_dinamicos.append(self.label_numero_casa_atual)
-        
+        # # DADO DE ROLAGEM
+        # # Carrega o GIF com PIL
+        # self.gif = Image.open("images/dado_grego.gif")
+        # self.frames = []
+        # # Extrai os quadros do GIF
+        # try:
+        #     while True:
+        #         frame = self.gif.copy()
+        #         frame = frame.convert("RGBA")  # Certificar-se de que está em RGBA
+        #         # Adicionar fundo preto onde há transparência
+        #         black_bg = Image.new("RGBA", frame.size, "black")
+        #         frame = Image.alpha_composite(black_bg, frame)
+        #         # Redimensionar o quadro
+        #         frame = frame.resize((80, 80), Image.Resampling.LANCZOS) # reduz a imagem pra 80 X 80
+        #         # Converter para PhotoImage
+        #         self.frames.append(ImageTk.PhotoImage(frame))
+        #         self.gif.seek(len(self.frames))  # Avançar para o próximo quadro
+        # except EOFError:
+        #     pass  # Final do GIF
+        # # Configuraçºão do Canvas - tamanhao do Dado
+        # self.canvas = tk.Canvas(self.root, width=80, height=80, bg="black", highlightthickness=0)
+        # self.canvas.place(x=160, y=100)       
+        # # Exibir o primeiro quadro
+        # self.image_on_canvas = self.canvas.create_image(0, 0, anchor="nw", image=self.frames[0])        
+        # # Inicializa o índice do quadro
+        # self.current_frame = 0      
+        # # Exibe a animação
+        # self.play_gif()
+         
+        # # Botão de rolagem de dados
+        # botao_rolar_dados = ctk.CTkButton(
+        # self.canvas_abre,
+        # fg_color='black',
+        # width= 100,
+        # border_width= 1,
+        # border_color= "white",
+        # hover_color='red',
+        # text="Roll a die!",
+        # font=("Gelio Greek Diner", 18),
+        # command=lambda: (self.rolar_dado(), self.atualizar_tela()) # ROLAR DADO!!!
+        # )
+        # botao_rolar_dados.place(x=150, y=185)
+        # self.widgets_dinamicos.append(botao_rolar_dados)
          
          #linha               
         self.canvas_abre.create_text(
@@ -402,7 +394,7 @@ class Tela_Jogo:
         #     anchor="center")  
                 
         # testando a função das cartas
-        self.casa_evento_001()      
+        self.quadro_de_acao_carta()      
         # teste de evento de casa 
         #self.quadro_de_acao_evento()
         
@@ -477,36 +469,30 @@ class Tela_Jogo:
         #self.atualizar_layout_widgets()  # Atualiza os widgets com a nova cor
 
 
-    def rolar_dado_sem_delay(self):
+    def rolar_dado(self):
             # Sorteia um número entre 1 e 6
             numero_sorteado = random.randint(1, 6)
             print(f'Número sorteado: {numero_sorteado}')
-            
-            # atualiza a imagem em movimento por uma imagem estatica do resultado
-            self.imagem_dado = f"images/dado{numero_sorteado}.png"
-                                   
-            # Atualiza o Canvas com a nova imagem
-            nova_imagem = Image.open(self.imagem_dado).resize((80, 80), Image.Resampling.LANCZOS)
-            self.imagem_estatica = ImageTk.PhotoImage(nova_imagem)
-            self.canvas.itemconfig(self.image_on_canvas, image=self.imagem_estatica)
-              
-            # Atualiza os pontos e a posição do jogador         
+            # Atualiza os pontos           
             self.back_end.player_pontos +=  (15 * numero_sorteado)
             print(f'Pontos do jogador: {self.back_end.player_pontos}')           
             print(f'Casas do tabuleiro no momento:{self.casas_exibidas}')   
+            # Atualiza a posição do jogador
             self.back_end.casa_atual += numero_sorteado            
             print(f'Casa atual: {self.back_end.casa_atual}')
-            
-            # Introduz um atraso de 2 segundos antes de continuar
-            self.root.after(2000, lambda: self._continuar_rolagem_dado())
 
-            # Limpa widgets existentes antes de atualizar a tela
-            self.limpar_widgets_casa_atual()
             
-            self.atualizar_tela()# Atualiza outros elementos da tela 
             
-            # Carrega os gadgets da nova casa
-            self.carregar_casa(self.back_end.casa_atual)
+            
+            #self.cor_Layout = self.back_end.cor_layout_atual # busca a cor do layout do backend  
+            
+    
+            
+            #self.exibir_casas(self.back_end.casas)
+
+            
+            #Atualiza o texto do label com os novos pontos
+            #self.label_pontos.configure(text=f"POINTS: {self.player_pontos}")
 
 
     def atualizar_tela(self):
@@ -533,12 +519,6 @@ class Tela_Jogo:
         if hasattr(self, 'label_xp') and self.label_xp.winfo_exists():
             self.label_xp.configure(text=f"XP: {str(self.back_end.player_xp)}",text_color=self.cor_Layout)
             
-        if hasattr(self, 'label_esta_na_casa') and self.label_esta_na_casa.winfo_exists():
-            self.label_esta_na_casa.configure(text=f"You are\non space:",text_color=self.cor_Layout) 
-            
-        if hasattr(self, 'label_numero_casa_atual') and self.label_numero_casa_atual.winfo_exists():
-            self.label_numero_casa_atual.configure(text=f"{self.back_end.casa_atual}",text_color="white")
-            
         if hasattr(self, 'label_cartas') and self.label_cartas.winfo_exists():
             self.label_cartas.configure(text="Your Cards:",text_color="white")
             
@@ -561,12 +541,10 @@ class Tela_Jogo:
                                
         for widget in self.widgets_dinamicos:
             if isinstance(widget, ctk.CTkLabel) and widget not in [self.label_pontos, self.label_xp, self.label_titulo_nome,self.label_cartas,
-                                                                   self.label_carta_menu1, self.label_carta_menu2, self.label_carta_menu3,
-                                                                   self.label_esta_na_casa, self.label_numero_casa_atual]:
+                                                                   self.label_carta_menu1, self.label_carta_menu2, self.label_carta_menu3]:
                 widget.destroy()
                 self.widgets_dinamicos = [self.label_pontos, self.label_xp, self.label_titulo_nome, self.label_cartas,
-                                          self.label_carta_menu1, self.label_carta_menu2, self.label_carta_menu3,
-                                          self.label_esta_na_casa, self.label_numero_casa_atual]  # Mantém as labels na lista
+                                          self.label_carta_menu1, self.label_carta_menu2, self.label_carta_menu3]  # Mantém as labels na lista
 
         # Atualiza as imagens das casas
         for i, casa in enumerate(self.casas_exibidas):
@@ -638,199 +616,6 @@ class Tela_Jogo:
         
         except Exception as e:
             print(f"Erro ao atualizar a imagem dos tijolinhos: {e}")
-
-
-    def carregar_casa(self, casa_atual):
-        """Carrega os widgets da casa especificada."""
-        # Limpa os widgets da casa anterior
-        self.limpar_widgets_casa_atual()
-
-        # Carrega os widgets específicos para a nova casa
-        if casa_atual == 1:
-            self.casa_evento_001()
-        elif casa_atual == 2:
-            self.casa_evento_002()
-        elif casa_atual == 3:
-            self.casa_evento_003()
-        elif casa_atual == 4:
-            self.casa_evento_004()
-        elif casa_atual == 5:
-            self.casa_evento_005()
-        elif casa_atual == 6:
-            self.casa_evento_006()
-        elif casa_atual == 7:
-            self.casa_evento_007()
-        else:
-            print(f"Nenhum evento configurado para a casa {casa_atual}.")
-
-
-
-    def rolar_dado(self):
-        # Sorteia um número entre 1 e 6
-        numero_sorteado = random.randint(1, 6)
-        print(f'Número sorteado: {numero_sorteado}')
-        
-        # Atualiza a imagem em movimento por uma imagem estática do resultado
-        self.imagem_dado = f"images/dado{numero_sorteado}.png"
-        nova_imagem = Image.open(self.imagem_dado).resize((80, 80), Image.Resampling.LANCZOS)
-        self.imagem_estatica = ImageTk.PhotoImage(nova_imagem)
-        self.canvas.itemconfig(self.image_on_canvas, image=self.imagem_estatica)  # Exibe a imagem estática imediatamente
-        
-        # Introduz um atraso de 2 segundos antes de continuar
-        self.root.after(3000, lambda: self._continuar_rolagem_dado(numero_sorteado))
-
-    def _continuar_rolagem_dado(self, numero_sorteado):
-        """Continua as ações após exibir a imagem estática por 2 segundos."""
-        # Atualiza os pontos e a posição do jogador
-        self.back_end.player_pontos += (15 * numero_sorteado)
-        print(f'Pontos do jogador: {self.back_end.player_pontos}')
-        print(f'Casas do tabuleiro no momento: {self.casas_exibidas}')
-        self.back_end.casa_atual += numero_sorteado
-        print(f'Casa atual: {self.back_end.casa_atual}')
-        
-        # Limpa widgets existentes antes de atualizar a tela
-        self.limpar_widgets_casa_atual()
-        self.atualizar_tela()  # Atualiza outros elementos da tela
-        self.carregar_casa(self.back_end.casa_atual)  # Carrega os gadgets da nova casa
-
-
-
-# Até aqui funciona!!!
-
-    def casa_evento_001(self):
-         # Canvas para o dado
-        self.canvas = tk.Canvas(self.root, width=80, height=80, bg="black", highlightthickness=0)
-        self.canvas.place(x=550, y=200, anchor='n')
-        self.widgets_casa_atual.append(self.canvas)  # Adiciona o canvas à lista
-
-        # Carrega o GIF com PIL
-        self.gif = Image.open(self.imagem_dado)
-        self.frames = []
-        # Extrai os quadros do GIF
-        try:
-            while True:
-                frame = self.gif.copy()
-                frame = frame.convert("RGBA")  # Certificar-se de que está em RGBA
-                # Adicionar fundo preto onde há transparência
-                black_bg = Image.new("RGBA", frame.size, "black")
-                frame = Image.alpha_composite(black_bg, frame)
-                # Redimensionar o quadro
-                frame = frame.resize((80, 80), Image.Resampling.LANCZOS) # reduz a imagem pra 80 X 80
-                # Converter para PhotoImage
-                self.frames.append(ImageTk.PhotoImage(frame))
-                self.gif.seek(len(self.frames))  # Avançar para o próximo quadro
-        except EOFError:
-            pass  # Final do GIF
-        # Configuraçºão do Canvas - tamanhao do Dado
-        self.canvas = tk.Canvas(self.root, width=80, height=80, bg="black", highlightthickness=0)
-        self.canvas.place(x=550, y=200, anchor='n')       
-        # Exibir o primeiro quadro
-        self.image_on_canvas = self.canvas.create_image(0, 0, anchor="nw", image=self.frames[0])        
-        # Inicializa o índice do quadro
-        self.current_frame = 0      
-        # Exibe a animação
-        self.play_gif()
-         
-        # Botão de rolagem de dados
-        botao_rolar_dados = ctk.CTkButton(
-        self.canvas_abre,
-        fg_color='black',
-        width= 100,
-        border_width= 1,
-        border_color= "white",
-        hover_color='red',
-        text="Roll a die!",
-        font=("Gelio Greek Diner", 18),
-        command=lambda: (self.rolar_dado(), self.atualizar_tela()) # ROLAR DADO!!!
-        )
-        botao_rolar_dados.place(x=550, y=290, anchor='n')
-        self.widgets_casa_atual.append(botao_rolar_dados)  # Adiciona o botão à lista
-
-        
-        
-        
-        
-    def casa_evento_002(self):
-        """Exibe os widgets para o evento da Casa 002."""
-        label_casa = ctk.CTkLabel(
-            self.root,
-            text="Você chegou na Casa 002!",
-            text_color="white",
-            bg_color="black",
-            font=("Gelio Greek Diner", 18),
-        )
-        label_casa.place(x=550, y=400, anchor='n')
-        self.widgets_casa_atual.append(label_casa)
-        
-        
-        
-    def casa_evento_003(self):
-        """Exibe os widgets para o evento da Casa 002."""
-        label_casa = ctk.CTkLabel(
-            self.root,
-            text="Você chegou na Casa 003!",
-            text_color="white",
-            bg_color="black",
-            font=("Gelio Greek Diner", 18),
-        )
-        label_casa.place(x=550, y=400, anchor='n')
-        self.widgets_casa_atual.append(label_casa)
-        
-        
-    def casa_evento_004(self):
-        """Exibe os widgets para o evento da Casa 002."""
-        label_casa = ctk.CTkLabel(
-            self.root,
-            text="Você chegou na Casa 004!",
-            text_color="white",
-            bg_color="black",
-            font=("Gelio Greek Diner", 18),
-        )
-        label_casa.place(x=550, y=400, anchor='n')
-        self.widgets_casa_atual.append(label_casa)
-    
-    def casa_evento_005(self):
-        """Exibe os widgets para o evento da Casa 002."""
-        label_casa = ctk.CTkLabel(
-            self.root,
-            text="Você chegou na Casa 005!",
-            text_color="white",
-            bg_color="black",
-            font=("Gelio Greek Diner", 18),
-        )
-        label_casa.place(x=550, y=400, anchor='n')
-        self.widgets_casa_atual.append(label_casa)
-        
-    def casa_evento_006(self):
-        """Exibe os widgets para o evento da Casa 002."""
-        label_casa = ctk.CTkLabel(
-            self.root,
-            text="Você chegou na Casa 006!",
-            text_color="white",
-            bg_color="black",
-            font=("Gelio Greek Diner", 18),
-        )
-        label_casa.place(x=550, y=400, anchor='n')
-        self.widgets_casa_atual.append(label_casa)
-        
-    def casa_evento_007(self):
-        """Exibe os widgets para o evento da Casa 002."""
-        label_casa = ctk.CTkLabel(
-            self.root,
-            text="Você chegou na Casa 007!",
-            text_color="white",
-            bg_color="black",
-            font=("Gelio Greek Diner", 18),
-        )
-        label_casa.place(x=550, y=400,anchor='n')
-        self.widgets_casa_atual.append(label_casa)
-
-
-
-
-
-
-
 
 
     

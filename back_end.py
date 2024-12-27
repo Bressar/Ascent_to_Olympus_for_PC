@@ -20,7 +20,7 @@ class Back_End:
         self.player_pontos = 0    
         self.casa_atual = 1 # Inicializando com a casa 1
         
-        self.observadores = []  # Lista de observadores
+        # self.observadores = []  # Lista de observadores
         
         self.carta_inicial = [{
             "nome": "No name",
@@ -223,6 +223,7 @@ or advance
             "agua": "images/tijolos_agua.png",
         }
         
+        # Tijolo grnade que vai em cima da tela
         self.tijolos_cor_atual = "images/tijolos_azuis.png" # default
         
         self.dic_cards = {
@@ -241,8 +242,8 @@ or advance
         }
         
         self.casas = [
-    {"numero": 1, "texto": "Hermes", "imagem": "imagens_casas/casa_001.png"},
-    {"numero": 2, "texto": "", "imagem": "imagens_casas/casa_002.png"},
+    {"numero": 1, "texto": "", "imagem": "imagens_casas/casa_001.png"},
+    {"numero": 2, "texto": "Hermes", "imagem": "imagens_casas/casa_002.png"},
     {"numero": 3, "texto": "", "imagem": "imagens_casas/casa_003.png"},
     {"numero": 4, "texto": "", "imagem": "imagens_casas/casa_004.png"},
     {"numero": 5, "texto": "Sphinx", "imagem": "imagens_casas/casa_005.png"},
@@ -471,6 +472,24 @@ or advance
             print(f"Personagem {nome_personagem} não encontrado!")
          
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     def exibir_casas_BE(self, lista_maior):
         # O número sorteado define de onde os 8 itens devem começar
         # Vamos garantir que o número esteja entre 1 e 120
@@ -549,6 +568,7 @@ or advance
         self.atualizar_cor_layout()
         self.atualizar_tijolos()
         
+    
         
        # self.notificar_observadores()  # Notifica as mudanças
         
