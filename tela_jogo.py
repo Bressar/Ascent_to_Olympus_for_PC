@@ -12,7 +12,7 @@ from PIL import Image, ImageDraw, ImageFont, ImageTk
 import random
 from back_end import Back_End
 
-# Até aqui! 22H:56
+# Até aqui! 12H:56
 
 
 class Tela_Jogo:
@@ -49,7 +49,7 @@ class Tela_Jogo:
         self.atualizar_tela()
    
     
-    def play_gif(self):
+    def play_gif(self):# Reproduz a animação do GIF no canvas
         if not hasattr(self, 'animacao_ativa') or self.animacao_ativa: # para exibor a imagem 'resultado' no final da rolagem
             if self.current_frame < len(self.frames):
                 self.canvas.itemconfig(self.image_on_canvas, image=self.frames[self.current_frame])
@@ -655,9 +655,114 @@ class Tela_Jogo:
         self.atualizar_tela()  # Atualiza outros elementos da tela
         self.carregar_casa(self.back_end.casa_atual)  # Carrega os gadgets da nova casa
 
-
-    # somente para combates de dados
+#tentativa 1
+# NOVAS FUNÇÕES DADOS
     def rolar_dado_de_batalha(self, casas_avanco=0, casas_retrocesso=0, vida=0):
+#        Lógica da batalha: sorteia o número do dado, exibe o resultado e processa a batalha.
+        # Para a animação do GIF
+        self.animacao_ativa = False
+
+        print(f'Pontos do jogador antes da batalha: {self.back_end.player_pontos}')  # Debug
+
+        # Sorteia um número entre 1 e 6
+        numero_sorteado = random.randint(1, 6)
+        print(f'Número sorteado em batalha: {numero_sorteado}')
+
+        # Verifica vitória ou derrota
+        vitoria = numero_sorteado > 3
+        print(f'Resultado: {numero_sorteado}, vitória: {vitoria}')  # Debug
+
+        # Atualiza a imagem em movimento por uma imagem estática do resultado
+        self.imagem_dado = f"images/dado{numero_sorteado}.png"
+        nova_imagem = Image.open(self.imagem_dado).resize((80, 80), Image.Resampling.LANCZOS)
+        self.imagem_estatica = ImageTk.PhotoImage(nova_imagem)
+        self.canvas.itemconfig(self.image_on_canvas, image=self.imagem_estatica)  # Exibe a imagem estática imediatamente
+
+        # Introduz um atraso de 2 segundos antes de processar o resultado
+        self.root.after(2000, lambda: self._processar_resultado_batalha(numero_sorteado, casas_avanco, casas_retrocesso, vida))
+
+    def _processar_resultado_batalha(self, numero_sorteado, casas_avanco, casas_retrocesso, vida):
+    # Processa o resultado da batalha após exibir a imagem do dado.
+
+        vitoria = numero_sorteado > 3
+
+        # Pontos, avanço ou retrocesso de acordo com o resultado da batalha
+        if vitoria:
+            self.back_end.player_pontos += (15 * casas_avanco) + 30  # Vitória
+            self.back_end.casa_atual += casas_avanco
+            self.back_end.player_xp += vida  # Ganha vida se aplicável
+            print('Você VENCEU!')
+        else:
+            self.back_end.player_pontos -= ((15 * casas_retrocesso) + 30)  # Derrota
+            self.back_end.casa_atual -= casas_retrocesso
+            self.back_end.player_xp -= vida  # Perde vida se aplicável
+            print('Você PERDEU!')
+
+        print(f'Pontos do jogador depois da batalha: {self.back_end.player_pontos}')  # Debug
+        print(f'Casa atual depois da batalha: {self.back_end.casa_atual}')
+
+        # Atualiza a interface
+        self.limpar_widgets_casa_atual()
+        self.atualizar_tela()
+        self.carregar_casa(self.back_end.casa_atual)
+
+    def chamada_do_dado_batalha(self):
+# Configura o dado no canvas e exibe o botão de rolar.
+
+        self.animacao_ativa = True
+
+        # Canvas para o dado
+        self.canvas = tk.Canvas(self.root, width=80, height=80, bg="black", highlightthickness=0)
+        self.canvas.place(x=400, y=320, anchor='n')  # Posição do dado
+        self.widgets_casa_atual.append(self.canvas)  # Adiciona o canvas à lista
+
+        # Carrega o GIF com PIL
+        self.gif = Image.open(self.imagem_dado)
+        self.frames = []
+
+        # Extrai os quadros do GIF
+        try:
+            while True:
+                frame = self.gif.copy()
+                frame = frame.convert("RGBA")  # Certificar-se de que está em RGBA
+                # Adicionar fundo preto onde há transparência
+                black_bg = Image.new("RGBA", frame.size, "black")
+                frame = Image.alpha_composite(black_bg, frame)
+                # Redimensionar o quadro
+                frame = frame.resize((80, 80), Image.Resampling.LANCZOS)
+                # Converter para PhotoImage
+                self.frames.append(ImageTk.PhotoImage(frame))
+                self.gif.seek(len(self.frames))  # Avançar para o próximo quadro
+        except EOFError:
+            pass  # Final do GIF
+
+        # Configuração inicial do Canvas
+        self.image_on_canvas = self.canvas.create_image(0, 0, anchor="nw", image=self.frames[0])
+        self.current_frame = 0
+
+        # Exibe a animação
+        self.play_gif()
+
+        # Botão de rolagem de dados
+        botao_rolar_dados = ctk.CTkButton(
+            self.canvas_abre,
+            fg_color='black',
+            width=100,
+            border_width=1,
+            border_color="white",
+            hover_color='red',
+            text="Roll a die!",
+            font=("Gelio Greek Diner", 18),
+            command=lambda: (self.rolar_dado_de_batalha(casas_avanco=2, casas_retrocesso=2, vida=1))
+        )
+        botao_rolar_dados.place(x=400, y=405, anchor='n')
+        self.widgets_casa_atual.append(botao_rolar_dados)
+
+
+
+
+    # somente para combates de dados   VELHOS VELHOS VELHOS
+    def rolar_dado_de_batalha_1(self, casas_avanco=0, casas_retrocesso=0, vida=0):
         # Para a animação do GIF
         self.animacao_ativa = False   
         
@@ -681,7 +786,7 @@ class Tela_Jogo:
         # Introduz um atraso de 2 segundos antes de processar o resultado
         self.root.after(2000, lambda: self._processar_resultado_batalha(numero_sorteado, casas_avanco, casas_retrocesso, vida))
     
-    def _processar_resultado_batalha(self, numero_sorteado, casas_avanco, casas_retrocesso, vida):
+    def _processar_resultado_batalha_1(self, numero_sorteado, casas_avanco, casas_retrocesso, vida):
         """Processa o resultado da batalha após exibir a imagem do dado."""
         vitoria = numero_sorteado > 3
         print(f'Resultado: {numero_sorteado}, vitória: {vitoria}')  # for debug  
@@ -726,6 +831,59 @@ class Tela_Jogo:
         # self.limpar_widgets_casa_atual()
         # self.atualizar_tela()  # Atualiza outros elementos da tela
         # self.carregar_casa(self.back_end.casa_atual)  # Carrega os gadgets da nova casa
+       
+    def chamada_do_dado_batalha_1(self): # USADO NAS CASAS DE EVENTO
+         # Para a animação do GIF
+        self.animacao_ativa = False
+                # Canvas para o dado
+        self.canvas = tk.Canvas(self.root, width=80, height=80, bg="black", highlightthickness=0)
+        self.canvas.place(x=400, y=320, anchor='n') # posição do dado
+        self.widgets_casa_atual.append(self.canvas)  # Adiciona o canvas à lista
+        # Carrega o GIF com PIL
+        self.gif = Image.open(self.imagem_dado)
+        self.frames = []
+        # Extrai os quadros do GIF
+        try:
+            while True:
+                frame = self.gif.copy()
+                frame = frame.convert("RGBA")  # Certificar-se de que está em RGBA
+                # Adicionar fundo preto onde há transparência
+                black_bg = Image.new("RGBA", frame.size, "black")
+                frame = Image.alpha_composite(black_bg, frame)
+                # Redimensionar o quadro
+                frame = frame.resize((80, 80), Image.Resampling.LANCZOS) # reduz a imagem pra 80 X 80
+                # Converter para PhotoImage
+                self.frames.append(ImageTk.PhotoImage(frame))
+                self.gif.seek(len(self.frames))  # Avançar para o próximo quadro
+        except EOFError:
+            pass  # Final do GIF
+        # Configuraçºão do Canvas - tamanhao do Dado
+        self.canvas = tk.Canvas(self.root, width=80, height=80, bg="black", highlightthickness=0)
+        self.canvas.place(x=400, y=320, anchor='n')  # posição do dado     
+        # Exibir o primeiro quadro
+        self.image_on_canvas = self.canvas.create_image(0, 0, anchor="nw", image=self.frames[0])        
+        # Inicializa o índice do quadro
+        self.current_frame = 0  
+         # Ativa a animação
+        self.animacao_ativa = True    
+        # Exibe a animação
+        self.play_gif()
+         
+        # Botão de rolagem de dados
+        botao_rolar_dados = ctk.CTkButton(
+        self.canvas_abre,
+        fg_color='black',
+        width= 100,
+        border_width= 1,
+        border_color= "white",
+        hover_color='red',
+        text="Roll a die!",
+        font=("Gelio Greek Diner", 18),
+        command=lambda: (self.rolar_dado_de_batalha(casas_avanco=2,casas_retrocesso=2), self.atualizar_tela()) # ROLAR DADO!!!
+        )
+        botao_rolar_dados.place(x=400, y=405, anchor='n')
+        self.widgets_casa_atual.append(botao_rolar_dados)   
+    # somente para combates de dados   VELHOS VELHOS VELHOS
 
 
 
@@ -762,10 +920,142 @@ class Tela_Jogo:
         self.widgets_casa_atual.append(label_descricao_carta_exibida)
         
         
+    
+    def usar_carta_da_mao(self, carta_numero=1):
+        cartas_mao = self.back_end.cartas_player
+        try:
+             # Verifica se a carta existe na mão (índice válido)
+            if carta_numero < 1 or carta_numero > len(cartas_mao):
+                # Exibe uma mensagem de alerta caso o índice seja inválido
+                messagebox.showerror("Error", "This position does not have any cards!")
+                return
+            
+            nome_carta_escolhida = cartas_mao[carta_numero -1]['nome']
+            print(f'Carta na posição str({carta_numero} -1): {nome_carta_escolhida}') # for debug
+            
+            if nome_carta_escolhida == "Aphrodite":
+                self.use_carta_Aphrodite()
+            elif nome_carta_escolhida == "Apollo":
+                self.use_carta_Apollo()
+            elif nome_carta_escolhida == "Artemis":
+                self.use_carta_Artemis()
+            elif nome_carta_escolhida == "Ares":
+                self.use_carta_Ares()
+            elif nome_carta_escolhida == "Hades":
+                self.use_carta_Hades()                
+            elif nome_carta_escolhida == "Hephaestus":
+                self.use_carta_Hephaestus()
+            elif nome_carta_escolhida == "Hera":
+                self.use_carta_Hera()
+            elif nome_carta_escolhida == "Hermes":
+                self.use_carta_Hermes()
+            elif nome_carta_escolhida == "Persephone":
+                self.use_carta_Persephone()                 
+            elif nome_carta_escolhida == "Poseidon":
+                self.use_carta_Poseidon()       
+            elif nome_carta_escolhida == "Zeus":
+                self.use_carta_Zeus()
+            elif nome_carta_escolhida == "Athena":
+                self.use_carta_Athena()
+            else:
+                print(f"Carta {nome_carta_escolhida} não reconhecida.")  # For debug
+                print(f"Não há cartas para usar...Lista vazia") # for backend Debug
+        except Exception as e:
+            print(f'Erro: {e}')
+            messagebox.showerror("Erro", f"Ocorreu um erro ao tentar usar a carta: {e}")
+      
+      
+    # Menu fixo com o dado de rolagem mais escolha de cartas           
+    def area_de_dado_e_cartas_eventos(self):
+        label_text_linha = ctk.CTkLabel(
+        self.root,
+        text="<><><><><><><><><><><><><><><><><><><><><><><><>",
+        text_color="gray",
+        font=("Arial", 16),
+        bg_color= "black"
+        )
+        label_text_linha.place(x=550, y=310, anchor="center")
+        self.widgets_casa_atual.append(label_text_linha)
+
+        # DADO
+        self.chamada_do_dado_batalha()
+        
+            #     # OU...             
+        self.label_ou = ctk.CTkLabel(
+                    self.root,
+                    text= "OR", 
+                    text_color= self.back_end.cor_layout_atual,  
+                    bg_color= "black",  
+                    font=("Gelio Fasolada", 22),
+                    )          
+        self.label_ou.place(x=520, y=405, anchor="n") # relx=0.5, y=10, anchor="n"
+        self.widgets_casa_atual.append(self.label_ou)
+        
+        # Escolher carta
+        self.botao_choose_card = ctk.CTkButton(
+        self.canvas_abre,
+        fg_color='black',
+        width= 100,
+        border_width= 1,
+        border_color= "white",
+        hover_color='black',
+        text="Choose a card!",
+        font=("Gelio Greek Diner", 18)
+        )
+        self.botao_choose_card.place(x=670, y=405, anchor='n')
+        self.widgets_casa_atual.append(self.botao_choose_card)  # Adiciona o botão à lista
+        
+         # Botão carta 1
+        botao_carta_1 = ctk.CTkButton(
+        self.canvas_abre,
+        fg_color='black',
+        width= 50,
+        height= 50,
+        border_width= 1,
+        border_color= "white",
+        hover_color=self.back_end.cor_layout_atual,
+        text="I",
+        font=("Gelio Greek Diner", 24),
+        command=lambda: self.usar_carta_da_mao(1) # função de abrir a carta do indice 0
+        )
+        botao_carta_1 .place(x=610, y=340, anchor='n')
+        self.widgets_casa_atual.append(botao_carta_1 )  # Adiciona o botão à lista 
+            
+         # Botão carta 2
+        botao_carta_2 = ctk.CTkButton(
+        self.canvas_abre,
+        fg_color='black',
+        width= 50,
+        height= 50,
+        border_width= 1,
+        border_color= "white",
+        hover_color=self.back_end.cor_layout_atual,
+        text="I I",
+        font=("Gelio Greek Diner", 24),
+        command=lambda: self.usar_carta_da_mao(2) # função de abrir a carta do indice 0
+        )
+        botao_carta_2 .place(x=670, y=340, anchor='n')
+        self.widgets_casa_atual.append(botao_carta_2)  # Adiciona o botão à lista 
+        
+         # Botão carta 3
+        botao_carta_3 = ctk.CTkButton(
+        self.canvas_abre,
+        fg_color='black',
+        width= 50,
+        height= 50,
+        border_width= 1,
+        border_color= "white",
+        hover_color=self.back_end.cor_layout_atual,
+        text="I I I",
+        font=("Gelio Greek Diner", 24),
+        command=lambda: self.usar_carta_da_mao(3) # função de abrir a carta do indice 0
+        )
+        botao_carta_3 .place(x=730, y=340, anchor='n')
+        self.widgets_casa_atual.append(botao_carta_3)  # Adiciona o botão à lista 
 
 
-
-
+ # !!!!! EVENTOS DAS CASAS COMEÇAM AQUI !!!!!!!
+ 
     def casa_evento_001(self):
          # Canvas para o dado
         self.canvas = tk.Canvas(self.root, width=80, height=80, bg="black", highlightthickness=0)
@@ -889,52 +1179,7 @@ class Tela_Jogo:
         botao_carta_3 .place(x=620, y=380, anchor='n')
         self.widgets_casa_atual.append(botao_carta_3)  # Adiciona o botão à lista 
          
-
-    def usar_carta_da_mao(self, carta_numero=1):
-        cartas_mao = self.back_end.cartas_player
-        try:
-             # Verifica se a carta existe na mão (índice válido)
-            if carta_numero < 1 or carta_numero > len(cartas_mao):
-                # Exibe uma mensagem de alerta caso o índice seja inválido
-                messagebox.showerror("Error", "This position does not have any cards!")
-                return
-            
-            nome_carta_escolhida = cartas_mao[carta_numero -1]['nome']
-            print(f'Carta na posição str({carta_numero} -1): {nome_carta_escolhida}') # for debug
-            
-            if nome_carta_escolhida == "Aphrodite":
-                self.use_carta_Aphrodite()
-            elif nome_carta_escolhida == "Apollo":
-                self.use_carta_Apollo()
-            elif nome_carta_escolhida == "Artemis":
-                self.use_carta_Artemis()
-            elif nome_carta_escolhida == "Ares":
-                self.use_carta_Ares()
-            elif nome_carta_escolhida == "Hades":
-                self.use_carta_Hades()                
-            elif nome_carta_escolhida == "Hephaestus":
-                self.use_carta_Hephaestus()
-            elif nome_carta_escolhida == "Hera":
-                self.use_carta_Hera()
-            elif nome_carta_escolhida == "Hermes":
-                self.use_carta_Hermes()
-            elif nome_carta_escolhida == "Persephone":
-                self.use_carta_Persephone()                 
-            elif nome_carta_escolhida == "Poseidon":
-                self.use_carta_Poseidon()       
-            elif nome_carta_escolhida == "Zeus":
-                self.use_carta_Zeus()
-            elif nome_carta_escolhida == "Athena":
-                self.use_carta_Athena()
-            else:
-                print(f"Carta {nome_carta_escolhida} não reconhecida.")  # For debug
-                print(f"Não há cartas para usar...Lista vazia") # for backend Debug
-        except Exception as e:
-            print(f'Erro: {e}')
-            messagebox.showerror("Erro", f"Ocorreu um erro ao tentar usar a carta: {e}")
-                
-    
-        
+       
     def casa_evento_002(self): # casa da carta de Hermes
         self.limpar_widgets_casa_atual()
         
@@ -1028,60 +1273,7 @@ class Tela_Jogo:
     def casa_evento_004(self): # casa em branco
        self.limpar_widgets_casa_atual()        
        self.casa_evento_001()
-
        
-    def chamada_do_dado_batalha(self): # USADO NAS CASAS DE EVENTO
-         # Para a animação do GIF
-        self.animacao_ativa = False
-                # Canvas para o dado
-        self.canvas = tk.Canvas(self.root, width=80, height=80, bg="black", highlightthickness=0)
-        self.canvas.place(x=400, y=320, anchor='n') # posição do dado
-        self.widgets_casa_atual.append(self.canvas)  # Adiciona o canvas à lista
-        # Carrega o GIF com PIL
-        self.gif = Image.open(self.imagem_dado)
-        self.frames = []
-        # Extrai os quadros do GIF
-        try:
-            while True:
-                frame = self.gif.copy()
-                frame = frame.convert("RGBA")  # Certificar-se de que está em RGBA
-                # Adicionar fundo preto onde há transparência
-                black_bg = Image.new("RGBA", frame.size, "black")
-                frame = Image.alpha_composite(black_bg, frame)
-                # Redimensionar o quadro
-                frame = frame.resize((80, 80), Image.Resampling.LANCZOS) # reduz a imagem pra 80 X 80
-                # Converter para PhotoImage
-                self.frames.append(ImageTk.PhotoImage(frame))
-                self.gif.seek(len(self.frames))  # Avançar para o próximo quadro
-        except EOFError:
-            pass  # Final do GIF
-        # Configuraçºão do Canvas - tamanhao do Dado
-        self.canvas = tk.Canvas(self.root, width=80, height=80, bg="black", highlightthickness=0)
-        self.canvas.place(x=400, y=320, anchor='n')  # posição do dado     
-        # Exibir o primeiro quadro
-        self.image_on_canvas = self.canvas.create_image(0, 0, anchor="nw", image=self.frames[0])        
-        # Inicializa o índice do quadro
-        self.current_frame = 0  
-         # Ativa a animação
-        self.animacao_ativa = True    
-        # Exibe a animação
-        self.play_gif()
-         
-        # Botão de rolagem de dados
-        botao_rolar_dados = ctk.CTkButton(
-        self.canvas_abre,
-        fg_color='black',
-        width= 100,
-        border_width= 1,
-        border_color= "white",
-        hover_color='red',
-        text="Roll a die!",
-        font=("Gelio Greek Diner", 18),
-        command=lambda: (self.rolar_dado_de_batalha(casas_avanco=2,casas_retrocesso=2), self.atualizar_tela()) # ROLAR DADO!!!
-        )
-        botao_rolar_dados.place(x=400, y=405, anchor='n')
-        self.widgets_casa_atual.append(botao_rolar_dados)   
-    
     
     def casa_evento_005(self): # esfinge
         self.limpar_widgets_casa_atual()       
@@ -1126,99 +1318,10 @@ move back 2 spaces."""
         label_descricao_evento.place(x=650, y=140, anchor ="n")
         self.widgets_dinamicos.append(label_descricao_evento)
         
-        label_text_linha = ctk.CTkLabel(
-        self.root,
-        text="<><><><><><><><><><><><><><><><><><><><><><><><>",
-        text_color="gray",
-        font=("Arial", 16),
-        bg_color= "black"
-        )
-        label_text_linha.place(x=550, y=310, anchor="center")
-        self.widgets_casa_atual.append(label_text_linha)
-            
+        # DADO E CARTAS
+        self.area_de_dado_e_cartas_eventos()
         
-        # DADO
-        self.chamada_do_dado_batalha()
-        
-        
-        
-            #     # OU...             
-        self.label_ou = ctk.CTkLabel(
-                    self.root,
-                    text= "OR", 
-                    text_color= self.back_end.cor_layout_atual,  
-                    bg_color= "black",  
-                    font=("Gelio Fasolada", 22),
-                    )          
-        self.label_ou.place(x=520, y=405, anchor="n") # relx=0.5, y=10, anchor="n"
-        self.widgets_casa_atual.append(self.label_ou)
-        
-        # Escolher carta
-        self.botao_choose_card = ctk.CTkButton(
-        self.canvas_abre,
-        fg_color='black',
-        width= 100,
-        border_width= 1,
-        border_color= "white",
-        hover_color='black',
-        text="Choose a card!",
-        font=("Gelio Greek Diner", 18)
-        )
-        self.botao_choose_card.place(x=670, y=405, anchor='n')
-        self.widgets_casa_atual.append(self.botao_choose_card)  # Adiciona o botão à lista
-        
-         # Botão carta 1
-        botao_carta_1 = ctk.CTkButton(
-        self.canvas_abre,
-        fg_color='black',
-        width= 50,
-        height= 50,
-        border_width= 1,
-        border_color= "white",
-        hover_color=self.back_end.cor_layout_atual,
-        text="I",
-        font=("Gelio Greek Diner", 24),
-        command=lambda: self.usar_carta_da_mao(1) # função de abrir a carta do indice 0
-        )
-        botao_carta_1 .place(x=610, y=340, anchor='n')
-        self.widgets_casa_atual.append(botao_carta_1 )  # Adiciona o botão à lista 
-            
-         # Botão carta 2
-        botao_carta_2 = ctk.CTkButton(
-        self.canvas_abre,
-        fg_color='black',
-        width= 50,
-        height= 50,
-        border_width= 1,
-        border_color= "white",
-        hover_color=self.back_end.cor_layout_atual,
-        text="I I",
-        font=("Gelio Greek Diner", 24),
-        command=lambda: self.usar_carta_da_mao(2) # função de abrir a carta do indice 0
-        )
-        botao_carta_2 .place(x=670, y=340, anchor='n')
-        self.widgets_casa_atual.append(botao_carta_2)  # Adiciona o botão à lista 
-        
-         # Botão carta 3
-        botao_carta_3 = ctk.CTkButton(
-        self.canvas_abre,
-        fg_color='black',
-        width= 50,
-        height= 50,
-        border_width= 1,
-        border_color= "white",
-        hover_color=self.back_end.cor_layout_atual,
-        text="I I I",
-        font=("Gelio Greek Diner", 24),
-        command=lambda: self.usar_carta_da_mao(3) # função de abrir a carta do indice 0
-        )
-        botao_carta_3 .place(x=730, y=340, anchor='n')
-        self.widgets_casa_atual.append(botao_carta_3)  # Adiciona o botão à lista 
-    
-    
-    
       
-        
     def casa_evento_006(self): # casa em branco
         self.limpar_widgets_casa_atual()        
         self.casa_evento_001()
@@ -1229,8 +1332,54 @@ move back 2 spaces."""
     
         
     def casa_evento_008(self): # Prometeus
-        self.limpar_widgets_casa_atual()        
-        pass 
+         self.limpar_widgets_casa_atual()       
+         # label do nome da casa exibida
+        label_nome_casa_evento = ctk.CTkLabel(
+            self.root,
+            text= "Sphinx",  # Substituir pelo texto dinâmico, 
+            text_color="white",  
+            fg_color="black",  # Cor de fundo
+            font=("Olympus", 24), 
+        )
+        label_nome_casa_evento.place(x=450, y=110, anchor ="n")
+        self.widgets_dinamicos.append(label_nome_casa_evento)
+        
+        #IMAGEM DA CASA
+        self.image_evento_exibido = PhotoImage(file="images/casa_evento_layout.png")
+        self.label_evento_exibido = tk.Label(
+            self.root,  # Substitua por self.canvas_abre se quiser que o Label seja um filho do Canvas
+            image=self.image_evento_exibido,
+            bg="black"  # Define a cor de fundo do Label
+        )
+        self.label_evento_exibido.place(x=450, y=140, anchor='n')  # Posiciona o Label
+        self.widgets_casa_atual.append(self.label_evento_exibido)
+
+        texto_evento = (
+"""She asked you a question.
+Solve the riddle and roll a die.
+
+If you get 3 or more,
+move forward 2 spaces.
+If you get 2 or less,
+move back 2 spaces."""
+        )
+        # label de descrição do evento
+        label_descricao_evento = ctk.CTkLabel(
+            self.root,
+            text=texto_evento,  # Substituir pelo texto dinâmico, se necessário
+            text_color="white",  
+            fg_color="black",  # Cor de fundo
+            font=("Cambria", 17), # "Gelio Fasolada"
+        )
+        label_descricao_evento.place(x=650, y=140, anchor ="n")
+        self.widgets_dinamicos.append(label_descricao_evento)
+        
+        # DADO E CARTAS
+        self.area_de_dado_e_cartas_eventos()
+ 
+ 
+ 
+ 
                  
     def casa_evento_009(self): # casa em branco
         self.limpar_widgets_casa_atual()        
