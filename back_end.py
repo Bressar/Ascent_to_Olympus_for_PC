@@ -531,5 +531,12 @@ or advance
         print(f"Carta '{nome_carta}' adicionada com sucesso. Lista atual:")
         for carta in self.cartas_player:
             print(f"- {carta['nome']}: {carta['action']}")
-
-
+    
+    
+    def retornar_casas(self, numero_casas_retornar):
+        self.casa_atual - numero_casas_retornar
+        return self.casa_atual
+    
+    def avancar_casas(self, numero_casas_avancar):
+        self.casa_atual + numero_casas_avancar
+        return self.casa_atual

@@ -595,8 +595,7 @@ class Tela_Jogo:
             print(f"Erro ao atualizar a imagem dos tijolinhos: {e}")
 
 
-    def carregar_casa(self, casa_atual):
-        """Carrega os widgets da casa especificada."""
+    def carregar_casa(self, casa_atual):# Carrega os widgets da casa especificada.
         # Limpa os widgets da casa anterior
         self.limpar_widgets_casa_atual()
 
@@ -615,6 +614,233 @@ class Tela_Jogo:
             self.casa_evento_006()
         elif casa_atual == 7:
             self.casa_evento_007()
+        elif casa_atual == 8:
+            self.casa_evento_008()
+        elif casa_atual == 9:
+            self.casa_evento_009()
+        elif casa_atual == 10:
+            self.casa_evento_010()
+        elif casa_atual == 11:
+            self.casa_evento_011()
+        elif casa_atual == 12:
+            self.casa_evento_012()
+        elif casa_atual == 13:
+            self.casa_evento_013()
+        elif casa_atual == 14:
+            self.casa_evento_014()
+        elif casa_atual == 15:
+            self.casa_evento_015()
+        elif casa_atual == 16:
+            self.casa_evento_016()
+        elif casa_atual == 17:
+            self.casa_evento_017()
+        elif casa_atual == 18:
+            self.casa_evento_018()
+        elif casa_atual == 19:
+            self.casa_evento_019()
+        elif casa_atual == 20:
+            self.casa_evento_020()
+        elif casa_atual == 21:
+            self.casa_evento_021()
+        elif casa_atual == 22:
+            self.casa_evento_022()
+        elif casa_atual == 23:
+            self.casa_evento_023()
+        elif casa_atual == 24:
+            self.casa_evento_024()
+        elif casa_atual == 25:
+            self.casa_evento_025()
+        elif casa_atual == 26:
+            self.casa_evento_026()
+        elif casa_atual == 27:
+            self.casa_evento_027()
+        elif casa_atual == 28:
+            self.casa_evento_028()
+        elif casa_atual == 29:
+            self.casa_evento_029()
+        elif casa_atual == 30:
+            self.casa_evento_030()
+        elif casa_atual == 31:
+            self.casa_evento_031()
+        elif casa_atual == 32:
+            self.casa_evento_032()
+        elif casa_atual == 33:
+            self.casa_evento_033()
+        elif casa_atual == 34:
+            self.casa_evento_034()
+        elif casa_atual == 35:
+            self.casa_evento_035()
+        elif casa_atual == 36:
+            self.casa_evento_036()
+        elif casa_atual == 37:
+            self.casa_evento_037()
+        elif casa_atual == 38:
+            self.casa_evento_038()
+        elif casa_atual == 39:
+            self.casa_evento_039()
+        elif casa_atual == 40:
+            self.casa_evento_040()
+        elif casa_atual == 41:
+            self.casa_evento_041()
+        elif casa_atual == 42:
+            self.casa_evento_042()
+        elif casa_atual == 43:
+            self.casa_evento_043()
+        elif casa_atual == 44:
+            self.casa_evento_044()
+        elif casa_atual == 45:
+            self.casa_evento_045()
+        elif casa_atual == 46:
+            self.casa_evento_046()
+        elif casa_atual == 47:
+            self.casa_evento_047()
+        elif casa_atual == 48:
+            self.casa_evento_048()
+        elif casa_atual == 49:
+            self.casa_evento_049()
+        elif casa_atual == 50:
+            self.casa_evento_050()
+        elif casa_atual == 51:
+            self.casa_evento_051()
+        elif casa_atual == 52:
+            self.casa_evento_052()
+        elif casa_atual == 53:
+            self.casa_evento_053()
+        elif casa_atual == 54:
+            self.casa_evento_054()
+        elif casa_atual == 55:
+            self.casa_evento_055()
+        elif casa_atual == 56:
+            self.casa_evento_056()
+        elif casa_atual == 57:
+            self.casa_evento_057()
+        elif casa_atual == 58:
+            self.casa_evento_058()
+        elif casa_atual == 59:
+            self.casa_evento_059()
+        elif casa_atual == 60:
+            self.casa_evento_060()
+        elif casa_atual == 61:
+            self.casa_evento_061()
+        elif casa_atual == 62:
+            self.casa_evento_062()
+        elif casa_atual == 63:
+            self.casa_evento_063()
+        elif casa_atual == 64:
+            self.casa_evento_064()
+        elif casa_atual == 65:
+            self.casa_evento_065()
+        elif casa_atual == 66:
+            self.casa_evento_066()
+        elif casa_atual == 67:
+            self.casa_evento_067()
+        elif casa_atual == 68:
+            self.casa_evento_068()
+        elif casa_atual == 69:
+            self.casa_evento_069()
+        elif casa_atual == 70:
+            self.casa_evento_070()
+        elif casa_atual == 71:
+            self.casa_evento_071()
+        elif casa_atual == 72:
+            self.casa_evento_072()
+        elif casa_atual == 73:
+            self.casa_evento_073()
+        elif casa_atual == 74:
+            self.casa_evento_074()
+        elif casa_atual == 75:
+            self.casa_evento_075()
+        elif casa_atual == 76:
+            self.casa_evento_076()
+        elif casa_atual == 77:
+            self.casa_evento_077()
+        elif casa_atual == 78:
+            self.casa_evento_078()
+        elif casa_atual == 79:
+            self.casa_evento_079()
+        elif casa_atual == 80:
+            self.casa_evento_080()
+        elif casa_atual == 81:
+            self.casa_evento_081()
+        elif casa_atual == 82:
+            self.casa_evento_082()
+        elif casa_atual == 83:
+            self.casa_evento_083()
+        elif casa_atual == 84:
+            self.casa_evento_084()
+        elif casa_atual == 85:
+            self.casa_evento_085()
+        elif casa_atual == 86:
+            self.casa_evento_086()
+        elif casa_atual == 87:
+            self.casa_evento_087()
+        elif casa_atual == 88:
+            self.casa_evento_088()
+        elif casa_atual == 89:
+            self.casa_evento_089()
+        elif casa_atual == 90:
+            self.casa_evento_090()
+        elif casa_atual == 91:
+            self.casa_evento_091()
+        elif casa_atual == 92:
+            self.casa_evento_092()
+        elif casa_atual == 93:
+            self.casa_evento_093()
+        elif casa_atual == 94:
+            self.casa_evento_094()
+        elif casa_atual == 95:
+            self.casa_evento_095()
+        elif casa_atual == 96:
+            self.casa_evento_096()
+        elif casa_atual == 97:
+            self.casa_evento_097()
+        elif casa_atual == 98:
+            self.casa_evento_098()
+        elif casa_atual == 99:
+            self.casa_evento_099()
+        elif casa_atual == 100:
+            self.casa_evento_100()
+        elif casa_atual == 101:
+            self.casa_evento_101()
+        elif casa_atual == 102:
+            self.casa_evento_102()
+        elif casa_atual == 103:
+            self.casa_evento_103()
+        elif casa_atual == 104:
+            self.casa_evento_104()
+        elif casa_atual == 105:
+            self.casa_evento_105()
+        elif casa_atual == 106:
+            self.casa_evento_106()
+        elif casa_atual == 107:
+            self.casa_evento_107()
+        elif casa_atual == 108:
+            self.casa_evento_108()
+        elif casa_atual == 109:
+            self.casa_evento_109()
+        elif casa_atual == 110:
+            self.casa_evento_110()
+        elif casa_atual == 111:
+            self.casa_evento_111()
+        elif casa_atual == 112:
+            self.casa_evento_112()
+        elif casa_atual == 113:
+            self.casa_evento_113()
+        elif casa_atual == 114:
+            self.casa_evento_114()
+        elif casa_atual == 115:
+            self.casa_evento_115()
+        elif casa_atual == 116:
+            self.casa_evento_116()
+        elif casa_atual == 117:
+            self.casa_evento_117()
+        elif casa_atual == 118:
+            self.casa_evento_118()
+        elif casa_atual == 119:
+            self.casa_evento_119()
+        elif casa_atual == 120:
+            self.casa_evento_120()
+
         else:
             print(f"Nenhum evento configurado para a casa {casa_atual}.")
 
@@ -629,7 +855,7 @@ class Tela_Jogo:
         self.animacao_ativa = False
         
         # Sorteia um número entre 1 e 6
-        numero_sorteado = random.choice([4]) # random.randint(1, 6)
+        numero_sorteado = random.randint(1, 6) # random.choice([4]) # random.randint(1, 6)
         print(f'Número sorteado: {numero_sorteado}')
         
         # Atualiza a imagem em movimento por uma imagem estática do resultado
@@ -656,7 +882,7 @@ class Tela_Jogo:
         self.carregar_casa(self.back_end.casa_atual)  # Carrega os gadgets da nova casa
 
 #tentativa 1
-# NOVAS FUNÇÕES DADOS
+# NOVAS FUNÇÕES DADOS FUNCIONANDO
     def rolar_dado_de_batalha(self, casas_avanco=0, casas_retrocesso=0, vida=0):
 #        Lógica da batalha: sorteia o número do dado, exibe o resultado e processa a batalha.
         # Para a animação do GIF
@@ -753,7 +979,7 @@ class Tela_Jogo:
             hover_color='red',
             text="Roll a die!",
             font=("Gelio Greek Diner", 18),
-            command=lambda: (self.rolar_dado_de_batalha(casas_avanco=2, casas_retrocesso=2, vida=1))
+            command=lambda: (self.rolar_dado_de_batalha(casas_avanco=2, casas_retrocesso=2, vida=0)) # determina o que dado faz
         )
         botao_rolar_dados.place(x=400, y=405, anchor='n')
         self.widgets_casa_atual.append(botao_rolar_dados)
@@ -966,7 +1192,7 @@ class Tela_Jogo:
       
       
     # Menu fixo com o dado de rolagem mais escolha de cartas           
-    def area_de_dado_e_cartas_eventos(self):
+    def chamada_cartas_eventos(self):
         label_text_linha = ctk.CTkLabel(
         self.root,
         text="<><><><><><><><><><><><><><><><><><><><><><><><>",
@@ -976,9 +1202,6 @@ class Tela_Jogo:
         )
         label_text_linha.place(x=550, y=310, anchor="center")
         self.widgets_casa_atual.append(label_text_linha)
-
-        # DADO
-        self.chamada_do_dado_batalha()
         
             #     # OU...             
         self.label_ou = ctk.CTkLabel(
@@ -1056,7 +1279,7 @@ class Tela_Jogo:
 
  # !!!!! EVENTOS DAS CASAS COMEÇAM AQUI !!!!!!!
  
-    def casa_evento_001(self):
+    def casa_evento_001(self): # casa da abertura DADOS + CARTAS
          # Canvas para o dado
         self.canvas = tk.Canvas(self.root, width=80, height=80, bg="black", highlightthickness=0)
         self.canvas.place(x=550, y=120, anchor='n') # posição do dado
@@ -1180,7 +1403,7 @@ class Tela_Jogo:
         self.widgets_casa_atual.append(botao_carta_3)  # Adiciona o botão à lista 
          
        
-    def casa_evento_002(self): # casa da carta de Hermes
+    def casa_evento_002(self): # Carta HERMES
         self.limpar_widgets_casa_atual()
         
         try:
@@ -1268,14 +1491,13 @@ class Tela_Jogo:
     def casa_evento_003(self): # casa em branco
         self.limpar_widgets_casa_atual()        
         self.casa_evento_001()
-        
-        
+               
     def casa_evento_004(self): # casa em branco
        self.limpar_widgets_casa_atual()        
        self.casa_evento_001()
        
     
-    def casa_evento_005(self): # esfinge
+    def casa_evento_005(self): # ESFINGE
         self.limpar_widgets_casa_atual()       
          # label do nome da casa exibida
         label_nome_casa_evento = ctk.CTkLabel(
@@ -1289,7 +1511,7 @@ class Tela_Jogo:
         self.widgets_dinamicos.append(label_nome_casa_evento)
         
         #IMAGEM DA CASA
-        self.image_evento_exibido = PhotoImage(file="images/casa_evento_layout.png")
+        self.image_evento_exibido = PhotoImage(file="images/casa_005_esfinge.png")
         self.label_evento_exibido = tk.Label(
             self.root,  # Substitua por self.canvas_abre se quiser que o Label seja um filho do Canvas
             image=self.image_evento_exibido,
@@ -1298,8 +1520,7 @@ class Tela_Jogo:
         self.label_evento_exibido.place(x=450, y=140, anchor='n')  # Posiciona o Label
         self.widgets_casa_atual.append(self.label_evento_exibido)
 
-        texto_evento = (
-"""She asked you a question.
+        texto_evento = ("""She asked you a question.
 Solve the riddle and roll a die.
 
 If you get 3 or more,
@@ -1319,24 +1540,25 @@ move back 2 spaces."""
         self.widgets_dinamicos.append(label_descricao_evento)
         
         # DADO E CARTAS
-        self.area_de_dado_e_cartas_eventos()
+        self.chamada_do_dado_batalha()
+        self.chamada_cartas_eventos()
         
       
     def casa_evento_006(self): # casa em branco
         self.limpar_widgets_casa_atual()        
         self.casa_evento_001()
-        
+               
     def casa_evento_007(self): # casa em branco
         self.limpar_widgets_casa_atual()        
         self.casa_evento_001() 
     
         
-    def casa_evento_008(self): # Prometeus
-         self.limpar_widgets_casa_atual()       
-         # label do nome da casa exibida
+    def casa_evento_008(self): # PROMETEUS
+        self.limpar_widgets_casa_atual()       
+        # label do nome da casa exibida
         label_nome_casa_evento = ctk.CTkLabel(
             self.root,
-            text= "Sphinx",  # Substituir pelo texto dinâmico, 
+            text= "Prometeus",  # Substituir pelo texto dinâmico, 
             text_color="white",  
             fg_color="black",  # Cor de fundo
             font=("Olympus", 24), 
@@ -1345,7 +1567,7 @@ move back 2 spaces."""
         self.widgets_dinamicos.append(label_nome_casa_evento)
         
         #IMAGEM DA CASA
-        self.image_evento_exibido = PhotoImage(file="images/casa_evento_layout.png")
+        self.image_evento_exibido = PhotoImage(file="images/casa_008_prometeu.png")
         self.label_evento_exibido = tk.Label(
             self.root,  # Substitua por self.canvas_abre se quiser que o Label seja um filho do Canvas
             image=self.image_evento_exibido,
@@ -1354,14 +1576,11 @@ move back 2 spaces."""
         self.label_evento_exibido.place(x=450, y=140, anchor='n')  # Posiciona o Label
         self.widgets_casa_atual.append(self.label_evento_exibido)
 
-        texto_evento = (
-"""She asked you a question.
-Solve the riddle and roll a die.
+        texto_evento = ("""Watch the condemned Titan
+in his punishment 
 
-If you get 3 or more,
-move forward 2 spaces.
-If you get 2 or less,
-move back 2 spaces."""
+and return 
+2 spaces."""
         )
         # label de descrição do evento
         label_descricao_evento = ctk.CTkLabel(
@@ -1374,21 +1593,71 @@ move back 2 spaces."""
         label_descricao_evento.place(x=650, y=140, anchor ="n")
         self.widgets_dinamicos.append(label_descricao_evento)
         
+        # evento da casa       
+        self.back_end.retornar_casas(numero_casas_retornar=2)
+        #self.atualizar_tela()
+        
         # DADO E CARTAS
-        self.area_de_dado_e_cartas_eventos()
- 
- 
- 
- 
+        self.chamada_do_dado_batalha()
+        self.chamada_cartas_eventos()
+
                  
     def casa_evento_009(self): # casa em branco
         self.limpar_widgets_casa_atual()        
         self.casa_evento_001()   
      
-     
-     
         
+    def casa_evento_010(self): # ESPARTA
+        self.limpar_widgets_casa_atual()       
+            # label do nome da casa exibida
+        label_nome_casa_evento = ctk.CTkLabel(
+            self.root,
+            text= "Sparta",  # Substituir pelo texto dinâmico, 
+            text_color="white",  
+            fg_color="black",  # Cor de fundo
+            font=("Olympus", 24), 
+            )
+        label_nome_casa_evento.place(x=450, y=110, anchor ="n")
+        self.widgets_dinamicos.append(label_nome_casa_evento)
+            
+            #IMAGEM DA CASA
+        self.image_evento_exibido = PhotoImage(file="images/casa_010_esparta.png")
+        self.label_evento_exibido = tk.Label(
+                self.root,  # Substitua por self.canvas_abre se quiser que o Label seja um filho do Canvas
+                image=self.image_evento_exibido,
+                bg="black"  # Define a cor de fundo do Label
+            )
+        self.label_evento_exibido.place(x=450, y=140, anchor='n')  # Posiciona o Label
+        self.widgets_casa_atual.append(self.label_evento_exibido)
+
+        texto_evento = ("""The Spartans
+don't like strangers!
+Fight for your life.
+
+If you win,
+advance 2 spaces.
+If you lose,
+lose 1 life."""
+        )
+        # label de descrição do evento
+        label_descricao_evento = ctk.CTkLabel(
+            self.root,
+            text=texto_evento,  # Substituir pelo texto dinâmico, se necessário
+            text_color="white",  
+            fg_color="black",  # Cor de fundo
+            font=("Cambria", 17), # "Gelio Fasolada"
+        )
+        label_descricao_evento.place(x=650, y=140, anchor ="n")
+        self.widgets_dinamicos.append(label_descricao_evento)
         
+        # evento da casa
+        self.back_end.retornar_casas(numero_casas_retornar=2)
+        
+        # DADO E CARTAS
+        self.chamada_do_dado_batalha()
+        self.chamada_cartas_eventos()
+
+     
     def casa_evento_011(self): # casa em branco
         self.limpar_widgets_casa_atual()        
         self.casa_evento_001() 
@@ -1398,9 +1667,47 @@ move back 2 spaces."""
         self.casa_evento_001() 
         
         
-        
-        
-    
+    def casa_evento_013(self): # HESTIA
+        self.limpar_widgets_casa_atual()       
+            # label do nome da casa exibida
+        label_nome_casa_evento = ctk.CTkLabel(
+            self.root,
+            text= "Hestia",  # Substituir pelo texto dinâmico, 
+            text_color="white",  
+            fg_color="black",  # Cor de fundo
+            font=("Olympus", 24), 
+            )
+        label_nome_casa_evento.place(x=450, y=110, anchor ="n")
+        self.widgets_dinamicos.append(label_nome_casa_evento)
+            
+            #IMAGEM DA CASA
+        self.image_evento_exibido = PhotoImage(file="images/casa_013_hestia.png")
+        self.label_evento_exibido = tk.Label(
+                self.root,  # Substitua por self.canvas_abre se quiser que o Label seja um filho do Canvas
+                image=self.image_evento_exibido,
+                bg="black"  # Define a cor de fundo do Label
+            )
+        self.label_evento_exibido.place(x=450, y=140, anchor='n')  # Posiciona o Label
+        self.widgets_casa_atual.append(self.label_evento_exibido)
+
+        texto_evento = ("""Back 1 space
+
+and assist
+the Goddess
+with her hearth."""
+        )
+        # label de descrição do evento
+        label_descricao_evento = ctk.CTkLabel(
+            self.root,
+            text=texto_evento,  # Substituir pelo texto dinâmico, se necessário
+            text_color="white",  
+            fg_color="black",  # Cor de fundo
+            font=("Cambria", 17), # "Gelio Fasolada"
+        )
+        label_descricao_evento.place(x=650, y=140, anchor ="n")
+        self.widgets_dinamicos.append(label_descricao_evento)
+          
+            
     def casa_evento_014(self): # casa em branco
         self.limpar_widgets_casa_atual()        
         self.casa_evento_001() 
@@ -1413,14 +1720,1194 @@ move back 2 spaces."""
         self.limpar_widgets_casa_atual()        
         self.casa_evento_001() 
         
+                    
+    def casa_evento_017(self): # QUIMERA
+        self.limpar_widgets_casa_atual()       
+            # label do nome da casa exibida
+        label_nome_casa_evento = ctk.CTkLabel(
+            self.root,
+            text= "Chimera",  # Substituir pelo texto dinâmico, 
+            text_color="white",  
+            fg_color="black",  # Cor de fundo
+            font=("Olympus", 24), 
+            )
+        label_nome_casa_evento.place(x=450, y=110, anchor ="n")
+        self.widgets_dinamicos.append(label_nome_casa_evento)
+            
+            #IMAGEM DA CASA
+        self.image_evento_exibido = PhotoImage(file="images/casa_017_quimera.png")
+        self.label_evento_exibido = tk.Label(
+                self.root,  # Substitua por self.canvas_abre se quiser que o Label seja um filho do Canvas
+                image=self.image_evento_exibido,
+                bg="black"  # Define a cor de fundo do Label
+            )
+        self.label_evento_exibido.place(x=450, y=140, anchor='n')  # Posiciona o Label
+        self.widgets_casa_atual.append(self.label_evento_exibido)
+
+        texto_evento = ("""Fight against the monster.
+
+If you lose,
+move back 3 spaces.
+
+If you win,
+move forward 3 spaces."""
+        )
+        # label de descrição do evento
+        label_descricao_evento = ctk.CTkLabel(
+            self.root,
+            text=texto_evento,  # Substituir pelo texto dinâmico, se necessário
+            text_color="white",  
+            fg_color="black",  # Cor de fundo
+            font=("Cambria", 17), # "Gelio Fasolada"
+        )
+        label_descricao_evento.place(x=650, y=140, anchor ="n")
+        self.widgets_dinamicos.append(label_descricao_evento)
         
+                
     def casa_evento_018(self): # casa em branco
         self.limpar_widgets_casa_atual()        
         self.casa_evento_001()  
         
     def casa_evento_019(self): # casa em branco
         self.limpar_widgets_casa_atual()        
-        self.casa_evento_001()  
+        self.casa_evento_001()
+        
+    def casa_evento_020(self): # casa em branco
+        self.limpar_widgets_casa_atual()        
+        self.casa_evento_001() 
+        
+        
+    def casa_evento_021(self): # casa da carta POSEIDON
+        self.limpar_widgets_casa_atual()
+        
+        try:
+            # Carrega a imagem usando PIL
+            img = Image.open(self.back_end.cartas_deuses[9]['imagem']) 
+            # Converte a imagem para PhotoImage
+            self.image_carta_exibida = ImageTk.PhotoImage(img)
+            # Cria um Label para exibir a imagem no Canvas
+            self.label_imagem_carta = tk.Label(self.canvas_abre, image=self.image_carta_exibida, bg="black")
+            self.label_imagem_carta.place(x=440, y=130, anchor="n")
+            # Adiciona o Label à lista de widgets dinâmicos
+            self.widgets_casa_atual.append(self.label_imagem_carta)
+
+        except Exception as e:
+            print(f'Sem imagens nessa carta, usando a imagem default -> {e}')
+               
+        # label do nome da casa exibida
+        label_descricao_carta1 = ctk.CTkLabel(
+            self.root,
+            text= 'Card abilities:',  # Substituir pelo texto dinâmico, 
+            text_color=self.back_end.cor_layout_atual,  
+            fg_color="black",  # Cor de fundo
+            font=("Gelio Fasolada", 18), 
+        )
+        label_descricao_carta1.place(x=650, y=130, anchor ="n")
+        self.widgets_casa_atual.append(label_descricao_carta1)
+        
+        """Exibe os widgets para o evento da Casa 002."""
+        label_casa = ctk.CTkLabel(
+            self.root,
+            text= self.back_end.cartas_deuses[9]['action_p'],
+            text_color="white",
+            bg_color="black",
+            font=("cambria", 18),
+        )
+        label_casa.place(x=650, y=160, anchor='n')
+        self.widgets_casa_atual.append(label_casa)
+        
+
+        label_guardar_card_exibido = ctk.CTkLabel(
+            self.root,
+            text= "Do you keep the card?",  # Substituir pelo texto dinâmico, 
+            text_color= self.back_end.cor_layout_atual,  
+            fg_color="black",  # Cor de fundo
+            font=("Gelio Fasolada", 17), # Gelio Fasolada
+        )
+        label_guardar_card_exibido.place(x=650, y=320, anchor ="center")
+        self.widgets_casa_atual.append(label_guardar_card_exibido)
+               
+        # Botão SIM
+        botao_sim_card = ctk.CTkButton(
+        self.root,
+        fg_color='black',
+        width= 16,
+        border_color= "white",
+        border_width= 1,
+        hover_color=self.back_end.cor_layout_atual,
+        text="yes",
+        font=("Gelio Greek Diner", 18),
+        command=lambda: (self.back_end.adicionar_carta_a_cartas_player("Poseidon"),
+                         self.atualizar_cartas(),  # Atualiza imagens das cartas
+                         #self.atualizar_tela(),
+                         self.limpar_widgets_casa_atual(),
+                         self.casa_evento_001()) # acrescenta Hermes
+        )
+        botao_sim_card.place(x=600, y=360, anchor="center")
+        self.widgets_casa_atual.append(botao_sim_card)
+        
+        # Botão NÃO
+        botao_naum_card = ctk.CTkButton(
+        self.root,
+        fg_color='black',
+        width= 16,
+        border_color= "white",
+        border_width= 1,
+        hover_color="red",
+        text="no",
+        font=("Gelio Greek Diner", 18),
+        command=lambda: (self.limpar_widgets_casa_atual(), self.casa_evento_001()) # abre pra jogar dado ou carta
+        )
+        botao_naum_card.place(x=700, y=360, anchor="center")
+        self.widgets_casa_atual.append(botao_naum_card) 
+
+
+    def casa_evento_022(self): # casa em branco
+            self.limpar_widgets_casa_atual()        
+            self.casa_evento_001()
+            
+    def casa_evento_023(self): # casa em branco
+            self.limpar_widgets_casa_atual()        
+            self.casa_evento_001()
+
+
+    def casa_evento_024(self): # CICLOPES
+            self.limpar_widgets_casa_atual()       
+                # label do nome da casa exibida
+            label_nome_casa_evento = ctk.CTkLabel(
+                self.root,
+                text= "Ciclops",  # Substituir pelo texto dinâmico, 
+                text_color="white",  
+                fg_color="black",  # Cor de fundo
+                font=("Olympus", 24), 
+                )
+            label_nome_casa_evento.place(x=450, y=110, anchor ="n")
+            self.widgets_dinamicos.append(label_nome_casa_evento)
+                
+                #IMAGEM DA CASA
+            self.image_evento_exibido = PhotoImage(file="images/casa_024_ciclope.png")
+            self.label_evento_exibido = tk.Label(
+                    self.root,  # Substitua por self.canvas_abre se quiser que o Label seja um filho do Canvas
+                    image=self.image_evento_exibido,
+                    bg="black"  # Define a cor de fundo do Label
+                )
+            self.label_evento_exibido.place(x=450, y=140, anchor='n')  # Posiciona o Label
+            self.widgets_casa_atual.append(self.label_evento_exibido)
+
+            texto_evento = ("""Engage in battle
+against the Cyclops.
+    
+If you win, 
+move forward
+1 space."""
+            )
+            # label de descrição do evento
+            label_descricao_evento = ctk.CTkLabel(
+                self.root,
+                text=texto_evento,  # Substituir pelo texto dinâmico, se necessário
+                text_color="white",  
+                fg_color="black",  # Cor de fundo
+                font=("Cambria", 17), # "Gelio Fasolada"
+            )
+            label_descricao_evento.place(x=650, y=140, anchor ="n")
+            self.widgets_dinamicos.append(label_descricao_evento)
+
+
+    def casa_evento_025(self): # casa em branco
+            self.limpar_widgets_casa_atual()        
+            self.casa_evento_001()
+            
+    def casa_evento_026(self): # casa em branco
+            self.limpar_widgets_casa_atual()        
+            self.casa_evento_001()
+            
+    def casa_evento_027(self): # casa em branco
+                self.limpar_widgets_casa_atual()        
+                self.casa_evento_001()
+                
+
+    def casa_evento_028(self): # HARPIAS
+            self.limpar_widgets_casa_atual()       
+                # label do nome da casa exibida
+            label_nome_casa_evento = ctk.CTkLabel(
+                self.root,
+                text= "Harpies",  # Substituir pelo texto dinâmico, 
+                text_color="white",  
+                fg_color="black",  # Cor de fundo
+                font=("Olympus", 24), 
+                )
+            label_nome_casa_evento.place(x=450, y=110, anchor ="n")
+            self.widgets_dinamicos.append(label_nome_casa_evento)
+                
+                #IMAGEM DA CASA
+            self.image_evento_exibido = PhotoImage(file="images/casa_028_harpias.png")
+            self.label_evento_exibido = tk.Label(
+                    self.root,  # Substitua por self.canvas_abre se quiser que o Label seja um filho do Canvas
+                    image=self.image_evento_exibido,
+                    bg="black"  # Define a cor de fundo do Label
+                )
+            self.label_evento_exibido.place(x=450, y=140, anchor='n')  # Posiciona o Label
+            self.widgets_casa_atual.append(self.label_evento_exibido)
+
+            texto_evento = ("""Face the 
+bronze-feathered monsters.
+    
+If you win,
+move forward
+1 space."""
+            )
+            # label de descrição do evento
+            label_descricao_evento = ctk.CTkLabel(
+                self.root,
+                text=texto_evento,  # Substituir pelo texto dinâmico, se necessário
+                text_color="white",  
+                fg_color="black",  # Cor de fundo
+                font=("Cambria", 17), # "Gelio Fasolada"
+            )
+            label_descricao_evento.place(x=650, y=140, anchor ="n")
+            self.widgets_dinamicos.append(label_descricao_evento)
+
+
+    def casa_evento_029(self): # casa em branco
+                self.limpar_widgets_casa_atual()        
+                self.casa_evento_001()
+
+        
+    def casa_evento_030(self): # casa da carta ATHENA
+        self.limpar_widgets_casa_atual()
+        
+        try:
+            # Carrega a imagem usando PIL
+            img = Image.open(self.back_end.cartas_deuses[11]['imagem']) 
+            # Converte a imagem para PhotoImage
+            self.image_carta_exibida = ImageTk.PhotoImage(img)
+            # Cria um Label para exibir a imagem no Canvas
+            self.label_imagem_carta = tk.Label(self.canvas_abre, image=self.image_carta_exibida, bg="black")
+            self.label_imagem_carta.place(x=440, y=130, anchor="n")
+            # Adiciona o Label à lista de widgets dinâmicos
+            self.widgets_casa_atual.append(self.label_imagem_carta)
+
+        except Exception as e:
+            print(f'Sem imagens nessa carta, usando a imagem default -> {e}')
+               
+        # label do nome da casa exibida
+        label_descricao_carta1 = ctk.CTkLabel(
+            self.root,
+            text= 'Card abilities:',  # Substituir pelo texto dinâmico, 
+            text_color=self.back_end.cor_layout_atual,  
+            fg_color="black",  # Cor de fundo
+            font=("Gelio Fasolada", 18), 
+        )
+        label_descricao_carta1.place(x=650, y=130, anchor ="n")
+        self.widgets_casa_atual.append(label_descricao_carta1)
+        
+        """Exibe os widgets para o evento da Casa 002."""
+        label_casa = ctk.CTkLabel(
+            self.root,
+            text= self.back_end.cartas_deuses[11]['action_p'],
+            text_color="white",
+            bg_color="black",
+            font=("cambria", 18),
+        )
+        label_casa.place(x=650, y=160, anchor='n')
+        self.widgets_casa_atual.append(label_casa)
+        
+
+        label_guardar_card_exibido = ctk.CTkLabel(
+            self.root,
+            text= "Do you keep the card?",  # Substituir pelo texto dinâmico, 
+            text_color= self.back_end.cor_layout_atual,  
+            fg_color="black",  # Cor de fundo
+            font=("Gelio Fasolada", 17), # Gelio Fasolada
+        )
+        label_guardar_card_exibido.place(x=650, y=320, anchor ="center")
+        self.widgets_casa_atual.append(label_guardar_card_exibido)
+               
+        # Botão SIM
+        botao_sim_card = ctk.CTkButton(
+        self.root,
+        fg_color='black',
+        width= 16,
+        border_color= "white",
+        border_width= 1,
+        hover_color=self.back_end.cor_layout_atual,
+        text="yes",
+        font=("Gelio Greek Diner", 18),
+        command=lambda: (self.back_end.adicionar_carta_a_cartas_player("Athena"),
+                         self.atualizar_cartas(),  # Atualiza imagens das cartas
+                         #self.atualizar_tela(),
+                         self.limpar_widgets_casa_atual(),
+                         self.casa_evento_001()) # acrescenta Hermes
+        )
+        botao_sim_card.place(x=600, y=360, anchor="center")
+        self.widgets_casa_atual.append(botao_sim_card)
+        
+        # Botão NÃO
+        botao_naum_card = ctk.CTkButton(
+        self.root,
+        fg_color='black',
+        width= 16,
+        border_color= "white",
+        border_width= 1,
+        hover_color="red",
+        text="no",
+        font=("Gelio Greek Diner", 18),
+        command=lambda: (self.limpar_widgets_casa_atual(), self.casa_evento_001()) # abre pra jogar dado ou carta
+        )
+        botao_naum_card.place(x=700, y=360, anchor="center")
+        self.widgets_casa_atual.append(botao_naum_card) 
+
+
+    def casa_evento_031(self): # casa em branco
+                self.limpar_widgets_casa_atual()        
+                self.casa_evento_001()
+                
+                
+    def casa_evento_032(self): # TANATOS
+            self.limpar_widgets_casa_atual()       
+                # label do nome da casa exibida
+            label_nome_casa_evento = ctk.CTkLabel(
+                self.root,
+                text= "Thanatos",  # Substituir pelo texto dinâmico, 
+                text_color="white",  
+                fg_color="black",  # Cor de fundo
+                font=("Olympus", 24), 
+                )
+            label_nome_casa_evento.place(x=450, y=110, anchor ="n")
+            self.widgets_dinamicos.append(label_nome_casa_evento)
+                
+                #IMAGEM DA CASA
+            self.image_evento_exibido = PhotoImage(file="images/casa_032_tanatos.png")
+            self.label_evento_exibido = tk.Label(
+                    self.root,  # Substitua por self.canvas_abre se quiser que o Label seja um filho do Canvas
+                    image=self.image_evento_exibido,
+                    bg="black"  # Define a cor de fundo do Label
+                )
+            self.label_evento_exibido.place(x=450, y=140, anchor='n')  # Posiciona o Label
+            self.widgets_casa_atual.append(self.label_evento_exibido)
+
+            texto_evento = ("""Thanatos 
+will take you
+to meet Charon.
+
+Advance to 
+space 39."""
+            )
+            # label de descrição do evento
+            label_descricao_evento = ctk.CTkLabel(
+                self.root,
+                text=texto_evento,  # Substituir pelo texto dinâmico, se necessário
+                text_color="white",  
+                fg_color="black",  # Cor de fundo
+                font=("Cambria", 17), # "Gelio Fasolada"
+            )
+            label_descricao_evento.place(x=650, y=140, anchor ="n")
+            self.widgets_dinamicos.append(label_descricao_evento)
+
+
+    def casa_evento_033(self): # casa em branco
+                self.limpar_widgets_casa_atual()        
+                self.casa_evento_001()
+                
+                
+    def casa_evento_034(self): # MINOTAURO
+            self.limpar_widgets_casa_atual()       
+                # label do nome da casa exibida
+            label_nome_casa_evento = ctk.CTkLabel(
+                self.root,
+                text= "Minotaur",  # Substituir pelo texto dinâmico, 
+                text_color="white",  
+                fg_color="black",  # Cor de fundo
+                font=("Olympus", 24), 
+                )
+            label_nome_casa_evento.place(x=450, y=110, anchor ="n")
+            self.widgets_dinamicos.append(label_nome_casa_evento)
+                
+                #IMAGEM DA CASA
+            self.image_evento_exibido = PhotoImage(file="images/casa_034_minotauro.png")
+            self.label_evento_exibido = tk.Label(
+                    self.root,  # Substitua por self.canvas_abre se quiser que o Label seja um filho do Canvas
+                    image=self.image_evento_exibido,
+                    bg="black"  # Define a cor de fundo do Label
+                )
+            self.label_evento_exibido.place(x=450, y=140, anchor='n')  # Posiciona o Label
+            self.widgets_casa_atual.append(self.label_evento_exibido)
+
+            texto_evento = ("""Welcome to the 
+Labyrinth of Crete.
+Face the Minotaur! 
+Fight the beast.
+
+if you win,
+advance 2 spaces."""
+            )
+            # label de descrição do evento
+            label_descricao_evento = ctk.CTkLabel(
+                self.root,
+                text=texto_evento,  # Substituir pelo texto dinâmico, se necessário
+                text_color="white",  
+                fg_color="black",  # Cor de fundo
+                font=("Cambria", 17), # "Gelio Fasolada"
+            )
+            label_descricao_evento.place(x=650, y=140, anchor ="n")
+            self.widgets_dinamicos.append(label_descricao_evento)
+
+
+    def casa_evento_035(self): # casa em branco
+                self.limpar_widgets_casa_atual()        
+                self.casa_evento_001()
+
+                
+    def casa_evento_036(self): # LABIRINTO
+            self.limpar_widgets_casa_atual()       
+                # label do nome da casa exibida
+            label_nome_casa_evento = ctk.CTkLabel(
+                self.root,
+                text= "Labyrinth",  # Substituir pelo texto dinâmico, 
+                text_color="white",  
+                fg_color="black",  # Cor de fundo
+                font=("Olympus", 24), 
+                )
+            label_nome_casa_evento.place(x=450, y=110, anchor ="n")
+            self.widgets_dinamicos.append(label_nome_casa_evento)
+                
+                #IMAGEM DA CASA
+            self.image_evento_exibido = PhotoImage(file="images/casa_036_labirinto.png")
+            self.label_evento_exibido = tk.Label(
+                    self.root,  # Substitua por self.canvas_abre se quiser que o Label seja um filho do Canvas
+                    image=self.image_evento_exibido,
+                    bg="black"  # Define a cor de fundo do Label
+                )
+            self.label_evento_exibido.place(x=450, y=140, anchor='n')  # Posiciona o Label
+            self.widgets_casa_atual.append(self.label_evento_exibido)
+
+            texto_evento = ("""You are lost 
+in the Labyrinth.
+Seek Ariadne's thread,
+to escape you must roll
+the number
+5 or 6."""
+            )
+            # label de descrição do evento
+            label_descricao_evento = ctk.CTkLabel(
+                self.root,
+                text=texto_evento,  # Substituir pelo texto dinâmico, se necessário
+                text_color="white",  
+                fg_color="black",  # Cor de fundo
+                font=("Cambria", 17), # "Gelio Fasolada"
+            )
+            label_descricao_evento.place(x=650, y=140, anchor ="n")
+            self.widgets_dinamicos.append(label_descricao_evento)
+            
+            
+    def casa_evento_037(self): # casa em branco
+                self.limpar_widgets_casa_atual()        
+                self.casa_evento_001()
+
+      
+    def casa_evento_038(self): # casa da carta HADES
+        self.limpar_widgets_casa_atual()
+        
+        try:
+            # Carrega a imagem usando PIL
+            img = Image.open(self.back_end.cartas_deuses[4]['imagem']) 
+            # Converte a imagem para PhotoImage
+            self.image_carta_exibida = ImageTk.PhotoImage(img)
+            # Cria um Label para exibir a imagem no Canvas
+            self.label_imagem_carta = tk.Label(self.canvas_abre, image=self.image_carta_exibida, bg="black")
+            self.label_imagem_carta.place(x=440, y=130, anchor="n")
+            # Adiciona o Label à lista de widgets dinâmicos
+            self.widgets_casa_atual.append(self.label_imagem_carta)
+
+        except Exception as e:
+            print(f'Sem imagens nessa carta, usando a imagem default -> {e}')
+               
+        # label do nome da casa exibida
+        label_descricao_carta1 = ctk.CTkLabel(
+            self.root,
+            text= 'Card abilities:',  # Substituir pelo texto dinâmico, 
+            text_color=self.back_end.cor_layout_atual,  
+            fg_color="black",  # Cor de fundo
+            font=("Gelio Fasolada", 18), 
+        )
+        label_descricao_carta1.place(x=650, y=130, anchor ="n")
+        self.widgets_casa_atual.append(label_descricao_carta1)
+        
+        """Exibe os widgets para o evento da Casa 002."""
+        label_casa = ctk.CTkLabel(
+            self.root,
+            text= self.back_end.cartas_deuses[4]['action_p'],
+            text_color="white",
+            bg_color="black",
+            font=("cambria", 18),
+        )
+        label_casa.place(x=650, y=160, anchor='n')
+        self.widgets_casa_atual.append(label_casa)
+        
+
+        label_guardar_card_exibido = ctk.CTkLabel(
+            self.root,
+            text= "Do you keep the card?",  # Substituir pelo texto dinâmico, 
+            text_color= self.back_end.cor_layout_atual,  
+            fg_color="black",  # Cor de fundo
+            font=("Gelio Fasolada", 17), # Gelio Fasolada
+        )
+        label_guardar_card_exibido.place(x=650, y=320, anchor ="center")
+        self.widgets_casa_atual.append(label_guardar_card_exibido)
+               
+        # Botão SIM
+        botao_sim_card = ctk.CTkButton(
+        self.root,
+        fg_color='black',
+        width= 16,
+        border_color= "white",
+        border_width= 1,
+        hover_color=self.back_end.cor_layout_atual,
+        text="yes",
+        font=("Gelio Greek Diner", 18),
+        command=lambda: (self.back_end.adicionar_carta_a_cartas_player("Hades"),
+                         self.atualizar_cartas(),  # Atualiza imagens das cartas
+                         #self.atualizar_tela(),
+                         self.limpar_widgets_casa_atual(),
+                         self.casa_evento_001()) # acrescenta Hermes
+        )
+        botao_sim_card.place(x=600, y=360, anchor="center")
+        self.widgets_casa_atual.append(botao_sim_card)
+        
+        # Botão NÃO
+        botao_naum_card = ctk.CTkButton(
+        self.root,
+        fg_color='black',
+        width= 16,
+        border_color= "white",
+        border_width= 1,
+        hover_color="red",
+        text="no",
+        font=("Gelio Greek Diner", 18),
+        command=lambda: (self.limpar_widgets_casa_atual(), self.casa_evento_001()) # abre pra jogar dado ou carta
+        )
+        botao_naum_card.place(x=700, y=360, anchor="center")
+        self.widgets_casa_atual.append(botao_naum_card) 
+
+               
+    def casa_evento_039(self): # CARONTE
+            self.limpar_widgets_casa_atual()       
+                # label do nome da casa exibida
+            label_nome_casa_evento = ctk.CTkLabel(
+                self.root,
+                text= "Charon",  # Substituir pelo texto dinâmico, 
+                text_color="white",  
+                fg_color="black",  # Cor de fundo
+                font=("Olympus", 24), 
+                )
+            label_nome_casa_evento.place(x=450, y=110, anchor ="n")
+            self.widgets_dinamicos.append(label_nome_casa_evento)
+                
+                #IMAGEM DA CASA
+            self.image_evento_exibido = PhotoImage(file="images/casa_039_caronte.png")
+            self.label_evento_exibido = tk.Label(
+                    self.root,  # Substitua por self.canvas_abre se quiser que o Label seja um filho do Canvas
+                    image=self.image_evento_exibido,
+                    bg="black"  # Define a cor de fundo do Label
+                )
+            self.label_evento_exibido.place(x=450, y=140, anchor='n')  # Posiciona o Label
+            self.widgets_casa_atual.append(self.label_evento_exibido)
+
+            texto_evento = ("""Roll a die and
+negotiate your life 
+with the ferryman 
+of the River Styx.."""
+            )
+            # label de descrição do evento
+            label_descricao_evento = ctk.CTkLabel(
+                self.root,
+                text=texto_evento,  # Substituir pelo texto dinâmico, se necessário
+                text_color="white",  
+                fg_color="black",  # Cor de fundo
+                font=("Cambria", 17), # "Gelio Fasolada"
+            )
+            label_descricao_evento.place(x=650, y=140, anchor ="n")
+            self.widgets_dinamicos.append(label_descricao_evento)
+  
+
+    def casa_evento_040(self): # casa em branco
+                self.limpar_widgets_casa_atual()        
+                self.casa_evento_001()
+                    
+    def casa_evento_041(self): # casa em branco
+                self.limpar_widgets_casa_atual()        
+                self.casa_evento_001()
+
+              
+    def casa_evento_042(self): # JULGAMENTO
+            self.limpar_widgets_casa_atual()       
+                # label do nome da casa exibida
+            label_nome_casa_evento = ctk.CTkLabel(
+                self.root,
+                text= "Judgment",  # Substituir pelo texto dinâmico, 
+                text_color="white",  
+                fg_color="black",  # Cor de fundo
+                font=("Olympus", 24), 
+                )
+            label_nome_casa_evento.place(x=450, y=110, anchor ="n")
+            self.widgets_dinamicos.append(label_nome_casa_evento)
+                
+                #IMAGEM DA CASA
+            self.image_evento_exibido = PhotoImage(file="images/casa_042_juizes.png")
+            self.label_evento_exibido = tk.Label(
+                    self.root,  # Substitua por self.canvas_abre se quiser que o Label seja um filho do Canvas
+                    image=self.image_evento_exibido,
+                    bg="black"  # Define a cor de fundo do Label
+                )
+            self.label_evento_exibido.place(x=450, y=140, anchor='n')  # Posiciona o Label
+            self.widgets_casa_atual.append(self.label_evento_exibido)
+
+            texto_evento = ("""Be judged by 
+the three judges:
+Rhadamanthus, Minos and Aeacus.
+
+Roll a die, and if 
+you pass, advance to 
+space 47."""
+            )
+            # label de descrição do evento
+            label_descricao_evento = ctk.CTkLabel(
+                self.root,
+                text=texto_evento,  # Substituir pelo texto dinâmico, se necessário
+                text_color="white",  
+                fg_color="black",  # Cor de fundo
+                font=("Cambria", 17), # "Gelio Fasolada"
+            )
+            label_descricao_evento.place(x=650, y=140, anchor ="n")
+            self.widgets_dinamicos.append(label_descricao_evento)
+  
+
+    def casa_evento_043(self): # casa em branco
+                self.limpar_widgets_casa_atual()        
+                self.casa_evento_001()
+
+              
+    def casa_evento_044(self): # ORFEU
+            self.limpar_widgets_casa_atual()       
+                # label do nome da casa exibida
+            label_nome_casa_evento = ctk.CTkLabel(
+                self.root,
+                text= "Orpheus",  # Substituir pelo texto dinâmico, 
+                text_color="white",  
+                fg_color="black",  # Cor de fundo
+                font=("Olympus", 24), 
+                )
+            label_nome_casa_evento.place(x=450, y=110, anchor ="n")
+            self.widgets_dinamicos.append(label_nome_casa_evento)
+                
+                #IMAGEM DA CASA
+            self.image_evento_exibido = PhotoImage(file="images/casa_044_orfeu.png")
+            self.label_evento_exibido = tk.Label(
+                    self.root,  # Substitua por self.canvas_abre se quiser que o Label seja um filho do Canvas
+                    image=self.image_evento_exibido,
+                    bg="black"  # Define a cor de fundo do Label
+                )
+            self.label_evento_exibido.place(x=450, y=140, anchor='n')  # Posiciona o Label
+            self.widgets_casa_atual.append(self.label_evento_exibido)
+
+            texto_evento = ("""You are enchanted 
+by Orpheus's sorrowful song.
+Move back
+1 space
+and 
+lose 
+1 life."""
+            )
+            # label de descrição do evento
+            label_descricao_evento = ctk.CTkLabel(
+                self.root,
+                text=texto_evento,  # Substituir pelo texto dinâmico, se necessário
+                text_color="white",  
+                fg_color="black",  # Cor de fundo
+                font=("Cambria", 17), # "Gelio Fasolada"
+            )
+            label_descricao_evento.place(x=650, y=140, anchor ="n")
+            self.widgets_dinamicos.append(label_descricao_evento)
+  
+
+    def casa_evento_045(self): # casa em branco
+                self.limpar_widgets_casa_atual()        
+                self.casa_evento_001()
+
+    def casa_evento_046(self): # casa em branco
+                self.limpar_widgets_casa_atual()        
+                self.casa_evento_001()
+
+    def casa_evento_047(self): # casa em branco
+                self.limpar_widgets_casa_atual()        
+                self.casa_evento_001()
+
+    def casa_evento_048(self): # casa em branco
+                self.limpar_widgets_casa_atual()        
+                self.casa_evento_001()
+                
+      
+    def casa_evento_049(self): # casa da carta HEFESTO
+        self.limpar_widgets_casa_atual()
+        
+        try:
+            # Carrega a imagem usando PIL
+            img = Image.open(self.back_end.cartas_deuses[5]['imagem']) 
+            # Converte a imagem para PhotoImage
+            self.image_carta_exibida = ImageTk.PhotoImage(img)
+            # Cria um Label para exibir a imagem no Canvas
+            self.label_imagem_carta = tk.Label(self.canvas_abre, image=self.image_carta_exibida, bg="black")
+            self.label_imagem_carta.place(x=440, y=130, anchor="n")
+            # Adiciona o Label à lista de widgets dinâmicos
+            self.widgets_casa_atual.append(self.label_imagem_carta)
+
+        except Exception as e:
+            print(f'Sem imagens nessa carta, usando a imagem default -> {e}')
+               
+        # label do nome da casa exibida
+        label_descricao_carta1 = ctk.CTkLabel(
+            self.root,
+            text= 'Card abilities:',  # Substituir pelo texto dinâmico, 
+            text_color=self.back_end.cor_layout_atual,  
+            fg_color="black",  # Cor de fundo
+            font=("Gelio Fasolada", 18), 
+        )
+        label_descricao_carta1.place(x=650, y=130, anchor ="n")
+        self.widgets_casa_atual.append(label_descricao_carta1)
+        
+        """Exibe os widgets para o evento da Casa 002."""
+        label_casa = ctk.CTkLabel(
+            self.root,
+            text= self.back_end.cartas_deuses[5]['action_p'],
+            text_color="white",
+            bg_color="black",
+            font=("cambria", 18),
+        )
+        label_casa.place(x=650, y=160, anchor='n')
+        self.widgets_casa_atual.append(label_casa)
+        
+
+        label_guardar_card_exibido = ctk.CTkLabel(
+            self.root,
+            text= "Do you keep the card?",  # Substituir pelo texto dinâmico, 
+            text_color= self.back_end.cor_layout_atual,  
+            fg_color="black",  # Cor de fundo
+            font=("Gelio Fasolada", 17), # Gelio Fasolada
+        )
+        label_guardar_card_exibido.place(x=650, y=320, anchor ="center")
+        self.widgets_casa_atual.append(label_guardar_card_exibido)
+               
+        # Botão SIM
+        botao_sim_card = ctk.CTkButton(
+        self.root,
+        fg_color='black',
+        width= 16,
+        border_color= "white",
+        border_width= 1,
+        hover_color=self.back_end.cor_layout_atual,
+        text="yes",
+        font=("Gelio Greek Diner", 18),
+        command=lambda: (self.back_end.adicionar_carta_a_cartas_player("Hephaestus"),
+                         self.atualizar_cartas(),  # Atualiza imagens das cartas
+                         #self.atualizar_tela(),
+                         self.limpar_widgets_casa_atual(),
+                         self.casa_evento_001()) # acrescenta Hermes
+        )
+        botao_sim_card.place(x=600, y=360, anchor="center")
+        self.widgets_casa_atual.append(botao_sim_card)
+        
+        # Botão NÃO
+        botao_naum_card = ctk.CTkButton(
+        self.root,
+        fg_color='black',
+        width= 16,
+        border_color= "white",
+        border_width= 1,
+        hover_color="red",
+        text="no",
+        font=("Gelio Greek Diner", 18),
+        command=lambda: (self.limpar_widgets_casa_atual(), self.casa_evento_001()) # abre pra jogar dado ou carta
+        )
+        botao_naum_card.place(x=700, y=360, anchor="center")
+        self.widgets_casa_atual.append(botao_naum_card) 
+
+               
+    def casa_evento_050(self): # casa em branco
+                self.limpar_widgets_casa_atual()        
+                self.casa_evento_001()
+                
+    def casa_evento_051(self): # casa em branco
+            self.limpar_widgets_casa_atual()        
+            self.casa_evento_001()
+            
+                  
+    def casa_evento_052(self): # ERINIAS
+            self.limpar_widgets_casa_atual()       
+                # label do nome da casa exibida
+            label_nome_casa_evento = ctk.CTkLabel(
+                self.root,
+                text= "Erinyes",  # Substituir pelo texto dinâmico, 
+                text_color="white",  
+                fg_color="black",  # Cor de fundo
+                font=("Olympus", 24), 
+                )
+            label_nome_casa_evento.place(x=450, y=110, anchor ="n")
+            self.widgets_dinamicos.append(label_nome_casa_evento)
+                
+                #IMAGEM DA CASA
+            self.image_evento_exibido = PhotoImage(file="images/casa_052_erinias.png")
+            self.label_evento_exibido = tk.Label(
+                    self.root,  # Substitua por self.canvas_abre se quiser que o Label seja um filho do Canvas
+                    image=self.image_evento_exibido,
+                    bg="black"  # Define a cor de fundo do Label
+                )
+            self.label_evento_exibido.place(x=450, y=140, anchor='n')  # Posiciona o Label
+            self.widgets_casa_atual.append(self.label_evento_exibido)
+
+            texto_evento = ("""Face the Furies.
+                            
+If you win, 
+move forward 
+2 spaces."""
+            )
+            # label de descrição do evento
+            label_descricao_evento = ctk.CTkLabel(
+                self.root,
+                text=texto_evento,  # Substituir pelo texto dinâmico, se necessário
+                text_color="white",  
+                fg_color="black",  # Cor de fundo
+                font=("Cambria", 17), # "Gelio Fasolada"
+            )
+            label_descricao_evento.place(x=650, y=140, anchor ="n")
+            self.widgets_dinamicos.append(label_descricao_evento)
+
+  
+    def casa_evento_053(self): # casa em branco
+            self.limpar_widgets_casa_atual()        
+            self.casa_evento_001()
+            
+    def casa_evento_054(self): # casa em branco
+            self.limpar_widgets_casa_atual()        
+            self.casa_evento_001()
+            
+      
+    def casa_evento_055(self): # casa da carta PERSEFONE
+        self.limpar_widgets_casa_atual()        
+        try:
+            img = Image.open(self.back_end.cartas_deuses[8]['imagem']) 
+            self.image_carta_exibida = ImageTk.PhotoImage(img)
+            self.label_imagem_carta = tk.Label(self.canvas_abre, image=self.image_carta_exibida, bg="black")
+            self.label_imagem_carta.place(x=440, y=130, anchor="n")
+            self.widgets_casa_atual.append(self.label_imagem_carta)
+        except Exception as e:
+            print(f'Sem imagens nessa carta, usando a imagem default -> {e}')
+               
+        label_descricao_carta1 = ctk.CTkLabel(
+            self.root,
+            text= 'Card abilities:', 
+            text_color=self.back_end.cor_layout_atual,  
+            fg_color="black",
+            font=("Gelio Fasolada", 18), 
+        )
+        label_descricao_carta1.place(x=650, y=130, anchor ="n")
+        self.widgets_casa_atual.append(label_descricao_carta1)
+        
+        label_casa = ctk.CTkLabel(
+            self.root,
+            text= self.back_end.cartas_deuses[8]['action_p'], # texto descritivo da carta
+            text_color="white",
+            bg_color="black",
+            font=("cambria", 18),
+        )
+        label_casa.place(x=650, y=160, anchor='n')
+        self.widgets_casa_atual.append(label_casa)
+        
+        # Quer guardar a carta?
+        label_guardar_card_exibido = ctk.CTkLabel(
+            self.root,
+            text= "Do you keep the card?",
+            text_color= self.back_end.cor_layout_atual,  
+            fg_color="black",  
+            font=("Gelio Fasolada", 17), 
+        )
+        label_guardar_card_exibido.place(x=650, y=320, anchor ="center")
+        self.widgets_casa_atual.append(label_guardar_card_exibido)               
+        # Botão SIM
+        botao_sim_card = ctk.CTkButton(
+        self.root,
+        fg_color='black',
+        width= 16,
+        border_color= "white",
+        border_width= 1,
+        hover_color=self.back_end.cor_layout_atual,
+        text="yes",
+        font=("Gelio Greek Diner", 18),
+        command=lambda: (self.back_end.adicionar_carta_a_cartas_player("Persephone"),
+                         self.atualizar_cartas(), 
+                         self.limpar_widgets_casa_atual(),
+                         self.casa_evento_001()) # volta para o menu inicial, usar dado ou carta
+                        )
+        botao_sim_card.place(x=600, y=360, anchor="center")
+        self.widgets_casa_atual.append(botao_sim_card)
+        # Botão NÃO
+        botao_naum_card = ctk.CTkButton(
+        self.root,
+        fg_color='black',
+        width= 16,
+        border_color= "white",
+        border_width= 1,
+        hover_color="red",
+        text="no",
+        font=("Gelio Greek Diner", 18),
+        command=lambda: (self.limpar_widgets_casa_atual(), self.casa_evento_001()) # abre pra jogar dado ou carta
+        )
+        botao_naum_card.place(x=700, y=360, anchor="center")
+        self.widgets_casa_atual.append(botao_naum_card) 
+
+
+    def casa_evento_056(self): # casa em branco
+            self.limpar_widgets_casa_atual()        
+            self.casa_evento_001()
+
+    def casa_evento_057(self): # casa em branco
+            self.limpar_widgets_casa_atual()        
+            self.casa_evento_001()
+
+    def casa_evento_058(self): # casa em branco
+            self.limpar_widgets_casa_atual()        
+            self.casa_evento_001()
+
+    def casa_evento_059(self): # casa em branco
+            self.limpar_widgets_casa_atual()        
+            self.casa_evento_001()
+
+    def casa_evento_060(self): # casa em branco
+            self.limpar_widgets_casa_atual()        
+            self.casa_evento_001()
+ 
+                      
+    def casa_evento_061(self): # HIDRA
+            self.limpar_widgets_casa_atual()       
+            # label do nome da casa exibida
+            label_nome_casa_evento = ctk.CTkLabel(
+                self.root,
+                text= "Hydra", 
+                text_color="white",  
+                fg_color="black",
+                font=("Olympus", 24), 
+                )
+            label_nome_casa_evento.place(x=450, y=110, anchor ="n")
+            self.widgets_dinamicos.append(label_nome_casa_evento)                
+            #IMAGEM DA CASA
+            self.image_evento_exibido = PhotoImage(file="images/casa_061_hidra.png")
+            self.label_evento_exibido = tk.Label(
+                    self.root,
+                    image=self.image_evento_exibido,
+                    bg="black"
+                )
+            self.label_evento_exibido.place(x=450, y=140, anchor='n')
+            self.widgets_casa_atual.append(self.label_evento_exibido)
+            texto_evento = ("""Cutting off just 
+one head won't be 
+your salvation.
+
+If you win,
+advance
+2 spaces."""
+            )
+            # label de descrição do evento
+            label_descricao_evento = ctk.CTkLabel(
+                self.root,
+                text=texto_evento,  
+                text_color="white",  
+                fg_color="black",
+                font=("Cambria", 17), 
+            )
+            label_descricao_evento.place(x=650, y=140, anchor ="n")
+            self.widgets_dinamicos.append(label_descricao_evento)
+
+
+    def casa_evento_062(self): # casa em branco
+            self.limpar_widgets_casa_atual()        
+            self.casa_evento_001()
+  
+    def casa_evento_063(self): # casa em branco
+            self.limpar_widgets_casa_atual()        
+            self.casa_evento_001()
+      
+      
+    def casa_evento_064(self): # casa da carta APOLO
+        self.limpar_widgets_casa_atual()        
+        try:
+            img = Image.open(self.back_end.cartas_deuses[1]['imagem']) # caminho imagem da carta
+            self.image_carta_exibida = ImageTk.PhotoImage(img)
+            self.label_imagem_carta = tk.Label(self.canvas_abre, image=self.image_carta_exibida, bg="black")
+            self.label_imagem_carta.place(x=440, y=130, anchor="n")
+            self.widgets_casa_atual.append(self.label_imagem_carta)
+        except Exception as e:
+            print(f'Sem imagens nessa carta, usando a imagem default -> {e}')
+               
+        label_descricao_carta1 = ctk.CTkLabel(
+            self.root,
+            text= 'Card abilities:', 
+            text_color=self.back_end.cor_layout_atual,  
+            fg_color="black",
+            font=("Gelio Fasolada", 18), 
+        )
+        label_descricao_carta1.place(x=650, y=130, anchor ="n")
+        self.widgets_casa_atual.append(label_descricao_carta1)
+        
+        label_casa = ctk.CTkLabel(
+            self.root,
+            text= self.back_end.cartas_deuses[1]['action_p'], # texto descritivo da carta
+            text_color="white",
+            bg_color="black",
+            font=("cambria", 18),
+        )
+        label_casa.place(x=650, y=160, anchor='n')
+        self.widgets_casa_atual.append(label_casa)
+        
+        # Quer guardar a carta?
+        label_guardar_card_exibido = ctk.CTkLabel(
+            self.root,
+            text= "Do you keep the card?",
+            text_color= self.back_end.cor_layout_atual,  
+            fg_color="black",  
+            font=("Gelio Fasolada", 17), 
+        )
+        label_guardar_card_exibido.place(x=650, y=320, anchor ="center")
+        self.widgets_casa_atual.append(label_guardar_card_exibido)               
+        # Botão SIM
+        botao_sim_card = ctk.CTkButton(
+        self.root,
+        fg_color='black',
+        width= 16,
+        border_color= "white",
+        border_width= 1,
+        hover_color=self.back_end.cor_layout_atual,
+        text="yes",
+        font=("Gelio Greek Diner", 18),
+        command=lambda: (self.back_end.adicionar_carta_a_cartas_player("Apollo"),
+                         self.atualizar_cartas(), 
+                         self.limpar_widgets_casa_atual(),
+                         self.casa_evento_001()) # volta para o menu inicial, usar dado ou carta
+                        )
+        botao_sim_card.place(x=600, y=360, anchor="center")
+        self.widgets_casa_atual.append(botao_sim_card)
+        # Botão NÃO
+        botao_naum_card = ctk.CTkButton(
+        self.root,
+        fg_color='black',
+        width= 16,
+        border_color= "white",
+        border_width= 1,
+        hover_color="red",
+        text="no",
+        font=("Gelio Greek Diner", 18),
+        command=lambda: (self.limpar_widgets_casa_atual(), self.casa_evento_001()) # abre pra jogar dado ou carta
+        )
+        botao_naum_card.place(x=700, y=360, anchor="center")
+        self.widgets_casa_atual.append(botao_naum_card) 
+
+
+    def casa_evento_065(self): # casa em branco
+            self.limpar_widgets_casa_atual()        
+            self.casa_evento_001()
+
+                     
+    def casa_evento_066(self): # SISIFO
+            self.limpar_widgets_casa_atual()       
+            # label do nome da casa exibida
+            label_nome_casa_evento = ctk.CTkLabel(
+                self.root,
+                text= "Sisyphus", 
+                text_color="white",  
+                fg_color="black",
+                font=("Olympus", 24), 
+                )
+            label_nome_casa_evento.place(x=450, y=110, anchor ="n")
+            self.widgets_dinamicos.append(label_nome_casa_evento)                
+            #IMAGEM DA CASA
+            self.image_evento_exibido = PhotoImage(file="images/casa_066_sisifo.png")
+            self.label_evento_exibido = tk.Label(
+                    self.root,
+                    image=self.image_evento_exibido,
+                    bg="black"
+                )
+            self.label_evento_exibido.place(x=450, y=140, anchor='n')
+            self.widgets_casa_atual.append(self.label_evento_exibido)
+            texto_evento = ("""Help the condemned king
+push his stone.
+
+Lose one life,
+and return to 
+space 57"""
+            )
+            # label de descrição do evento
+            label_descricao_evento = ctk.CTkLabel(
+                self.root,
+                text=texto_evento,  
+                text_color="white",  
+                fg_color="black",
+                font=("Cambria", 17), 
+            )
+            label_descricao_evento.place(x=650, y=140, anchor ="n")
+            self.widgets_dinamicos.append(label_descricao_evento)
+
+
+    def casa_evento_067(self): # casa em branco
+            self.limpar_widgets_casa_atual()        
+            self.casa_evento_001()
+
+
+    def casa_evento_068(self): # casa em branco
+            self.limpar_widgets_casa_atual()        
+            self.casa_evento_001()
+
+                     
+    def casa_evento_069(self): # CENTAUROS
+            self.limpar_widgets_casa_atual()       
+            # label do nome da casa exibida
+            label_nome_casa_evento = ctk.CTkLabel(
+                self.root,
+                text= "Centaurs", 
+                text_color="white",  
+                fg_color="black",
+                font=("Olympus", 24), 
+                )
+            label_nome_casa_evento.place(x=450, y=110, anchor ="n")
+            self.widgets_dinamicos.append(label_nome_casa_evento)                
+            #IMAGEM DA CASA
+            self.image_evento_exibido = PhotoImage(file="images/casa_069_centauros.png")
+            self.label_evento_exibido = tk.Label(
+                    self.root,
+                    image=self.image_evento_exibido,
+                    bg="black"
+                )
+            self.label_evento_exibido.place(x=450, y=140, anchor='n')
+            self.widgets_casa_atual.append(self.label_evento_exibido)
+            texto_evento = ("""The centaurs have drunk
+too much wine and 
+have become violent.
+
+Try to defeat them."""
+            )
+            # label de descrição do evento
+            label_descricao_evento = ctk.CTkLabel(
+                self.root,
+                text=texto_evento,  
+                text_color="white",  
+                fg_color="black",
+                font=("Cambria", 17), 
+            )
+            label_descricao_evento.place(x=650, y=140, anchor ="n")
+            self.widgets_dinamicos.append(label_descricao_evento)
+
+   
+    def casa_evento_070(self): # casa em branco
+            self.limpar_widgets_casa_atual()        
+            self.casa_evento_001()
+
 
 
 
