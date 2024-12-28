@@ -1706,6 +1706,10 @@ with her hearth."""
         )
         label_descricao_evento.place(x=650, y=140, anchor ="n")
         self.widgets_dinamicos.append(label_descricao_evento)
+        
+                # DADO E CARTAS
+        self.chamada_do_dado_batalha()
+        self.chamada_cartas_eventos()
           
             
     def casa_evento_014(self): # casa em branco
@@ -1762,6 +1766,10 @@ move forward 3 spaces."""
         )
         label_descricao_evento.place(x=650, y=140, anchor ="n")
         self.widgets_dinamicos.append(label_descricao_evento)
+        
+                # DADO E CARTAS
+        self.chamada_do_dado_batalha()
+        self.chamada_cartas_eventos()
         
                 
     def casa_evento_018(self): # casa em branco
@@ -1911,6 +1919,10 @@ move forward
             )
             label_descricao_evento.place(x=650, y=140, anchor ="n")
             self.widgets_dinamicos.append(label_descricao_evento)
+            
+                        # DADO E CARTAS
+            self.chamada_do_dado_batalha()
+            self.chamada_cartas_eventos()
 
 
     def casa_evento_025(self): # casa em branco
@@ -1966,6 +1978,10 @@ move forward
             )
             label_descricao_evento.place(x=650, y=140, anchor ="n")
             self.widgets_dinamicos.append(label_descricao_evento)
+            
+                    # DADO E CARTAS
+            self.chamada_do_dado_batalha()
+            self.chamada_cartas_eventos()
 
 
     def casa_evento_029(self): # casa em branco
@@ -2103,6 +2119,10 @@ space 39."""
             )
             label_descricao_evento.place(x=650, y=140, anchor ="n")
             self.widgets_dinamicos.append(label_descricao_evento)
+            
+                    # DADO E CARTAS
+            self.chamada_do_dado_batalha()
+            self.chamada_cartas_eventos()
 
 
     def casa_evento_033(self): # casa em branco
@@ -2151,6 +2171,11 @@ advance 2 spaces."""
             )
             label_descricao_evento.place(x=650, y=140, anchor ="n")
             self.widgets_dinamicos.append(label_descricao_evento)
+            
+            
+                        # DADO E CARTAS
+            self.chamada_do_dado_batalha()
+            self.chamada_cartas_eventos()
 
 
     def casa_evento_035(self): # casa em branco
@@ -2199,6 +2224,10 @@ the number
             label_descricao_evento.place(x=650, y=140, anchor ="n")
             self.widgets_dinamicos.append(label_descricao_evento)
             
+                        # DADO E CARTAS
+            self.chamada_do_dado_batalha()
+            self.chamada_cartas_eventos()
+                
             
     def casa_evento_037(self): # casa em branco
                 self.limpar_widgets_casa_atual()        
@@ -2328,6 +2357,10 @@ of the River Styx.."""
             )
             label_descricao_evento.place(x=650, y=140, anchor ="n")
             self.widgets_dinamicos.append(label_descricao_evento)
+            
+                    # DADO E CARTAS
+            self.chamada_do_dado_batalha()
+            self.chamada_cartas_eventos()
   
 
     def casa_evento_040(self): # casa em branco
