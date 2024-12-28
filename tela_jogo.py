@@ -629,7 +629,7 @@ class Tela_Jogo:
         self.animacao_ativa = False
         
         # Sorteia um número entre 1 e 6
-        numero_sorteado = random.choice([1, 4]) # random.randint(1, 6)
+        numero_sorteado = random.choice([4]) # random.randint(1, 6)
         print(f'Número sorteado: {numero_sorteado}')
         
         # Atualiza a imagem em movimento por uma imagem estática do resultado
@@ -640,7 +640,7 @@ class Tela_Jogo:
         
         # Introduz um atraso de 2 segundos antes de continuar
         self.root.after(2000, lambda: self._continuar_rolagem_dado(numero_sorteado))
-
+        
     def _continuar_rolagem_dado(self, numero_sorteado):
         """Continua as ações após exibir a imagem estática por 2 segundos."""
         # Atualiza os pontos e a posição do jogador
@@ -654,6 +654,80 @@ class Tela_Jogo:
         self.limpar_widgets_casa_atual()
         self.atualizar_tela()  # Atualiza outros elementos da tela
         self.carregar_casa(self.back_end.casa_atual)  # Carrega os gadgets da nova casa
+
+
+    # somente para combates de dados
+    def rolar_dado_de_batalha(self, casas_avanco=0, casas_retrocesso=0, vida=0):
+        # Para a animação do GIF
+        self.animacao_ativa = False   
+        
+        print(f'Pontos do jogador antes da batalha: {self.back_end.player_pontos}') # for Debug   
+     
+        # Sorteia um número entre 1 e 6
+        numero_sorteado = random.randint(1, 6) #random.choice([4]) # random.randint(1, 6)
+        print(f'Número sorteado em batalha: {numero_sorteado}')
+        
+        vitoria = False
+        if numero_sorteado > 3:
+            vitoria= True
+        print(f'resultado: {numero_sorteado}, vitória: {vitoria} ')# for debug  
+                  
+        # Atualiza a imagem em movimento por uma imagem estática do resultado
+        self.imagem_dado = f"images/dado{numero_sorteado}.png"
+        nova_imagem = Image.open(self.imagem_dado).resize((80, 80), Image.Resampling.LANCZOS)
+        self.imagem_estatica = ImageTk.PhotoImage(nova_imagem)
+        self.canvas.itemconfig(self.image_on_canvas, image=self.imagem_estatica)  # Exibe a imagem estática imediatamente
+        
+        # Introduz um atraso de 2 segundos antes de processar o resultado
+        self.root.after(2000, lambda: self._processar_resultado_batalha(numero_sorteado, casas_avanco, casas_retrocesso, vida))
+    
+    def _processar_resultado_batalha(self, numero_sorteado, casas_avanco, casas_retrocesso, vida):
+        """Processa o resultado da batalha após exibir a imagem do dado."""
+        vitoria = numero_sorteado > 3
+        print(f'Resultado: {numero_sorteado}, vitória: {vitoria}')  # for debug  
+
+        # Pontos, avanço ou retrocesso de acordo com o resultado da batalha
+        if vitoria:
+            self.back_end.player_pontos += (15 * casas_avanco) + 30  # Vitória
+            self.back_end.casa_atual += casas_avanco
+            self.back_end.player_xp += vida  # Ganha vida se aplicável
+            print('Você VENCEU!')
+        else:
+            self.back_end.player_pontos -= ((15 * casas_retrocesso) + 30)  # Derrota
+            self.back_end.casa_atual -= casas_retrocesso
+            self.back_end.player_xp -= vida  # Perde vida se aplicável
+            print('Você PERDEU!')
+
+        print(f'Pontos do jogador depois da batalha: {self.back_end.player_pontos}')  # for Debug   
+        print(f'Casa atual depois da batalha: {self.back_end.casa_atual}')
+
+        # Atualiza a interface
+        self.limpar_widgets_casa_atual()
+        self.atualizar_tela()
+        self.carregar_casa(self.back_end.casa_atual)
+ 
+        # Pontos, avanço ou retorcesso de acordo com o resultado da batalha      
+        # if vitoria == True:                
+        #     self.back_end.player_pontos += ((15 * casas_avanco) + 30 )  # a cada vitória + 30 pontos e pontos de avanço
+        #     self.back_end.casa_atual += casas_avanco
+        #     self.back_end.player_xp += vida # se houver ganho de vidas na rolagem
+        #     print('Você VENCEU!')
+            
+        # if vitoria == False:
+        #     self.back_end.player_pontos -= ((15 * casas_avanco) - 30 ) # a cada derrota - 30 pontos e pontos de retorno 
+        #     self.back_end.casa_atual -= casas_retrocesso 
+        #     self.back_end.player_xp -= vida # se houver perda de vidas na rolagem  
+        #     print('Você PERDEU!')
+                            
+        # print(f'Pontos do jogador depois da batalha: {self.back_end.player_pontos}') # for Debug   
+        # print(f'Casa atual depois da batalha: {self.back_end.casa_atual}')
+        
+        #  # Limpa widgets existentes antes de atualizar a tela
+        # self.limpar_widgets_casa_atual()
+        # self.atualizar_tela()  # Atualiza outros elementos da tela
+        # self.carregar_casa(self.back_end.casa_atual)  # Carrega os gadgets da nova casa
+
+
 
 
     # Acho que não está em uso... testar depois!!!!!!!!!!!  
@@ -945,9 +1019,7 @@ class Tela_Jogo:
         botao_naum_card.place(x=700, y=360, anchor="center")
         self.widgets_casa_atual.append(botao_naum_card)    
         
-
-               
-        
+      
     def casa_evento_003(self): # casa em branco
         self.limpar_widgets_casa_atual()        
         self.casa_evento_001()
@@ -956,71 +1028,12 @@ class Tela_Jogo:
     def casa_evento_004(self): # casa em branco
        self.limpar_widgets_casa_atual()        
        self.casa_evento_001()
+
        
-       
-    
-    def casa_evento_005(self): # esfinge
-        self.limpar_widgets_casa_atual()
-        
-            # label do nome da casa exibida
-        label_nome_casa_evento = ctk.CTkLabel(
-            self.root,
-            text= "Sphinx",  # Substituir pelo texto dinâmico, 
-            text_color="white",  
-            fg_color="black",  # Cor de fundo
-            font=("Olympus", 24), 
-        )
-        label_nome_casa_evento.place(x=450, y=110, anchor ="n")
-        self.widgets_dinamicos.append(label_nome_casa_evento)
-        
-        
-        self.image_evento_exibido = PhotoImage(file="images/casa_evento_layout.png")
-        self.label_evento_exibido = tk.Label(
-            self.root,  # Substitua por self.canvas_abre se quiser que o Label seja um filho do Canvas
-            image=self.image_evento_exibido,
-            bg="black"  # Define a cor de fundo do Label
-        )
-        self.label_evento_exibido.place(x=450, y=140, anchor='n')  # Posiciona o Label
-        self.widgets_dinamicos.append(self.image_evento_exibido)
-                    
-        # self.image_evento_exibido = PhotoImage(file="images/casa_evento_layout.png")
-        # self.img_evento_exibido= self.canvas_abre.create_image(400, 220, anchor='n', image=self.image_evento_exibido)
-        
-        
-        
-        texto_evento = (
-"""She asked you a question.
-Solve the riddle and roll a die.
-
-If you get 3 or more,
-move forward 2 spaces.
-If you get 2 or less,
-move back 2 spaces."""
-        )
-        # label de descrição do evento
-        label_descricao_evento = ctk.CTkLabel(
-            self.root,
-            text=texto_evento,  # Substituir pelo texto dinâmico, se necessário
-            text_color="white",  
-            fg_color="black",  # Cor de fundo
-            font=("Cambria", 17), # "Gelio Fasolada"
-        )
-        label_descricao_evento.place(x=650, y=140, anchor ="n")
-        self.widgets_dinamicos.append(label_descricao_evento)
-        
-
-        label_text_linha = ctk.CTkLabel(
-        self.root,
-        text="<><><><><><><><><><><><><><><><><><><><><><><><>",
-        text_color="gray",
-        font=("Arial", 16),
-        bg_color= "black"
-        )
-        label_text_linha.place(x=550, y=310, anchor="center")
-        self.widgets_casa_atual.append(label_text_linha)
-            
-
-        # Canvas para o dado
+    def chamada_do_dado_batalha(self): # USADO NAS CASAS DE EVENTO
+         # Para a animação do GIF
+        self.animacao_ativa = False
+                # Canvas para o dado
         self.canvas = tk.Canvas(self.root, width=80, height=80, bg="black", highlightthickness=0)
         self.canvas.place(x=400, y=320, anchor='n') # posição do dado
         self.widgets_casa_atual.append(self.canvas)  # Adiciona o canvas à lista
@@ -1064,10 +1077,70 @@ move back 2 spaces."""
         hover_color='red',
         text="Roll a die!",
         font=("Gelio Greek Diner", 18),
-        command=lambda: (self.rolar_dado(), self.atualizar_tela()) # ROLAR DADO!!!
+        command=lambda: (self.rolar_dado_de_batalha(casas_avanco=2,casas_retrocesso=2), self.atualizar_tela()) # ROLAR DADO!!!
         )
         botao_rolar_dados.place(x=400, y=405, anchor='n')
-        self.widgets_casa_atual.append(botao_rolar_dados)  # Adiciona o botão à lista
+        self.widgets_casa_atual.append(botao_rolar_dados)   
+    
+    
+    def casa_evento_005(self): # esfinge
+        self.limpar_widgets_casa_atual()       
+         # label do nome da casa exibida
+        label_nome_casa_evento = ctk.CTkLabel(
+            self.root,
+            text= "Sphinx",  # Substituir pelo texto dinâmico, 
+            text_color="white",  
+            fg_color="black",  # Cor de fundo
+            font=("Olympus", 24), 
+        )
+        label_nome_casa_evento.place(x=450, y=110, anchor ="n")
+        self.widgets_dinamicos.append(label_nome_casa_evento)
+        
+        #IMAGEM DA CASA
+        self.image_evento_exibido = PhotoImage(file="images/casa_evento_layout.png")
+        self.label_evento_exibido = tk.Label(
+            self.root,  # Substitua por self.canvas_abre se quiser que o Label seja um filho do Canvas
+            image=self.image_evento_exibido,
+            bg="black"  # Define a cor de fundo do Label
+        )
+        self.label_evento_exibido.place(x=450, y=140, anchor='n')  # Posiciona o Label
+        self.widgets_casa_atual.append(self.label_evento_exibido)
+
+        texto_evento = (
+"""She asked you a question.
+Solve the riddle and roll a die.
+
+If you get 3 or more,
+move forward 2 spaces.
+If you get 2 or less,
+move back 2 spaces."""
+        )
+        # label de descrição do evento
+        label_descricao_evento = ctk.CTkLabel(
+            self.root,
+            text=texto_evento,  # Substituir pelo texto dinâmico, se necessário
+            text_color="white",  
+            fg_color="black",  # Cor de fundo
+            font=("Cambria", 17), # "Gelio Fasolada"
+        )
+        label_descricao_evento.place(x=650, y=140, anchor ="n")
+        self.widgets_dinamicos.append(label_descricao_evento)
+        
+        label_text_linha = ctk.CTkLabel(
+        self.root,
+        text="<><><><><><><><><><><><><><><><><><><><><><><><>",
+        text_color="gray",
+        font=("Arial", 16),
+        bg_color= "black"
+        )
+        label_text_linha.place(x=550, y=310, anchor="center")
+        self.widgets_casa_atual.append(label_text_linha)
+            
+        
+        # DADO
+        self.chamada_do_dado_batalha()
+        
+        
         
             #     # OU...             
         self.label_ou = ctk.CTkLabel(
