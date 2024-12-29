@@ -46,10 +46,11 @@ class Tela_Jogo:
         self.atualizar_tela()
    
     
-    def play_gif(self):# Reproduz a animação do GIF no canvas
-        if not hasattr(self, "image_on_canvas") or self.image_on_canvas is None: # verifica o canvas
+    def play_gif(self):
+        if not hasattr(self, "image_on_canvas") or self.image_on_canvas is None:
             print("Erro: 'image_on_canvas' não foi inicializado!")
             return
+
         if self.animacao_ativa:
             if self.current_frame < len(self.frames):
                 self.canvas.itemconfig(self.image_on_canvas, image=self.frames[self.current_frame])
@@ -60,20 +61,29 @@ class Tela_Jogo:
 
 
 
+    def play_gif_velho(self):# Reproduz a animação do GIF no canvas
+        if not hasattr(self, 'animacao_ativa') or self.animacao_ativa: # para exibor a imagem 'resultado' no final da rolagem
+            if self.current_frame < len(self.frames):
+                self.canvas.itemconfig(self.image_on_canvas, image=self.frames[self.current_frame])
+                self.current_frame += 1
+                self.root.after(500, self.play_gif)  # Controla a velocidade da animação
+            else:
+                self.current_frame = 0  # Reinicia o índice para repetir
+
+
+
+
     def limpar_widgets_casa_atual(self):
         """Limpa os widgets da casa atual, incluindo o canvas e a imagem do dado."""
         for widget in self.widgets_casa_atual:
             widget.destroy()
-
         # Se o canvas ainda estiver presente, é destruido
         if hasattr(self, 'canvas') and self.canvas:
             self.canvas.destroy()
             self.canvas = None
-
         # Certifica que nenhuma imagem estática ou GIF fique referenciada
         if hasattr(self, 'image_on_canvas') and self.image_on_canvas:
             self.image_on_canvas = None
-
         # Limpa a lista de widgets dinâmicos da casa atual
         self.widgets_casa_atual = []
 
@@ -332,7 +342,8 @@ class Tela_Jogo:
         # PRIMEIRA TELA EXIBIDA
         self.casa_evento_001()# Abre o jogo com a primeira casa   
 
-          
+        
+  
     def exibir_casas(self, lista_maior):
         # O número sorteado define de onde os 8 itens devem começar
         # Vamos garantir que o número esteja entre 1 e 120
@@ -352,6 +363,7 @@ class Tela_Jogo:
          # Calcular o início para garantir que sempre mostremos 8 elementos (se possível)
         if fim - inicio < 8:  # Se o número de elementos a ser exibido for menor que 8
             inicio = max(fim - 8, 0)  # Ajusta o início para que tenha 8 itens (ou menos no final)
+        
         
         # Pega os 8 itens ou até o fim da lista
         lista_exibida = lista_maior[inicio:fim]
@@ -439,8 +451,8 @@ class Tela_Jogo:
         # Atualiza a cor do layout antes de usá-la
         self.atualizar_cor_layout()  # Atualiza a cor do layout com o valor do backend
         self.atualizar_tijolos()  # Atualiza a cor do tijolinho no  backend
-        self.atualizar_imagem_tijolo()  # Atualiza a imagem no Canvas  
-    
+        self.atualizar_imagem_tijolo()  # Atualiza a imagem no Canvas 
+        self.atualizar_cartas() # atualiza as cartinhas
         
         # Atualizar a lista de casas exibidas
         self.casas_exibidas = self.exibir_casas(self.back_end.casas)
@@ -606,11 +618,6 @@ class Tela_Jogo:
         except Exception as e:
             print(f"Erro ao atualizar a imagem dos tijolinhos: {e}")
 
-    def carregar_carta_da_lista(self):
-        pass
-        
-        
-        
 
     def carregar_casa(self, casa_atual):# Carrega os widgets da casa especificada.
         # Limpa os widgets da casa anterior
@@ -905,21 +912,25 @@ class Tela_Jogo:
 #        Lógica da batalha: sorteia o número do dado, exibe o resultado e processa a batalha.
         # Para a animação do GIF
         self.animacao_ativa = False
+
         print(f'Pontos do jogador antes da batalha: {self.back_end.player_pontos}')  # Debug
+
         # Sorteia um número entre 1 e 6
         numero_sorteado = random.randint(1, 6)
         print(f'Número sorteado em batalha: {numero_sorteado}')
+
         # Verifica vitória ou derrota
         vitoria = numero_sorteado > 3
         print(f'Resultado: {numero_sorteado}, vitória: {vitoria}')  # Debug
+
         # Atualiza a imagem em movimento por uma imagem estática do resultado
         self.imagem_dado = f"images/dado{numero_sorteado}.png"
         nova_imagem = Image.open(self.imagem_dado).resize((80, 80), Image.Resampling.LANCZOS)
         self.imagem_estatica = ImageTk.PhotoImage(nova_imagem)
         self.canvas.itemconfig(self.image_on_canvas, image=self.imagem_estatica)  # Exibe a imagem estática imediatamente
 
-        # Introduz um atraso de 1.5 segundos antes de processar o resultado
-        self.root.after(1500, lambda: self._processar_resultado_batalha(numero_sorteado, casas_avanco, casas_retrocesso, vida))
+        # Introduz um atraso de 1 segundos antes de processar o resultado
+        self.root.after(1000, lambda: self._processar_resultado_batalha(numero_sorteado, casas_avanco, casas_retrocesso, vida))
 
     def _processar_resultado_batalha(self, numero_sorteado, casas_avanco, casas_retrocesso, vida):
     # Processa o resultado da batalha após exibir a imagem do dado.
@@ -1068,7 +1079,41 @@ class Tela_Jogo:
         botao_vontade_deuses.place(x=420, y=360, anchor='n')
         self.widgets_casa_atual.append(botao_vontade_deuses)
     
+    
+
+    # Acho que não está em uso... testar depois!!!!!!!!!!!  
+    def usar_carta_inicial(self):
+         # Limpar os widgets da casa atual para evitar sobreposição
+        self.limpar_widgets_casa_atual()        
+        try:
+            # Carregar a imagem usando PIL
+            img = Image.open(self.back_end.cartas_player[0]['imagem'])
+            # Converter a imagem para PhotoImage
+            self.image_carta_player = ImageTk.PhotoImage(img)
+            # Criar o Label com a imagem
+            self.label_imagem_carta = tk.Label(self.canvas_abre, image=self.image_carta_player, bg="black")
+            self.label_imagem_carta.place(x=440, y=265, anchor="center")
+            # Adicionar o Label à lista de widgets dinâmicos
+            self.widgets_casa_atual.append(self.label_imagem_carta)
+        except Exception as e:
+            print(f"Erro ao carregar a imagem da carta: {e}")           
+            self.label_imagem_carta = tk.Label(self.canvas_abre, image=self.back_end.cartas_player[0]['imagem'], bg="black")
+            self.label_imagem_carta.place(x=440, y=265, anchor="center")
+            self.widgets_casa_atual.append(self.label_imagem_carta)
+
+         # label do nome da casa exibida
+        label_descricao_carta_exibida = ctk.CTkLabel(
+            self.root,
+            text=self.back_end.cartas_player[0]['action_p'],  # Substitui pelo texto dinâmico, 
+            text_color="white",  
+            fg_color="black",  # Cor de fundo
+            font=("Cambria", 17), 
+        )
+        label_descricao_carta_exibida.place(x=650, y=220, anchor ="center")
+        self.widgets_casa_atual.append(label_descricao_carta_exibida)
         
+        
+    
     def usar_carta_da_mao(self, carta_numero=1):
         cartas_mao = self.back_end.cartas_player
         try:
@@ -1111,7 +1156,8 @@ class Tela_Jogo:
         except Exception as e:
             print(f'Erro: {e}')
             messagebox.showerror("Erro", f"Ocorreu um erro ao tentar usar a carta: {e}")
-                  
+      
+      
     # Menu fixo com o dado de rolagem mais escolha de cartas           
     def chamada_cartas_eventos(self):
         label_text_linha = ctk.CTkLabel(
@@ -1150,7 +1196,7 @@ class Tela_Jogo:
         hover_color=self.back_end.cor_layout_atual,
         text="I",
         font=("Gelio Greek Diner", 24),
-        command=lambda: self.usar_carta_da_mao(1) # função de abrir a carta do indice 0
+        command=lambda: (self.usar_carta_da_mao(1), ) # função de abrir a carta do indice 0
         )
         botao_carta_1 .place(x=610, y=330, anchor='n')
         self.widgets_casa_atual.append(botao_carta_1 )  # Adiciona o botão à lista 
@@ -1186,40 +1232,6 @@ class Tela_Jogo:
         )
         botao_carta_3 .place(x=730, y=330, anchor='n')
         self.widgets_casa_atual.append(botao_carta_3)  # Adiciona o botão à lista 
-     
-
-    # # Acho que não está em uso... testar depois!!!!!!!!!!!  
-    # def usar_carta_inicial(self):
-    #      # Limpar os widgets da casa atual para evitar sobreposição
-    #     self.limpar_widgets_casa_atual()        
-    #     try:
-    #         # Carregar a imagem usando PIL
-    #         img = Image.open(self.back_end.cartas_player[0]['imagem'])
-    #         # Converter a imagem para PhotoImage
-    #         self.image_carta_player = ImageTk.PhotoImage(img)
-    #         # Criar o Label com a imagem
-    #         self.label_imagem_carta = tk.Label(self.canvas_abre, image=self.image_carta_player, bg="black")
-    #         self.label_imagem_carta.place(x=440, y=265, anchor="center")
-    #         # Adicionar o Label à lista de widgets dinâmicos
-    #         self.widgets_casa_atual.append(self.label_imagem_carta)
-    #     except Exception as e:
-    #         print(f"Erro ao carregar a imagem da carta: {e}")           
-    #         self.label_imagem_carta = tk.Label(self.canvas_abre, image=self.back_end.cartas_player[0]['imagem'], bg="black")
-    #         self.label_imagem_carta.place(x=440, y=265, anchor="center")
-    #         self.widgets_casa_atual.append(self.label_imagem_carta)
-
-    #      # label do nome da casa exibida
-    #     label_descricao_carta_exibida = ctk.CTkLabel(
-    #         self.root,
-    #         text=self.back_end.cartas_player[0]['action_p'],  # Substitui pelo texto dinâmico, 
-    #         text_color="white",  
-    #         fg_color="black",  # Cor de fundo
-    #         font=("Cambria", 17), 
-    #     )
-    #     label_descricao_carta_exibida.place(x=650, y=220, anchor ="center")
-    #     self.widgets_casa_atual.append(label_descricao_carta_exibida)
-        
-   # Aqui é o PONTO DE RETORNO!!    
 
 
  # !!!!! EVENTOS DAS CASAS COMEÇAM AQUI !!!!!!!
@@ -1413,6 +1425,7 @@ class Tela_Jogo:
         font=("Gelio Greek Diner", 18),
         command=lambda: (self.back_end.adicionar_carta_a_cartas_player("Hermes"),
                          self.atualizar_cartas(),  # Atualiza imagens das cartas
+                         #self.atualizar_tela(),
                          self.limpar_widgets_casa_atual(),
                          self.casa_evento_001()) # acrescenta Hermes
         )
@@ -1455,7 +1468,7 @@ class Tela_Jogo:
             font=("Olympus", 24), 
         )
         label_nome_casa_evento.place(x=450, y=110, anchor ="n")
-        self.widgets_casa_atual.append(label_nome_casa_evento)
+        self.widgets_dinamicos.append(label_nome_casa_evento)
         
         #IMAGEM DA CASA
         self.image_evento_exibido = PhotoImage(file="images/casa_005_esfinge.png")
@@ -1484,7 +1497,7 @@ and lose 1 life"""
             font=("Cambria", 17), # "Gelio Fasolada"
         )
         label_descricao_evento.place(x=650, y=140, anchor ="n")
-        self.widgets_casa_atual.append(label_descricao_evento)
+        self.widgets_dinamicos.append(label_descricao_evento)
         
         # DADO E CARTAS
         
@@ -1512,7 +1525,7 @@ and lose 1 life"""
             font=("Olympus", 24), 
         )
         label_nome_casa_evento.place(x=450, y=110, anchor ="n")
-        self.widgets_casa_atual.append(label_nome_casa_evento)
+        self.widgets_dinamicos.append(label_nome_casa_evento)
         
         #IMAGEM DA CASA
         self.image_evento_exibido = PhotoImage(file="images/casa_008_prometeu.png")
@@ -1539,7 +1552,7 @@ and return
             font=("Cambria", 17), # "Gelio Fasolada"
         )
         label_descricao_evento.place(x=650, y=140, anchor ="n")
-        self.widgets_casa_atual.append(label_descricao_evento)
+        self.widgets_dinamicos.append(label_descricao_evento)
         
         # evento da casa       
         self.back_end.retornar_casas(numero_casas_retornar=2)
@@ -1566,7 +1579,7 @@ and return
             font=("Olympus", 24), 
             )
         label_nome_casa_evento.place(x=450, y=110, anchor ="n")
-        self.widgets_casa_atual.append(label_nome_casa_evento)
+        self.widgets_dinamicos.append(label_nome_casa_evento)
             
             #IMAGEM DA CASA
         self.image_evento_exibido = PhotoImage(file="images/casa_010_esparta.png")
@@ -1596,14 +1609,14 @@ lose 1 life."""
             font=("Cambria", 17), # "Gelio Fasolada"
         )
         label_descricao_evento.place(x=650, y=140, anchor ="n")
-        self.widgets_casa_atual.append(label_descricao_evento)
+        self.widgets_dinamicos.append(label_descricao_evento)
+        
+        # evento da casa
+        self.back_end.retornar_casas(numero_casas_retornar=2)
         
         # DADO E CARTAS
         self.chamada_do_dado_batalha(casas_avanco=2, casas_retrocesso=1, vida=1)
         self.chamada_cartas_eventos()
-        
-                # evento da casa
-        #self.back_end.retornar_casas(numero_casas_retornar=2)
 
      
     def casa_evento_011(self): # casa em branco
@@ -1626,7 +1639,7 @@ lose 1 life."""
             font=("Olympus", 24), 
             )
         label_nome_casa_evento.place(x=450, y=110, anchor ="n")
-        self.widgets_casa_atual.append(label_nome_casa_evento)
+        self.widgets_dinamicos.append(label_nome_casa_evento)
             
             #IMAGEM DA CASA
         self.image_evento_exibido = PhotoImage(file="images/casa_013_hestia.png")
@@ -1653,7 +1666,7 @@ with her hearth."""
             font=("Cambria", 17), # "Gelio Fasolada"
         )
         label_descricao_evento.place(x=650, y=140, anchor ="n")
-        self.widgets_casa_atual.append(label_descricao_evento)
+        self.widgets_dinamicos.append(label_descricao_evento)
         
         self.botao_vontade_dos_deuses(casas_avanco=0, casas_retrocesso=1, vida_mais=0, vida_menos=0, pontos_mais= 0, pontos_menos=15)
         self.chamada_cartas_eventos()
@@ -1683,7 +1696,7 @@ with her hearth."""
             font=("Olympus", 24), 
             )
         label_nome_casa_evento.place(x=450, y=110, anchor ="n")
-        self.widgets_casa_atual.append(label_nome_casa_evento)
+        self.widgets_dinamicos.append(label_nome_casa_evento)
             
             #IMAGEM DA CASA
         self.image_evento_exibido = PhotoImage(file="images/casa_017_quimera.png")
@@ -1712,7 +1725,7 @@ move forward 3 spaces."""
             font=("Cambria", 17), # "Gelio Fasolada"
         )
         label_descricao_evento.place(x=650, y=140, anchor ="n")
-        self.widgets_casa_atual.append(label_descricao_evento)
+        self.widgets_dinamicos.append(label_descricao_evento)
         
                 # DADO E CARTAS
         self.chamada_do_dado_batalha(casas_avanco=3, casas_retrocesso=3, vida=1)
@@ -1837,7 +1850,7 @@ move forward 3 spaces."""
                 font=("Olympus", 24), 
                 )
             label_nome_casa_evento.place(x=450, y=110, anchor ="n")
-            self.widgets_casa_atual.append(label_nome_casa_evento)
+            self.widgets_dinamicos.append(label_nome_casa_evento)
                 
                 #IMAGEM DA CASA
             self.image_evento_exibido = PhotoImage(file="images/casa_024_ciclope.png")
@@ -1866,7 +1879,7 @@ lose 1 life."""
                 font=("Cambria", 17), # "Gelio Fasolada"
             )
             label_descricao_evento.place(x=650, y=140, anchor ="n")
-            self.widgets_casa_atual.append(label_descricao_evento)
+            self.widgets_dinamicos.append(label_descricao_evento)
             
                         # DADO E CARTAS
             self.chamada_do_dado_batalha(casas_avanco=2, casas_retrocesso=1, vida=1)
@@ -1897,7 +1910,7 @@ lose 1 life."""
                 font=("Olympus", 24), 
                 )
             label_nome_casa_evento.place(x=450, y=110, anchor ="n")
-            self.widgets_casa_atual.append(label_nome_casa_evento)
+            self.widgets_dinamicos.append(label_nome_casa_evento)
                 
                 #IMAGEM DA CASA
             self.image_evento_exibido = PhotoImage(file="images/casa_028_harpias.png")
@@ -1925,7 +1938,7 @@ move forward
                 font=("Cambria", 17), # "Gelio Fasolada"
             )
             label_descricao_evento.place(x=650, y=140, anchor ="n")
-            self.widgets_casa_atual.append(label_descricao_evento)
+            self.widgets_dinamicos.append(label_descricao_evento)
             
                     # DADO E CARTAS
             self.chamada_do_dado_batalha(casas_avanco=1, casas_retrocesso=1, vida=0)
@@ -2038,7 +2051,7 @@ move forward
                 font=("Olympus", 24), 
                 )
             label_nome_casa_evento.place(x=450, y=110, anchor ="n")
-            self.widgets_casa_atual.append(label_nome_casa_evento)
+            self.widgets_dinamicos.append(label_nome_casa_evento)
                 
                 #IMAGEM DA CASA
             self.image_evento_exibido = PhotoImage(file="images/casa_032_tanatos.png")
@@ -2066,7 +2079,7 @@ space 39."""
                 font=("Cambria", 17), # "Gelio Fasolada"
             )
             label_descricao_evento.place(x=650, y=140, anchor ="n")
-            self.widgets_casa_atual.append(label_descricao_evento)
+            self.widgets_dinamicos.append(label_descricao_evento)
             
             self.botao_vontade_dos_deuses(casas_avanco=7, casas_retrocesso=0, vida_mais=0, vida_menos=1, pontos_mais= 30, pontos_menos=60)
             self.chamada_cartas_eventos()
@@ -2088,7 +2101,7 @@ space 39."""
                 font=("Olympus", 24), 
                 )
             label_nome_casa_evento.place(x=450, y=110, anchor ="n")
-            self.widgets_casa_atual.append(label_nome_casa_evento)
+            self.widgets_dinamicos.append(label_nome_casa_evento)
                 
                 #IMAGEM DA CASA
             self.image_evento_exibido = PhotoImage(file="images/casa_034_minotauro.png")
@@ -2118,7 +2131,7 @@ or lose 1 life"""
                 font=("Cambria", 17), # "Gelio Fasolada"
             )
             label_descricao_evento.place(x=650, y=140, anchor ="n")
-            self.widgets_casa_atual.append(label_descricao_evento)
+            self.widgets_dinamicos.append(label_descricao_evento)
             
             self.chamada_do_dado_batalha(casas_avanco=2, casas_retrocesso=1, vida=1)
             self.chamada_cartas_eventos()
@@ -2140,7 +2153,7 @@ or lose 1 life"""
                 font=("Olympus", 24), 
                 )
             label_nome_casa_evento.place(x=450, y=110, anchor ="n")
-            self.widgets_casa_atual.append(label_nome_casa_evento)
+            self.widgets_dinamicos.append(label_nome_casa_evento)
                 
                 #IMAGEM DA CASA
             self.image_evento_exibido = PhotoImage(file="images/casa_036_labirinto.png")
@@ -2168,7 +2181,7 @@ roll a die"""
                 font=("Cambria", 17), # "Gelio Fasolada"
             )
             label_descricao_evento.place(x=650, y=140, anchor ="n")
-            self.widgets_casa_atual.append(label_descricao_evento)
+            self.widgets_dinamicos.append(label_descricao_evento)
             
                         # DADO E CARTAS
             self.chamada_do_dado_batalha(casas_avanco=1, casas_retrocesso=1, vida=0)
@@ -2276,7 +2289,7 @@ roll a die"""
                 font=("Olympus", 24), 
                 )
             label_nome_casa_evento.place(x=450, y=110, anchor ="n")
-            self.widgets_casa_atual.append(label_nome_casa_evento)
+            self.widgets_dinamicos.append(label_nome_casa_evento)
                 
                 #IMAGEM DA CASA
             self.image_evento_exibido = PhotoImage(file="images/casa_039_caronte.png")
@@ -2302,7 +2315,7 @@ of the River Styx.."""
                 font=("Cambria", 17), # "Gelio Fasolada"
             )
             label_descricao_evento.place(x=650, y=140, anchor ="n")
-            self.widgets_casa_atual.append(label_descricao_evento)
+            self.widgets_dinamicos.append(label_descricao_evento)
             
                     # DADO E CARTAS
             self.chamada_do_dado_batalha(casas_avanco=1, casas_retrocesso=2, vida=0)
@@ -2329,7 +2342,7 @@ of the River Styx.."""
                 font=("Olympus", 24), 
                 )
             label_nome_casa_evento.place(x=450, y=110, anchor ="n")
-            self.widgets_casa_atual.append(label_nome_casa_evento)   
+            self.widgets_dinamicos.append(label_nome_casa_evento)   
                 #IMAGEM DA CASA
             self.image_evento_exibido = PhotoImage(file="images/casa_042_juizes.png")
             self.label_evento_exibido = tk.Label(
@@ -2348,15 +2361,16 @@ Roll a die, and if
 you pass, advance to 
 space 47."""
             )
+            # label de descrição do evento
             label_descricao_evento = ctk.CTkLabel(
                 self.root,
-                text=texto_evento,  
+                text=texto_evento,  # Substituir pelo texto dinâmico, se necessário
                 text_color="white",  
-                fg_color="black",
-                font=("Cambria", 17), 
+                fg_color="black",  # Cor de fundo
+                font=("Cambria", 17), # "Gelio Fasolada"
             )
             label_descricao_evento.place(x=660, y=140, anchor ="n")
-            self.widgets_casa_atual.append(label_descricao_evento)
+            self.widgets_dinamicos.append(label_descricao_evento)
             
             #rolagem de dados
             self.chamada_do_dado_batalha(casas_avanco=5, casas_retrocesso=1, vida=0)
@@ -2379,7 +2393,7 @@ space 47."""
                 font=("Olympus", 24), 
                 )
             label_nome_casa_evento.place(x=450, y=110, anchor ="n")
-            self.widgets_casa_atual.append(label_nome_casa_evento)
+            self.widgets_dinamicos.append(label_nome_casa_evento)
                 
                 #IMAGEM DA CASA
             self.image_evento_exibido = PhotoImage(file="images/casa_044_orfeu.png")
@@ -2408,7 +2422,7 @@ and lose
                 font=("Cambria", 17), # "Gelio Fasolada"
             )
             label_descricao_evento.place(x=650, y=140, anchor ="n")
-            self.widgets_casa_atual.append(label_descricao_evento)
+            self.widgets_dinamicos.append(label_descricao_evento)
             
             self.botao_vontade_dos_deuses(casas_avanco=0, casas_retrocesso=1, vida_mais=0, vida_menos=1, pontos_mais= 0, pontos_menos=30)
             self.chamada_cartas_eventos()
@@ -2536,7 +2550,7 @@ and lose
                 font=("Olympus", 24), 
                 )
             label_nome_casa_evento.place(x=450, y=110, anchor ="n")
-            self.self.widgets_casa_atual.append(label_nome_casa_evento)
+            self.widgets_dinamicos.append(label_nome_casa_evento)
                 
                 #IMAGEM DA CASA
             self.image_evento_exibido = PhotoImage(file="images/casa_052_erinias.png")
@@ -2563,7 +2577,7 @@ move forward
                 font=("Cambria", 17), # "Gelio Fasolada"
             )
             label_descricao_evento.place(x=650, y=140, anchor ="n")
-            self.widgets_casa_atual.append(label_descricao_evento)
+            self.widgets_dinamicos.append(label_descricao_evento)
             
             #rolagem de dados
             self.chamada_do_dado_batalha(casas_avanco=2, casas_retrocesso=2, vida=0)
@@ -2685,7 +2699,7 @@ move forward
                 font=("Olympus", 24), 
                 )
             label_nome_casa_evento.place(x=450, y=110, anchor ="n")
-            self.widgets_casa_atual.append(label_nome_casa_evento)                
+            self.widgets_dinamicos.append(label_nome_casa_evento)                
             #IMAGEM DA CASA
             self.image_evento_exibido = PhotoImage(file="images/casa_061_hidra.png")
             self.label_evento_exibido = tk.Label(
@@ -2712,7 +2726,7 @@ advance
                 font=("Cambria", 17), 
             )
             label_descricao_evento.place(x=650, y=140, anchor ="n")
-            self.widgets_casa_atual.append(label_descricao_evento)
+            self.widgets_dinamicos.append(label_descricao_evento)
             
             #rolagem de dados
             self.chamada_do_dado_batalha(casas_avanco=2, casas_retrocesso=2, vida=0)
@@ -2818,7 +2832,7 @@ advance
                 font=("Olympus", 24), 
                 )
             label_nome_casa_evento.place(x=450, y=110, anchor ="n")
-            self.widgets_casa_atual.append(label_nome_casa_evento)                
+            self.widgets_dinamicos.append(label_nome_casa_evento)                
             #IMAGEM DA CASA
             self.image_evento_exibido = PhotoImage(file="images/casa_066_sisifo.png")
             self.label_evento_exibido = tk.Label(
@@ -2844,7 +2858,7 @@ space 57"""
                 font=("Cambria", 17), 
             )
             label_descricao_evento.place(x=650, y=140, anchor ="n")
-            self.widgets_casa_atual.append(label_descricao_evento)
+            self.widgets_dinamicos.append(label_descricao_evento)
             
             self.botao_vontade_dos_deuses(casas_avanco=0, casas_retrocesso=9, vida_mais=0, vida_menos=1, pontos_mais= 0, pontos_menos=30)
             self.chamada_cartas_eventos()
@@ -2870,7 +2884,7 @@ space 57"""
                 font=("Olympus", 24), 
                 )
             label_nome_casa_evento.place(x=450, y=110, anchor ="n")
-            self.widgets_casa_atual.append(label_nome_casa_evento)                
+            self.widgets_dinamicos.append(label_nome_casa_evento)                
             #IMAGEM DA CASA
             self.image_evento_exibido = PhotoImage(file="images/casa_069_centauros.png")
             self.label_evento_exibido = tk.Label(
@@ -2895,7 +2909,7 @@ Try to defeat them."""
                 font=("Cambria", 17), 
             )
             label_descricao_evento.place(x=650, y=140, anchor ="n")
-            self.widgets_casa_atual.append(label_descricao_evento)
+            self.widgets_dinamicos.append(label_descricao_evento)
             
             #rolagem de dados
             self.chamada_do_dado_batalha(casas_avanco=1, casas_retrocesso=1, vida=0)
@@ -2918,7 +2932,7 @@ Try to defeat them."""
                 font=("Olympus", 24), 
                 )
             label_nome_casa_evento.place(x=450, y=110, anchor ="n")
-            self.widgets_casa_atual.append(label_nome_casa_evento)                
+            self.widgets_dinamicos.append(label_nome_casa_evento)                
             #IMAGEM DA CASA
             self.image_evento_exibido = PhotoImage(file="images/casa_071_satiros.png")
             self.label_evento_exibido = tk.Label(
@@ -2944,7 +2958,7 @@ Try to defeat them"""
                 font=("Cambria", 17), 
             )
             label_descricao_evento.place(x=650, y=140, anchor ="n")
-            self.widgets_casa_atual.append(label_descricao_evento)
+            self.widgets_dinamicos.append(label_descricao_evento)
             
             #rolagem de dados
             self.chamada_do_dado_batalha(casas_avanco=1, casas_retrocesso=1, vida=0)
@@ -3046,7 +3060,7 @@ Try to defeat them"""
                 font=("Olympus", 24), 
                 )
             label_nome_casa_evento.place(x=450, y=110, anchor ="n")
-            self.widgets_casa_atual.append(label_nome_casa_evento)                
+            self.widgets_dinamicos.append(label_nome_casa_evento)                
             #IMAGEM DA CASA
             self.image_evento_exibido = PhotoImage(file="images/casa_075_sirenes.png")
             self.label_evento_exibido = tk.Label(
@@ -3073,7 +3087,7 @@ and advance
                 font=("Cambria", 17), 
             )
             label_descricao_evento.place(x=650, y=140, anchor ="n")
-            self.widgets_casa_atual.append(label_descricao_evento)
+            self.widgets_dinamicos.append(label_descricao_evento)
             
             # Se atalanta ou Hipolita avança 2 casas
             if self.back_end.personagem_escolhido_nome == self.back_end.personagens_jogo[0] or self.back_end.personagem_escolhido_nome == self.back_end.personagens_jogo[3]:
@@ -3190,7 +3204,7 @@ and advance
                 font=("Olympus", 24), 
                 )
             label_nome_casa_evento.place(x=450, y=110, anchor ="n")
-            self.widgets_casa_atual.append(label_nome_casa_evento)                
+            self.widgets_dinamicos.append(label_nome_casa_evento)                
             #IMAGEM DA CASA
             self.image_evento_exibido = PhotoImage(file="images/casa_082_ninfas.png")
             self.label_evento_exibido = tk.Label(
@@ -3216,7 +3230,7 @@ Advance
                 font=("Cambria", 17), 
             )
             label_descricao_evento.place(x=650, y=140, anchor ="n")
-            self.widgets_casa_atual.append(label_descricao_evento)
+            self.widgets_dinamicos.append(label_descricao_evento)
             
             # vontade dos deuses
             self.botao_vontade_dos_deuses(casas_avanco=2, casas_retrocesso=0, vida_mais=0, vida_menos=0, pontos_mais= 60, pontos_menos=0)
@@ -3244,7 +3258,7 @@ Advance
                 font=("Olympus", 24), 
                 )
             label_nome_casa_evento.place(x=450, y=110, anchor ="n")
-            self.widgets_casa_atual.append(label_nome_casa_evento)                
+            self.widgets_dinamicos.append(label_nome_casa_evento)                
             #IMAGEM DA CASA
             self.image_evento_exibido = PhotoImage(file="images/casa_085_troia.png")
             self.label_evento_exibido = tk.Label(
@@ -3271,7 +3285,7 @@ if you win, advance 2 spaces."""
                 font=("Cambria", 17), 
             )
             label_descricao_evento.place(x=650, y=140, anchor ="n")
-            self.widgets_casa_atual.append(label_descricao_evento)
+            self.widgets_dinamicos.append(label_descricao_evento)
             
             # Dados
             self.chamada_do_dado_batalha(casas_avanco=2, casas_retrocesso=2, vida=0)
@@ -3376,7 +3390,7 @@ if you win, advance 2 spaces."""
                 font=("Olympus", 24), 
                 )
             label_nome_casa_evento.place(x=450, y=110, anchor ="n")
-            self.widgets_casa_atual.append(label_nome_casa_evento)                
+            self.widgets_dinamicos.append(label_nome_casa_evento)                
             #IMAGEM DA CASA
             self.image_evento_exibido = PhotoImage(file="images/casa_090_eros.png")
             self.label_evento_exibido = tk.Label(
@@ -3403,7 +3417,7 @@ beauty and Love."""
                 font=("Cambria", 17), 
             )
             label_descricao_evento.place(x=650, y=140, anchor ="n")
-            self.widgets_casa_atual.append(label_descricao_evento)
+            self.widgets_dinamicos.append(label_descricao_evento)
             
             # vontade dos deuses
             self.botao_vontade_dos_deuses(casas_avanco=0, casas_retrocesso=2, vida_mais=0, vida_menos=0, pontos_mais= 60, pontos_menos=60)
@@ -3430,7 +3444,7 @@ beauty and Love."""
                 font=("Olympus", 24), 
                 )
             label_nome_casa_evento.place(x=450, y=110, anchor ="n")
-            self.widgets_casa_atual.append(label_nome_casa_evento)                
+            self.widgets_dinamicos.append(label_nome_casa_evento)                
             #IMAGEM DA CASA
             self.image_evento_exibido = PhotoImage(file="images/casa_093_pegaso.png")
             self.label_evento_exibido = tk.Label(
@@ -3454,7 +3468,7 @@ and advance
                 font=("Cambria", 17), 
             )
             label_descricao_evento.place(x=650, y=140, anchor ="n")
-            self.widgets_casa_atual.append(label_descricao_evento)
+            self.widgets_dinamicos.append(label_descricao_evento)
             
             # vontade dos deuses
             self.botao_vontade_dos_deuses(casas_avanco=6, casas_retrocesso=0, vida_mais=0, vida_menos=0, pontos_mais= 180, pontos_menos=0)
@@ -3481,7 +3495,7 @@ and advance
                 font=("Olympus", 24), 
                 )
             label_nome_casa_evento.place(x=450, y=110, anchor ="n")
-            self.widgets_casa_atual.append(label_nome_casa_evento)                
+            self.widgets_dinamicos.append(label_nome_casa_evento)                
             #IMAGEM DA CASA
             self.image_evento_exibido = PhotoImage(file="images/casa_096_dionisio.png")
             self.label_evento_exibido = tk.Label(
@@ -3505,7 +3519,7 @@ move forward
                 font=("Cambria", 17), 
             )
             label_descricao_evento.place(x=650, y=140, anchor ="n")
-            self.widgets_casa_atual.append(label_descricao_evento)
+            self.widgets_dinamicos.append(label_descricao_evento)
             
             # implementar Compre uma carta ou avance 3 casas.
             self.botao_vontade_dos_deuses(casas_avanco=3, casas_retrocesso=0, vida_mais=0, vida_menos=0, pontos_mais= 45, pontos_menos=0)
@@ -3528,7 +3542,7 @@ move forward
                 font=("Olympus", 24), 
                 )
             label_nome_casa_evento.place(x=450, y=110, anchor ="n")
-            self.widgets_casa_atual.append(label_nome_casa_evento)                
+            self.widgets_dinamicos.append(label_nome_casa_evento)                
             #IMAGEM DA CASA
             self.image_evento_exibido = PhotoImage(file="images/casa_098_bacantes.png")
             self.label_evento_exibido = tk.Label(
@@ -3555,7 +3569,7 @@ lose 1 life"""
                 font=("Cambria", 17), 
             )
             label_descricao_evento.place(x=650, y=140, anchor ="n")
-            self.widgets_casa_atual.append(label_descricao_evento)
+            self.widgets_dinamicos.append(label_descricao_evento)
             
             # vonatde dos deuses
             self.botao_vontade_dos_deuses(casas_avanco=0, casas_retrocesso=5, vida_mais=0, vida_menos=1, pontos_mais= 0, pontos_menos=60)
@@ -3578,7 +3592,7 @@ lose 1 life"""
                 font=("Olympus", 24), 
                 )
             label_nome_casa_evento.place(x=450, y=110, anchor ="n")
-            self.widgets_casa_atual.append(label_nome_casa_evento)                
+            self.widgets_dinamicos.append(label_nome_casa_evento)                
             #IMAGEM DA CASA
             self.image_evento_exibido = PhotoImage(file="images/casa_100_pan.png")
             self.label_evento_exibido = tk.Label(
@@ -3604,7 +3618,7 @@ lost 1 life"""
                 font=("Cambria", 17), 
             )
             label_descricao_evento.place(x=660, y=140, anchor ="n")
-            self.widgets_casa_atual.append(label_descricao_evento)
+            self.widgets_dinamicos.append(label_descricao_evento)
             
           # vontade dos deuses
             self.botao_vontade_dos_deuses(casas_avanco=0, casas_retrocesso=6, vida_mais=0, vida_menos=1, pontos_mais= 0, pontos_menos=60)
@@ -3718,7 +3732,7 @@ lost 1 life"""
                 font=("Olympus", 24), 
                 )
             label_nome_casa_evento.place(x=450, y=110, anchor ="n")
-            self.widgets_casa_atual.append(label_nome_casa_evento)                
+            self.widgets_dinamicos.append(label_nome_casa_evento)                
             #IMAGEM DA CASA
             self.image_evento_exibido = PhotoImage(file="images/casa_107_orion.png")
             self.label_evento_exibido = tk.Label(
@@ -3745,7 +3759,7 @@ you lose a life"""
                 font=("Cambria", 17), 
             )
             label_descricao_evento.place(x=650, y=140, anchor ="n")
-            self.widgets_casa_atual.append(label_descricao_evento)
+            self.widgets_dinamicos.append(label_descricao_evento)
             
             self.chamada_do_dado_batalha(casas_avanco=2, casas_retrocesso=2, vida=1)
             self.chamada_cartas_eventos()
@@ -3771,7 +3785,7 @@ you lose a life"""
                 font=("Olympus", 24), 
                 )
             label_nome_casa_evento.place(x=450, y=110, anchor ="n")
-            self.widgets_casa_atual.append(label_nome_casa_evento)                
+            self.widgets_dinamicos.append(label_nome_casa_evento)                
             #IMAGEM DA CASA
             self.image_evento_exibido = PhotoImage(file="images/casa_110_midas.png")
             self.label_evento_exibido = tk.Label(
@@ -3796,7 +3810,7 @@ and seek the god's help.."""
                 font=("Cambria", 17), 
             )
             label_descricao_evento.place(x=660, y=140, anchor ="n")
-            self.widgets_casa_atual.append(label_descricao_evento)
+            self.widgets_dinamicos.append(label_descricao_evento)
             
             # vontade dos deuses
             self.botao_vontade_dos_deuses(casas_avanco=0, casas_retrocesso=14, vida_mais=0, vida_menos=0, pontos_mais= 0, pontos_menos=300)
@@ -3906,7 +3920,7 @@ and seek the god's help.."""
                 font=("Olympus", 24), 
                 )
             label_nome_casa_evento.place(x=450, y=110, anchor ="n")
-            self.widgets_casa_atual.append(label_nome_casa_evento)                
+            self.widgets_dinamicos.append(label_nome_casa_evento)                
             #IMAGEM DA CASA
             self.image_evento_exibido = PhotoImage(file="images/casa_116_cronos.png")
             self.label_evento_exibido = tk.Label(
@@ -3932,7 +3946,8 @@ lose 1 life.."""
                 font=("Cambria", 17), 
             )
             label_descricao_evento.place(x=650, y=140, anchor ="n")
-            self.widgets_casa_atual.append(label_descricao_evento)
+            self.widgets_dinamicos.append(label_descricao_evento)
+            
             # vontade dos deuses
             self.botao_vontade_dos_deuses(casas_avanco=0, casas_retrocesso=5, vida_mais=0, vida_menos=1, pontos_mais=0, pontos_menos=60)
             self.chamada_cartas_eventos()
@@ -3958,7 +3973,7 @@ lose 1 life.."""
                 font=("Olympus", 24), 
                 )
             label_nome_casa_evento.place(x=450, y=110, anchor ="n")
-            self.widgets_casa_atual.append(label_nome_casa_evento)                
+            self.widgets_dinamicos.append(label_nome_casa_evento)                
             #IMAGEM DA CASA
             self.image_evento_exibido = PhotoImage(file="images/casa_119_grifos.png")
             self.label_evento_exibido = tk.Label(
@@ -3985,7 +4000,8 @@ Try to pass its guardians."""
                 font=("Cambria", 17), 
             )
             label_descricao_evento.place(x=650, y=140, anchor ="n")
-            self.widgets_casa_atual.append(label_descricao_evento)            
+            self.widgets_dinamicos.append(label_descricao_evento)
+            
             # Dados
             self.chamada_do_dado_batalha(casas_avanco=1, casas_retrocesso=2, vida=0)
 
@@ -3999,7 +4015,7 @@ Try to pass its guardians."""
 
 
 
-# CARTAS DE AÇÃO  # CARTAS DE AÇÃO  # CARTAS DE AÇÃO  # CARTAS DE AÇÃO  # CARTAS DE AÇÃO
+
 
     def chama_foto_carta(self, index_dicionario_deuses): # insere a foto da carta do deus
         try:
@@ -4030,7 +4046,7 @@ Try to pass its guardians."""
         else:
             print(f"Erro: O método '{nome_metodo}' não existe.")
 
-    def remover_carta(self, nome):# Remove uma carta usada da lista de cartas_player pelo nome.
+    def remover_carta(self, nome):# Remove uma carta da lista de cartas_player pelo nome.
         # Verifica se a carta existe na lista
         carta_encontrada = next((carta for carta in self.back_end.cartas_player if carta["nome"] == nome), None) 
         if carta_encontrada:
@@ -4039,585 +4055,97 @@ Try to pass its guardians."""
         else:
             print(f"Carta '{nome}' não encontrada na lista.")
         # atualiza a tela apos a remoção
+        self.limpar_referencias_cartas()
         self.atualizar_tela()
         
-     
+  # até aqui mesmo!!!    
+        
     def use_carta_Aphrodite(self):
         self.limpar_widgets_casa_atual()  
-        self.chama_foto_carta(0) # index afrodite  
-        # Título
-        label_nome_actions = ctk.CTkLabel(
-            self.root,
-            text= "Advance\n6 spaces", 
-            text_color="white",  
-            fg_color="black",
-            font=("cambria", 24), # "Olympus"
-            )
-        label_nome_actions.place(x=650, y=200, anchor ="n")
-        self.widgets_dinamicos.append(label_nome_actions)        
-        # Botão SIM
+        self.chama_foto_carta(0) # index afrodite        
+
+        # Botão avança 6
         botao_sim = ctk.CTkButton(
         self.canvas_abre,
         fg_color='black',
-        width= 70,
+        width= 16,
         border_color= "white",
         border_width= 1,
         hover_color=self.cor_Layout,
-        text="YES",
-        font=("Gelio Greek Diner", 22),
-        command=lambda: (self.vontade_dos_deuses(casas_avanco=6, casas_retrocesso=0, vida_mais=0, vida_menos=0, pontos_mais=90, pontos_menos=0),
-                         self.remover_carta('Aphrodite'),
-                         self.atualizar_cartas())
+        text="Advance\n6\nspaces",
+        font=("Gelio Greek Diner", 18),
+        command=lambda: (self.vontade_dos_deuses(casas_avanco=6, casas_retrocesso=0, vida_mais=0, vida_menos=0, pontos_mais=90, pontos_menos=0), self.remover_carta('Aphrodite'))
         )
-        botao_sim.place(x=600, y=350, anchor="center")
+        botao_sim.place(x=600, y=380, anchor="center")
         self.widgets_casa_atual.append(botao_sim)
+        
         # Botão NÃO
         botao_naum = ctk.CTkButton(
         self.canvas_abre,
         fg_color='black',
-        width= 70,
+        width= 16,
         border_color= "white",
         border_width= 1,
         hover_color="red",
-        text="NO",
-        font=("Gelio Greek Diner", 22),
-        command= lambda:(self.chamar_casa_evento(),
-                         self.atualizar_tela(),
-                         self.carregar_casa(self.back_end.casa_atual))
+        text="no",
+        font=("Gelio Greek Diner", 18),
+        command= lambda:(self.chamar_casa_evento(),self.carregar_casa(self.back_end.casa_atual))
         )
-        botao_naum.place(x=700, y=350, anchor="center")
+        
+        #self.limpar_widgets_casa_atual()
+        #self.atualizar_tela()
+        #self.carregar_casa(self.back_end.casa_atual)
+        
+        
+        botao_naum.place(x=700, y=380, anchor="center")
         self.widgets_casa_atual.append(botao_naum)
         
 
     def use_carta_Apollo(self):
         self.limpar_widgets_casa_atual()  
-        self.chama_foto_carta(1) # index Apolo 
-        # Título
-        label_nome_actions = ctk.CTkLabel(
-            self.root,
-            text= "Roll\n1 dice", 
-            text_color="white",  
-            fg_color="black",
-            font=("cambria", 24), # "Olympus"
-            )
-        label_nome_actions.place(x=650, y=200, anchor ="n")
-        self.widgets_dinamicos.append(label_nome_actions)        
-        # Botão SIM
-        botao_sim = ctk.CTkButton(
-        self.canvas_abre,
-        fg_color='black',
-        width= 70,
-        border_color= "white",
-        border_width= 1,
-        hover_color=self.cor_Layout,
-        text="YES",
-        font=("Gelio Greek Diner", 22),
-        command=lambda: (self.vontade_dos_deuses(casas_avanco=6, casas_retrocesso=0, vida_mais=0, vida_menos=0, pontos_mais=90, pontos_menos=0),
-                         self.remover_carta('Apollo'),
-                         self.atualizar_cartas())
-        )
-        botao_sim.place(x=600, y=350, anchor="center")
-        self.widgets_casa_atual.append(botao_sim)
-        # Botão NÃO
-        botao_naum = ctk.CTkButton(
-        self.canvas_abre,
-        fg_color='black',
-        width= 70,
-        border_color= "white",
-        border_width= 1,
-        hover_color="red",
-        text="NO",
-        font=("Gelio Greek Diner", 22),
-        command= lambda:(self.chamar_casa_evento(),
-                         self.atualizar_tela(),
-                         self.carregar_casa(self.back_end.casa_atual))
-        )
-        botao_naum.place(x=700, y=350, anchor="center")
-        self.widgets_casa_atual.append(botao_naum)
-           
+        self.chama_foto_carta(1) # index Apolo    
         
+
     def use_carta_Artemis(self):
         self.limpar_widgets_casa_atual()  
-        self.chama_foto_carta(2) # index Artemis 
-         # Título
-        label_nome_actions = ctk.CTkLabel(
-            self.root,
-            text= "Advance 3 spaces,\nor\nroll 1 die", 
-            text_color="white",  
-            fg_color="black",
-            font=("cambria", 24), # "Olympus"
-            )
-        label_nome_actions.place(x=650, y=200, anchor ="n")
-        self.widgets_dinamicos.append(label_nome_actions)        
-        # Botão SIM
-        botao_sim = ctk.CTkButton(
-        self.canvas_abre,
-        fg_color='black',
-        width= 70,
-        border_color= "white",
-        border_width= 1,
-        hover_color=self.cor_Layout,
-        text="YES",
-        font=("Gelio Greek Diner", 22),
-        command=lambda: (self.vontade_dos_deuses(casas_avanco=6, casas_retrocesso=0, vida_mais=0, vida_menos=0, pontos_mais=90, pontos_menos=0),
-                         self.remover_carta('Artemis'),
-                         self.atualizar_cartas())
-        )
-        botao_sim.place(x=600, y=350, anchor="center")
-        self.widgets_casa_atual.append(botao_sim)
-        # Botão NÃO
-        botao_naum = ctk.CTkButton(
-        self.canvas_abre,
-        fg_color='black',
-        width= 70,
-        border_color= "white",
-        border_width= 1,
-        hover_color="red",
-        text="NO",
-        font=("Gelio Greek Diner", 22),
-        command= lambda:(self.chamar_casa_evento(),
-                         self.atualizar_tela(),
-                         self.carregar_casa(self.back_end.casa_atual))
-        )
-        botao_naum.place(x=700, y=350, anchor="center")
-        self.widgets_casa_atual.append(botao_naum)
-             
+        self.chama_foto_carta(2) # index Artemis   
     
+
     def use_carta_Ares(self):
         self.limpar_widgets_casa_atual()  
-        self.chama_foto_carta(3) # index Ares
-         # Título
-        label_nome_actions = ctk.CTkLabel(
-            self.root,
-            text= "Win 1 battle\nor\nroll 1 die", 
-            text_color="white",  
-            fg_color="black",
-            font=("cambria", 24), # "Olympus"
-            )
-        label_nome_actions.place(x=650, y=200, anchor ="n")
-        self.widgets_dinamicos.append(label_nome_actions)        
-        # Botão SIM
-        botao_sim = ctk.CTkButton(
-        self.canvas_abre,
-        fg_color='black',
-        width= 70,
-        border_color= "white",
-        border_width= 1,
-        hover_color=self.cor_Layout,
-        text="YES",
-        font=("Gelio Greek Diner", 22),
-        command=lambda: (self.vontade_dos_deuses(casas_avanco=6, casas_retrocesso=0, vida_mais=0, vida_menos=0, pontos_mais=90, pontos_menos=0),
-                         self.remover_carta('Ares'),
-                         self.atualizar_cartas())
-        )
-        botao_sim.place(x=600, y=350, anchor="center")
-        self.widgets_casa_atual.append(botao_sim)
-        # Botão NÃO
-        botao_naum = ctk.CTkButton(
-        self.canvas_abre,
-        fg_color='black',
-        width= 70,
-        border_color= "white",
-        border_width= 1,
-        hover_color="red",
-        text="NO",
-        font=("Gelio Greek Diner", 22),
-        command= lambda:(self.chamar_casa_evento(),
-                         self.atualizar_tela(),
-                         self.carregar_casa(self.back_end.casa_atual))
-        )
-        botao_naum.place(x=700, y=350, anchor="center")
-        self.widgets_casa_atual.append(botao_naum)
-              
+        self.chama_foto_carta(3) # index Ares   
 
     def use_carta_Hades(self): 
         self.limpar_widgets_casa_atual()  
-        self.chama_foto_carta(4) # index Hades
-         # Título
-        label_nome_actions = ctk.CTkLabel(
-            self.root,
-            text= "Gain\none life", 
-            text_color="white",  
-            fg_color="black",
-            font=("cambria", 24), # "Olympus"
-            )
-        label_nome_actions.place(x=650, y=200, anchor ="n")
-        self.widgets_dinamicos.append(label_nome_actions)        
-        # Botão SIM
-        botao_sim = ctk.CTkButton(
-        self.canvas_abre,
-        fg_color='black',
-        width= 70,
-        border_color= "white",
-        border_width= 1,
-        hover_color=self.cor_Layout,
-        text="YES",
-        font=("Gelio Greek Diner", 22),
-        command=lambda: (self.vontade_dos_deuses(casas_avanco=6, casas_retrocesso=0, vida_mais=0, vida_menos=0, pontos_mais=90, pontos_menos=0),
-                         self.remover_carta('Hades'),
-                         self.atualizar_cartas())
-        )
-        botao_sim.place(x=600, y=350, anchor="center")
-        self.widgets_casa_atual.append(botao_sim)
-        # Botão NÃO
-        botao_naum = ctk.CTkButton(
-        self.canvas_abre,
-        fg_color='black',
-        width= 70,
-        border_color= "white",
-        border_width= 1,
-        hover_color="red",
-        text="NO",
-        font=("Gelio Greek Diner", 22),
-        command= lambda:(self.chamar_casa_evento(),
-                         self.atualizar_tela(),
-                         self.carregar_casa(self.back_end.casa_atual))
-        )
-        botao_naum.place(x=700, y=350, anchor="center")
-        self.widgets_casa_atual.append(botao_naum)
-                          
+        self.chama_foto_carta(4) # index Hades               
 
     def use_carta_Hephaestus(self):
         self.limpar_widgets_casa_atual()  
         self.chama_foto_carta(5) # index Hefesto 
-         # Título
-        label_nome_actions = ctk.CTkLabel(
-            self.root,
-            text= "Roll\n1 dice", 
-            text_color="white",  
-            fg_color="black",
-            font=("cambria", 24), # "Olympus"
-            )
-        label_nome_actions.place(x=650, y=200, anchor ="n")
-        self.widgets_dinamicos.append(label_nome_actions)        
-        # Botão SIM
-        botao_sim = ctk.CTkButton(
-        self.canvas_abre,
-        fg_color='black',
-        width= 70,
-        border_color= "white",
-        border_width= 1,
-        hover_color=self.cor_Layout,
-        text="YES",
-        font=("Gelio Greek Diner", 22),
-        command=lambda: (self.vontade_dos_deuses(casas_avanco=6, casas_retrocesso=0, vida_mais=0, vida_menos=0, pontos_mais=90, pontos_menos=0),
-                         self.remover_carta('Hephaestus'),
-                         self.atualizar_cartas())
-        )
-        botao_sim.place(x=600, y=350, anchor="center")
-        self.widgets_casa_atual.append(botao_sim)
-        # Botão NÃO
-        botao_naum = ctk.CTkButton(
-        self.canvas_abre,
-        fg_color='black',
-        width= 70,
-        border_color= "white",
-        border_width= 1,
-        hover_color="red",
-        text="NO",
-        font=("Gelio Greek Diner", 22),
-        command= lambda:(self.chamar_casa_evento(),
-                         self.atualizar_tela(),
-                         self.carregar_casa(self.back_end.casa_atual))
-        )
-        botao_naum.place(x=700, y=350, anchor="center")
-        self.widgets_casa_atual.append(botao_naum)
-           
 
     def use_carta_Hera(self):
         self.limpar_widgets_casa_atual()  
-        self.chama_foto_carta(6) # index Hera  
-         # Título
-        label_nome_actions = ctk.CTkLabel(
-            self.root,
-            text= "Gain one life\nor\nroll 1 die", 
-            text_color="white",  
-            fg_color="black",
-            font=("cambria", 24), # "Olympus"
-            )
-        label_nome_actions.place(x=650, y=200, anchor ="n")
-        self.widgets_dinamicos.append(label_nome_actions)        
-        # Botão SIM
-        botao_sim = ctk.CTkButton(
-        self.canvas_abre,
-        fg_color='black',
-        width= 70,
-        border_color= "white",
-        border_width= 1,
-        hover_color=self.cor_Layout,
-        text="YES",
-        font=("Gelio Greek Diner", 22),
-        command=lambda: (self.vontade_dos_deuses(casas_avanco=6, casas_retrocesso=0, vida_mais=0, vida_menos=0, pontos_mais=90, pontos_menos=0),
-                         self.remover_carta('Hera'),
-                         self.atualizar_cartas())
-        )
-        botao_sim.place(x=600, y=350, anchor="center")
-        self.widgets_casa_atual.append(botao_sim)
-        # Botão NÃO
-        botao_naum = ctk.CTkButton(
-        self.canvas_abre,
-        fg_color='black',
-        width= 70,
-        border_color= "white",
-        border_width= 1,
-        hover_color="red",
-        text="NO",
-        font=("Gelio Greek Diner", 22),
-        command= lambda:(self.chamar_casa_evento(),
-                         self.atualizar_tela(),
-                         self.carregar_casa(self.back_end.casa_atual))
-        )
-        botao_naum.place(x=700, y=350, anchor="center")
-        self.widgets_casa_atual.append(botao_naum)
-             
+        self.chama_foto_carta(6) # index Hera    
 
     def use_carta_Hermes(self):
         self.limpar_widgets_casa_atual()  
-        self.chama_foto_carta(7) # index Hermes 
-         # Título
-        label_nome_actions = ctk.CTkLabel(
-            self.root,
-            text= "Advance 5 spaces\nor\nskip 1 space", 
-            text_color="white",  
-            fg_color="black",
-            font=("cambria", 24), # "Olympus"
-            )
-        label_nome_actions.place(x=650, y=200, anchor ="n")
-        self.widgets_dinamicos.append(label_nome_actions)        
-        # Botão SIM
-        botao_sim = ctk.CTkButton(
-        self.canvas_abre,
-        fg_color='black',
-        width= 70,
-        border_color= "white",
-        border_width= 1,
-        hover_color=self.cor_Layout,
-        text="YES",
-        font=("Gelio Greek Diner", 22),
-        command=lambda: (self.vontade_dos_deuses(casas_avanco=6, casas_retrocesso=0, vida_mais=0, vida_menos=0, pontos_mais=90, pontos_menos=0),
-                         self.remover_carta('Hermes'),
-                         self.atualizar_cartas())
-        )
-        botao_sim.place(x=600, y=350, anchor="center")
-        self.widgets_casa_atual.append(botao_sim)
-        # Botão NÃO
-        botao_naum = ctk.CTkButton(
-        self.canvas_abre,
-        fg_color='black',
-        width= 70,
-        border_color= "white",
-        border_width= 1,
-        hover_color="red",
-        text="NO",
-        font=("Gelio Greek Diner", 22),
-        command= lambda:(self.chamar_casa_evento(),
-                         self.atualizar_tela(),
-                         self.carregar_casa(self.back_end.casa_atual))
-        )
-        botao_naum.place(x=700, y=350, anchor="center")
-        self.widgets_casa_atual.append(botao_naum)
-             
+        self.chama_foto_carta(7) # index Hermes   
 
     def use_carta_Persephone(self):  
         self.limpar_widgets_casa_atual()  
-        self.chama_foto_carta(8) # index Persefone 
-         # Título
-        label_nome_actions = ctk.CTkLabel(
-            self.root,
-            text= "Go back\n1, 2, or 3\nspaces", 
-            text_color="white",  
-            fg_color="black",
-            font=("cambria", 24), # "Olympus"
-            )
-        label_nome_actions.place(x=650, y=200, anchor ="n")
-        self.widgets_dinamicos.append(label_nome_actions)        
-        # Botão SIM
-        botao_sim = ctk.CTkButton(
-        self.canvas_abre,
-        fg_color='black',
-        width= 70,
-        border_color= "white",
-        border_width= 1,
-        hover_color=self.cor_Layout,
-        text="YES",
-        font=("Gelio Greek Diner", 22),
-        command=lambda: (self.vontade_dos_deuses(casas_avanco=6, casas_retrocesso=0, vida_mais=0, vida_menos=0, pontos_mais=90, pontos_menos=0),
-                         self.remover_carta('Persephone'),
-                         self.atualizar_cartas())
-        )
-        botao_sim.place(x=600, y=350, anchor="center")
-        self.widgets_casa_atual.append(botao_sim)
-        # Botão NÃO
-        botao_naum = ctk.CTkButton(
-        self.canvas_abre,
-        fg_color='black',
-        width= 70,
-        border_color= "white",
-        border_width= 1,
-        hover_color="red",
-        text="NO",
-        font=("Gelio Greek Diner", 22),
-        command= lambda:(self.chamar_casa_evento(),
-                         self.atualizar_tela(),
-                         self.carregar_casa(self.back_end.casa_atual))
-        )
-        botao_naum.place(x=700, y=350, anchor="center")
-        self.widgets_casa_atual.append(botao_naum)
-                          
+        self.chama_foto_carta(8) # index Persefone                
  
     def use_carta_Poseidon(self):
         self.limpar_widgets_casa_atual()  
-        self.chama_foto_carta(9) # index Poseidon  
-         # Título
-        label_nome_actions = ctk.CTkLabel(
-            self.root,
-            text= "Advance 4 spaces,\nor\nroll 1 die", 
-            text_color="white",  
-            fg_color="black",
-            font=("cambria", 24), # "Olympus"
-            )
-        label_nome_actions.place(x=650, y=200, anchor ="n")
-        self.widgets_dinamicos.append(label_nome_actions)        
-        # Botão SIM
-        botao_sim = ctk.CTkButton(
-        self.canvas_abre,
-        fg_color='black',
-        width= 70,
-        border_color= "white",
-        border_width= 1,
-        hover_color=self.cor_Layout,
-        text="YES",
-        font=("Gelio Greek Diner", 22),
-        command=lambda: (self.vontade_dos_deuses(casas_avanco=6, casas_retrocesso=0, vida_mais=0, vida_menos=0, pontos_mais=90, pontos_menos=0),
-                         self.remover_carta('Poseidon'),
-                         self.atualizar_cartas())
-        )
-        botao_sim.place(x=600, y=350, anchor="center")
-        self.widgets_casa_atual.append(botao_sim)
-        # Botão NÃO
-        botao_naum = ctk.CTkButton(
-        self.canvas_abre,
-        fg_color='black',
-        width= 70,
-        border_color= "white",
-        border_width= 1,
-        hover_color="red",
-        text="NO",
-        font=("Gelio Greek Diner", 22),
-        command= lambda:(self.chamar_casa_evento(),
-                         self.atualizar_tela(),
-                         self.carregar_casa(self.back_end.casa_atual))
-        )
-        botao_naum.place(x=700, y=350, anchor="center")
-        self.widgets_casa_atual.append(botao_naum)
-                
+        self.chama_foto_carta(9) # index Poseidon       
 
     def use_carta_Zeus(self):
         self.limpar_widgets_casa_atual()  
-        self.chama_foto_carta(10) # index Zeus 
-         # Título
-        label_nome_actions = ctk.CTkLabel(
-            self.root,
-            text= "Advance 6 spaces,\nor\nroll 1 dice", 
-            text_color="white",  
-            fg_color="black",
-            font=("cambria", 24), # "Olympus"
-            )
-        label_nome_actions.place(x=650, y=200, anchor ="n")
-        self.widgets_dinamicos.append(label_nome_actions)        
-        # Botão SIM
-        botao_sim = ctk.CTkButton(
-        self.canvas_abre,
-        fg_color='black',
-        width= 70,
-        border_color= "white",
-        border_width= 1,
-        hover_color=self.cor_Layout,
-        text="YES",
-        font=("Gelio Greek Diner", 22),
-        command=lambda: (self.vontade_dos_deuses(casas_avanco=6, casas_retrocesso=0, vida_mais=0, vida_menos=0, pontos_mais=90, pontos_menos=0),
-                         self.remover_carta('Zeus'),
-                         self.atualizar_cartas())
-        )
-        botao_sim.place(x=600, y=350, anchor="center")
-        self.widgets_casa_atual.append(botao_sim)
-        # Botão NÃO
-        botao_naum = ctk.CTkButton(
-        self.canvas_abre,
-        fg_color='black',
-        width= 70,
-        border_color= "white",
-        border_width= 1,
-        hover_color="red",
-        text="NO",
-        font=("Gelio Greek Diner", 22),
-        command= lambda:(self.chamar_casa_evento(),
-                         self.atualizar_tela(),
-                         self.carregar_casa(self.back_end.casa_atual))
-        )
-        botao_naum.place(x=700, y=350, anchor="center")
-        self.widgets_casa_atual.append(botao_naum)
-              
+        self.chama_foto_carta(10) # index Zeus    
    
     def use_carta_Athena(self):
         self.limpar_widgets_casa_atual()  
-        self.chama_foto_carta(11) # index Atena 
-         # Título
-        label_nome_actions = ctk.CTkLabel(
-            self.root,
-            text= "Win 1 battle,\nor\nadvance 2 spaces", 
-            text_color="white",  
-            fg_color="black",
-            font=("cambria", 24), # "Olympus"
-            )
-        label_nome_actions.place(x=650, y=200, anchor ="n")
-        self.widgets_dinamicos.append(label_nome_actions)        
-        # Botão SIM
-        botao_sim = ctk.CTkButton(
-        self.canvas_abre,
-        fg_color='black',
-        width= 70,
-        border_color= "white",
-        border_width= 1,
-        hover_color=self.cor_Layout,
-        text="YES",
-        font=("Gelio Greek Diner", 22),
-        command=lambda: (self.vontade_dos_deuses(casas_avanco=6, casas_retrocesso=0, vida_mais=0, vida_menos=0, pontos_mais=90, pontos_menos=0),
-                         self.remover_carta('Athena'),
-                         self.atualizar_cartas())
-        )
-        botao_sim.place(x=600, y=350, anchor="center")
-        self.widgets_casa_atual.append(botao_sim)
-        # Botão NÃO
-        botao_naum = ctk.CTkButton(
-        self.canvas_abre,
-        fg_color='black',
-        width= 70,
-        border_color= "white",
-        border_width= 1,
-        hover_color="red",
-        text="NO",
-        font=("Gelio Greek Diner", 22),
-        command= lambda:(self.chamar_casa_evento(),
-                         self.atualizar_tela(),
-                         self.carregar_casa(self.back_end.casa_atual))
-        )
-        botao_naum.place(x=700, y=350, anchor="center")
-        self.widgets_casa_atual.append(botao_naum)
-             
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
+        self.chama_foto_carta(11) # index Atena   
     
     
     

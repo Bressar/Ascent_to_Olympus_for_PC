@@ -115,9 +115,9 @@ the status of a demigod.""",
         },
         {
             "nome": "Apollo",
-            "action": "Roll 2 dice",
+            "action": "Roll 1 dice",
             "action_p": """Roll
-2 dice""",
+1 dice""",
             "imagem": "images/carta_apollo.png",
             "imagem_pequena": "images/carta_apollo_p.png"
         },
@@ -151,10 +151,9 @@ or roll
         },
         {
             "nome": "Hephaestus",
-            "action": "Roll 1 die again",
+            "action": "Roll 1 dice",
             "action_p": """Roll
-1 die
-again""",
+1 dice""",
             "imagem": "images/carta_hephaestus.png",
             "imagem_pequena": "images/carta_hephaestus_p.png"
         },
@@ -199,11 +198,11 @@ or roll
         },
         {
             "nome": "Zeus",
-            "action": "Advance 6 spaces, or roll 2 dice",
+            "action": "Advance 6 spaces, or roll 1 dice",
             "action_p": """Advance
 6 spaces,
 or roll
-2 dice""",
+1 dice""",
             "imagem": "images/carta_zeus.png",
             "imagem_pequena": "images/carta_zeus_p.png"
         },
@@ -404,34 +403,7 @@ or advance
             print(f"- {carta['nome']}: {carta['action']}")
             print(f"- {carta['imagem']}: {carta['imagem_pequena']}")
 
-    # Em construção!!!!
-    def adicionar_carta_player(self):
-        if self.casa_atual == 1:
-            self.carta_casa_deus = self.carta_casa_deus[7] #hermes
-        elif self.casa_atual == 21:
-            self.carta_casa_deus = self.carta_casa_deus[9] #poseidon
-        elif self.casa_atual == 30:
-            self.carta_casa_deus = self.carta_casa_deus[11] #atena
-        elif self.casa_atual == 38:
-            self.carta_casa_deus = self.carta_casa_deus[4] #hades
-        elif self.casa_atual == 49:
-            self.carta_casa_deus = self.carta_casa_deus[5] #hefesto
-        elif self.casa_atual == 55:
-            self.carta_casa_deus = self.carta_casa_deus[8] #persefone
-        elif self.casa_atual == 64:
-            self.carta_casa_deus = self.carta_casa_deus[1] #apolo
-        elif self.casa_atual == 73:
-            self.carta_casa_deus = self.carta_casa_deus[6] #hera
-        elif self.casa_atual == 79:
-            self.carta_casa_deus = self.carta_casa_deus[3] #ares
-        elif self.casa_atual == 88:
-            self.carta_casa_deus = self.carta_casa_deus[0] #afrodite
-        elif self.casa_atual == 104:
-            self.carta_casa_deus = self.carta_casa_deus[2] #artemis
-        elif self.casa_atual == 112:
-            self.carta_casa_deus = self.carta_casa_deus[10] #zeus
-            
-        self.cartas_player.add(self.carta_casa_deus)
+
         
         # Garante que a lista de cartas do jogador não exceda o limite de 3
         if len(self.cartas_player) > 3:

@@ -1,19 +1,10 @@
 # Versão do Jogo Grécia, para desktop
-# Funcionalidades do jogo
+# Implementação do jogo
 # criado:  18/12/24
-# atualizado: 27/12/24
+# atualizado: 29/12/24
 
-# import os
-# import shutil # para salvar as imagens dos cartões
 
 from PIL import Image, ImageDraw, ImageFont, ImageTk
-#from PIL import ImageWin
-# import qrcode
-# import sqlite3
-# import json
-# import webbrowser
-
-#ctk.set_appearance_mode("dark" )  # Modo de aparência: System", "dark" ou "light"
 
 import tkinter as tk
 from tkinter import filedialog, messagebox, Label, Tk, Canvas
@@ -21,13 +12,13 @@ import customtkinter as ctk
 from customtkinter import CTkImage, CTkFont 
 from telas_iniciais import Telas
 from tela_jogo import Tela_Jogo
-# from cartas import Cartas
+
 
 
 class Interface_Jogo:
     def __init__(self, root):
         self.janela = root
-        self.janela.title("Hermes&BresarGames©")
+        self.janela.title("Hermes&BressarGames©")
         self.janela.geometry("800x600")
         
         ctk.set_appearance_mode("dark")    
@@ -43,8 +34,8 @@ class Interface_Jogo:
         self.janelas_abertas = [] # para a função sair(main)
       
         # Interface de incialização 
-        self.Telas_iniciais.tela_01()
-        #self.Telas_iniciais.tela_02()
+        #self.Telas_iniciais.tela_01()
+        self.Telas_iniciais.tela_02()
         #self.Telas_iniciais.tela_03()
         #self.tela_jogo.tela_game()
         
@@ -112,3 +103,5 @@ if __name__ == "__main__":
     root = ctk.CTk()
     app = Interface_Jogo(root)
     root.mainloop() 
+    
+    
