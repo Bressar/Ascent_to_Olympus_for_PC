@@ -1,7 +1,7 @@
 # Versão do Jogo Grécia, para desktop
 # Implementação do jogo
 # criado:  18/12/24
-# atualizado: 29/12/24
+# atualizado: 30/12/24
 
 
 from PIL import Image, ImageDraw, ImageFont, ImageTk
@@ -12,6 +12,8 @@ import customtkinter as ctk
 from customtkinter import CTkImage, CTkFont 
 from telas_iniciais import Telas
 from tela_jogo import Tela_Jogo
+
+from back_end import Back_End
 
 
 
@@ -24,23 +26,22 @@ class Interface_Jogo:
         ctk.set_appearance_mode("dark")    
         self.janela.resizable(False, False)  # Define a janela como não redimensionável
         self.janela.configure(bg="black")
-        
+       
         # Passa a referência da própria instância para Telas        
         self.Telas_iniciais = Telas(root, self)
         self.tela_jogo = self.Telas_iniciais.tela_jogo # Tela de jogo agora já recebe Telas
         
-        self.widgets_dinamicos = self.Telas_iniciais.widgets_dinamicos # traz de telas a Lista para armazenar widgets dinâmicos
+        self.back_end = Back_End()
         
+        self.widgets_dinamicos = self.Telas_iniciais.widgets_dinamicos # traz de telas a Lista para armazenar widgets dinâmicos        
         self.janelas_abertas = [] # para a função sair(main)
       
         # Interface de incialização 
-        #self.Telas_iniciais.tela_01()
+        self.Telas_iniciais.tela_01()
         #self.Telas_iniciais.tela_02()
         #self.Telas_iniciais.tela_03()
-        self.tela_jogo.tela_game()
+        #self.tela_jogo.tela_game()
         
-
-
     def sair_jogo(self):
         print("Função sair_jogo chamada")  # Verificação
         janela_confirmacao = ctk.CTkToplevel(self.janela)

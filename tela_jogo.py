@@ -1,7 +1,6 @@
 # tela onde o jogo se desenrola..
 #  criado:  20/12/24
-# atualizado: 29/12/24
-# 
+# atualizado: 30/12/24
 
 import tkinter as tk
 from tkinter import font
@@ -15,28 +14,24 @@ from back_end import Back_End
 class Tela_Jogo:
     def __init__(self, root, telas_iniciais, interface_jogo, back_end):
         self.root = root  # Referência à janela principal
-        self.widgets_dinamicos = []  # Lista para armazenar widgets dinâmicos
         self.interface_jogo = interface_jogo  # Referência à instância de Interface_Jogo
         self.telas_iniciais = telas_iniciais   # Referência à instância de Telas    
         self.back_end = back_end  #  Back_End 
-        # self.cartas = cartas  # Instância de Cartas passada para Tela_Jogo
         self.canvas_abre = None  # Inicialmente vazio
-        self.back_end.load_fonts()
-        # self.cor_Layout = self.back_end.cor_layout_atual # busca a cor do layout do backend        
+        self.back_end.load_fonts()       
         self.root.configure(bg="black")
-        self.cor_Layout = self.back_end.cor_layout_atual # busca a cor do layout do 
-        # para evitar erros na atualização das labels
+        self.cor_Layout = self.back_end.cor_layout_atual # busca a cor do layout do backend
+        # para evitar erros na atualização das labels das cartinhas
         self.label_carta_menu1 = None
         self.label_carta_menu2 = None
         self.label_carta_menu3 = None
         self.imagem_dado = "images/dado_grego.gif"
-        
-        self.widgets_casa_atual = [] # widgets por casa
-        
+        self.widgets_dinamicos = []  # Lista para armazenar widgets dinâmicos
+        self.widgets_casa_atual = [] # widgets para as casas
         self.image_referencias_cartas = []  # Lista para manter referências às imagens das cartas
         
         
-    # Método de limpeza pode ser ajustado se necessário: PARA AS CARTINHAS QUE NÂO ATUALIZAVAM.....
+    # Método de limpeza PARA AS CARTINHAS QUE NÂO ATUALIZAVAM.....
     def limpar_referencias_cartas(self):
         self.image_referencias_cartas.clear()
         
@@ -952,9 +947,9 @@ class Tela_Jogo:
             text= "+4", 
             text_color= 'green',  
             bg_color= "black",  
-            font=("Gelio Fasolada", 20),
+            font=("Gelio Fasolada", 18),
             )          
-        self.label_4_mais.place(x=470, y=320, anchor="n") # relx=0.5, y=10, anchor="n"
+        self.label_4_mais.place(x=460, y=330, anchor="n") # relx=0.5, y=10, anchor="n"
         self.widgets_casa_atual.append(self.label_4_mais)
        # Perde -3
         self.label_4_mais = ctk.CTkLabel(
@@ -962,9 +957,9 @@ class Tela_Jogo:
             text= "-3", 
             text_color= 'red',  
             bg_color= "black",  
-            font=("Gelio Fasolada", 20),
+            font=("Gelio Fasolada", 18),
             )          
-        self.label_4_mais.place(x=470, y=345, anchor="n") # relx=0.5, y=10, anchor="n"
+        self.label_4_mais.place(x=460, y=355, anchor="n") # relx=0.5, y=10, anchor="n"
         self.widgets_casa_atual.append(self.label_4_mais)
         
 
@@ -1022,6 +1017,72 @@ class Tela_Jogo:
         )
         botao_rolar_dados.place(x=400, y=405, anchor='n')
         self.widgets_casa_atual.append(botao_rolar_dados)
+
+    def chamada_do_dado_batalha_troia(self, casas_avanco=0, casas_retrocesso=0, vida=0):
+        # Ganha +4
+        self.label_4_mais = ctk.CTkLabel(
+            self.root,
+            text= "+4", 
+            text_color= 'green',  
+            bg_color= "black",  
+            font=("Gelio Fasolada", 18),
+            )          
+        self.label_4_mais.place(x=710, y=330, anchor="n") # relx=0.5, y=10, anchor="n"
+        self.widgets_casa_atual.append(self.label_4_mais)
+       # Perde -3
+        self.label_4_mais = ctk.CTkLabel(
+            self.root,
+            text= "-3", 
+            text_color= 'red',  
+            bg_color= "black",  
+            font=("Gelio Fasolada", 18),
+            )          
+        self.label_4_mais.place(x=710, y=355, anchor="n") # relx=0.5, y=10, anchor="n"
+        self.widgets_casa_atual.append(self.label_4_mais)
+           
+    # Configura o dado no canvas e exibe o botão de rolar.
+        self.animacao_ativa = True
+        # Canvas para o dado
+        self.canvas = tk.Canvas(self.root, width=80, height=80, bg="black", highlightthickness=0)
+        self.canvas.place(x=650, y=320, anchor='n')  # Posição do dado
+        self.widgets_casa_atual.append(self.canvas)  # Adiciona o canvas à lista
+        # Carrega o GIF com PIL
+        self.gif = Image.open(self.imagem_dado)
+        self.frames = []
+        # Extrai os quadros do GIF
+        try:
+            while True:
+                frame = self.gif.copy()
+                frame = frame.convert("RGBA")  # Certificar-se de que está em RGBA
+                # Adicionar fundo preto onde há transparência
+                black_bg = Image.new("RGBA", frame.size, "black")
+                frame = Image.alpha_composite(black_bg, frame)
+                # Redimensionar o quadro
+                frame = frame.resize((80, 80), Image.Resampling.LANCZOS)
+                # Converter para PhotoImage
+                self.frames.append(ImageTk.PhotoImage(frame))
+                self.gif.seek(len(self.frames))  # Avançar para o próximo quadro
+        except EOFError:
+            pass  # Final do GIF
+        # Configuração inicial do Canvas
+        self.image_on_canvas = self.canvas.create_image(0, 0, anchor="nw", image=self.frames[0])
+        self.current_frame = 0       
+        self.play_gif()# Exibe a animação
+        # Botão de rolagem de dados
+        botao_rolar_dados = ctk.CTkButton(
+            self.canvas_abre,
+            fg_color='black',
+            width=100,
+            border_width=1,
+            border_color="white",
+            hover_color=self.back_end.cor_layout_atual,
+            text="Roll a die!",
+            font=("Gelio Greek Diner", 18),
+            command=lambda: (self.rolar_dado_de_batalha(casas_avanco, casas_retrocesso, vida)) # determina o que dado faz
+        )
+        botao_rolar_dados.place(x=650, y=405, anchor='n')
+        self.widgets_casa_atual.append(botao_rolar_dados)
+
 
 
     # FUNÇÃO VONTADE DOS DEUSES
@@ -1457,15 +1518,14 @@ class Tela_Jogo:
         )
         label_nome_casa_evento.place(x=450, y=110, anchor ="n")
         self.widgets_casa_atual.append(label_nome_casa_evento)
-        
         #IMAGEM DA CASA
         self.image_evento_exibido = PhotoImage(file="images/casa_005_esfinge.png")
         self.label_evento_exibido = tk.Label(
-            self.root,  # Substitua por self.canvas_abre se quiser que o Label seja um filho do Canvas
+            self.root, 
             image=self.image_evento_exibido,
-            bg="black"  # Define a cor de fundo do Label
+            bg="black"  
         )
-        self.label_evento_exibido.place(x=450, y=140, anchor='n')  # Posiciona o Label
+        self.label_evento_exibido.place(x=450, y=140, anchor='n') 
         self.widgets_casa_atual.append(self.label_evento_exibido)
 
         texto_evento = ("""She asked you a question.
@@ -1479,15 +1539,13 @@ and lose 1 life"""
         # label de descrição do evento
         label_descricao_evento = ctk.CTkLabel(
             self.root,
-            text=texto_evento,  # Substituir pelo texto dinâmico, se necessário
+            text=texto_evento, 
             text_color="white",  
-            fg_color="black",  # Cor de fundo
-            font=("Cambria", 17), # "Gelio Fasolada"
+            fg_color="black", 
+            font=("Cambria", 17), 
         )
         label_descricao_evento.place(x=650, y=140, anchor ="n")
         self.widgets_casa_atual.append(label_descricao_evento)
-        
-        # DADO E CARTAS
         
         self.chamada_do_dado_batalha(casas_avanco=2, casas_retrocesso=2, vida=1)
         self.chamada_cartas_eventos()
@@ -1527,9 +1585,10 @@ and lose 1 life"""
 
         texto_evento = ("""Watch the condemned Titan
 in his punishment 
-
-and return 
-2 spaces."""
+return 
+2 spaces.
+And lose
+1 life"""
         )
         # label de descrição do evento
         label_descricao_evento = ctk.CTkLabel(
@@ -1543,11 +1602,9 @@ and return
         self.widgets_casa_atual.append(label_descricao_evento)
         
         # evento da casa       
-        self.back_end.retornar_casas(numero_casas_retornar=2)
-        #self.atualizar_tela()
-        
-        # DADO E CARTAS
-        self.botao_vontade_dos_deuses(casas_avanco=0, casas_retrocesso=2, vida_mais=0, vida_menos=0, pontos_mais= 0, pontos_menos=30)
+        # self.back_end.retornar_casas(numero_casas_retornar=2)
+
+        self.botao_vontade_dos_deuses(casas_avanco=0, casas_retrocesso=2, vida_mais=0, vida_menos=1, pontos_mais= 0, pontos_menos=30)
         self.chamada_cartas_eventos()
 
                  
@@ -1599,12 +1656,8 @@ lose 1 life."""
         label_descricao_evento.place(x=650, y=140, anchor ="n")
         self.widgets_casa_atual.append(label_descricao_evento)
         
-        # DADO E CARTAS
         self.chamada_do_dado_batalha(casas_avanco=2, casas_retrocesso=1, vida=1)
         self.chamada_cartas_eventos()
-        
-                # evento da casa
-        #self.back_end.retornar_casas(numero_casas_retornar=2)
 
      
     def casa_evento_011(self): # casa em branco
@@ -1714,8 +1767,7 @@ move forward 3 spaces."""
         )
         label_descricao_evento.place(x=650, y=140, anchor ="n")
         self.widgets_casa_atual.append(label_descricao_evento)
-        
-                # DADO E CARTAS
+
         self.chamada_do_dado_batalha(casas_avanco=3, casas_retrocesso=3, vida=1)
         self.chamada_cartas_eventos()
         
@@ -1829,23 +1881,22 @@ move forward 3 spaces."""
 
     def casa_evento_024(self): # CICLOPES
             self.limpar_widgets_casa_atual()       
-                # label do nome da casa exibida
+            # label do nome da casa exibida
             label_nome_casa_evento = ctk.CTkLabel(
                 self.root,
-                text= "Ciclops",  # Substituir pelo texto dinâmico, 
+                text= "Ciclops",
                 text_color="white",  
-                fg_color="black",  # Cor de fundo
+                fg_color="black", 
                 font=("Olympus", 24), 
                 )
             label_nome_casa_evento.place(x=450, y=110, anchor ="n")
             self.widgets_casa_atual.append(label_nome_casa_evento)
-                
-                #IMAGEM DA CASA
+           #IMAGEM DA CASA
             self.image_evento_exibido = PhotoImage(file="images/casa_024_ciclope.png")
             self.label_evento_exibido = tk.Label(
-                    self.root,  # Substitua por self.canvas_abre se quiser que o Label seja um filho do Canvas
+                    self.root,  
                     image=self.image_evento_exibido,
-                    bg="black"  # Define a cor de fundo do Label
+                    bg="black"  
                 )
             self.label_evento_exibido.place(x=450, y=140, anchor='n')  # Posiciona o Label
             self.widgets_casa_atual.append(self.label_evento_exibido)
@@ -1868,8 +1919,7 @@ lose 1 life."""
             )
             label_descricao_evento.place(x=650, y=140, anchor ="n")
             self.widgets_casa_atual.append(label_descricao_evento)
-            
-                        # DADO E CARTAS
+
             self.chamada_do_dado_batalha(casas_avanco=2, casas_retrocesso=1, vida=1)
             self.chamada_cartas_eventos()
 
@@ -1889,7 +1939,7 @@ lose 1 life."""
 
     def casa_evento_028(self): # HARPIAS
             self.limpar_widgets_casa_atual()       
-                # label do nome da casa exibida
+            # label do nome da casa exibida
             label_nome_casa_evento = ctk.CTkLabel(
                 self.root,
                 text= "Harpies",  # Substituir pelo texto dinâmico, 
@@ -1900,7 +1950,7 @@ lose 1 life."""
             label_nome_casa_evento.place(x=450, y=110, anchor ="n")
             self.widgets_casa_atual.append(label_nome_casa_evento)
                 
-                #IMAGEM DA CASA
+            #IMAGEM DA CASA
             self.image_evento_exibido = PhotoImage(file="images/casa_028_harpias.png")
             self.label_evento_exibido = tk.Label(
                     self.root,  # Substitua por self.canvas_abre se quiser que o Label seja um filho do Canvas
@@ -1912,10 +1962,11 @@ lose 1 life."""
 
             texto_evento = ("""Face the 
 bronze-feathered monsters.
-    
 If you win,
 move forward
-1 space."""
+1 space.
+or lose
+1 life"""
             )
             # label de descrição do evento
             label_descricao_evento = ctk.CTkLabel(
@@ -1927,9 +1978,8 @@ move forward
             )
             label_descricao_evento.place(x=650, y=140, anchor ="n")
             self.widgets_casa_atual.append(label_descricao_evento)
-            
-                    # DADO E CARTAS
-            self.chamada_do_dado_batalha(casas_avanco=1, casas_retrocesso=1, vida=0)
+
+            self.chamada_do_dado_batalha(casas_avanco=1, casas_retrocesso=1, vida=1)
             self.chamada_cartas_eventos()
 
 
@@ -2046,7 +2096,7 @@ move forward
             self.label_evento_exibido = tk.Label(
                     self.root,  # Substitua por self.canvas_abre se quiser que o Label seja um filho do Canvas
                     image=self.image_evento_exibido,
-                    bg="black"  # Define a cor de fundo do Label
+                    bg="black"  
                 )
             self.label_evento_exibido.place(x=450, y=140, anchor='n')  # Posiciona o Label
             self.widgets_casa_atual.append(self.label_evento_exibido)
@@ -2061,10 +2111,10 @@ space 39."""
             # label de descrição do evento
             label_descricao_evento = ctk.CTkLabel(
                 self.root,
-                text=texto_evento,  # Substituir pelo texto dinâmico, se necessário
+                text=texto_evento,  
                 text_color="white",  
-                fg_color="black",  # Cor de fundo
-                font=("Cambria", 17), # "Gelio Fasolada"
+                fg_color="black", 
+                font=("Cambria", 17), 
             )
             label_descricao_evento.place(x=650, y=140, anchor ="n")
             self.widgets_casa_atual.append(label_descricao_evento)
@@ -2157,8 +2207,8 @@ or lose 1 life"""
 in the Labyrinth.
 Seek Ariadne's thread.
 
-To escape, you must
-roll a die"""
+Try to escape, 
+or lose 1 life"""
             )
             # label de descrição do evento
             label_descricao_evento = ctk.CTkLabel(
@@ -2171,8 +2221,8 @@ roll a die"""
             label_descricao_evento.place(x=650, y=140, anchor ="n")
             self.widgets_casa_atual.append(label_descricao_evento)
             
-                        # DADO E CARTAS
-            self.chamada_do_dado_batalha(casas_avanco=1, casas_retrocesso=1, vida=0)
+            # DADO E CARTAS
+            self.chamada_do_dado_batalha(casas_avanco=1, casas_retrocesso=1, vida=1)
             self.chamada_cartas_eventos()
                 
             
@@ -2305,8 +2355,7 @@ of the River Styx.."""
             label_descricao_evento.place(x=650, y=140, anchor ="n")
             self.widgets_casa_atual.append(label_descricao_evento)
             
-                    # DADO E CARTAS
-            self.chamada_do_dado_batalha(casas_avanco=1, casas_retrocesso=2, vida=0)
+            self.chamada_do_dado_batalha(casas_avanco=1, casas_retrocesso=2, vida=1)
             self.chamada_cartas_eventos()
   
 
@@ -2344,10 +2393,10 @@ of the River Styx.."""
             texto_evento = ("""Be judged by 
 the three judges:
 Rhadamanthus, Minos and Aeacus.
-
-Roll a die, and if 
-you pass, advance to 
-space 47."""
+If you pass, advance
+to space 47.
+Or lose 
+1 life"""
             )
             label_descricao_evento = ctk.CTkLabel(
                 self.root,
@@ -2359,8 +2408,7 @@ space 47."""
             label_descricao_evento.place(x=660, y=140, anchor ="n")
             self.widgets_casa_atual.append(label_descricao_evento)
             
-            #rolagem de dados
-            self.chamada_do_dado_batalha(casas_avanco=5, casas_retrocesso=1, vida=0)
+            self.chamada_do_dado_batalha(casas_avanco=5, casas_retrocesso=1, vida=1)
             self.chamada_cartas_eventos()
   
 
@@ -2537,9 +2585,9 @@ and lose
                 font=("Olympus", 24), 
                 )
             label_nome_casa_evento.place(x=450, y=110, anchor ="n")
-            self.self.widgets_casa_atual.append(label_nome_casa_evento)
+            self.widgets_casa_atual.append(label_nome_casa_evento)
                 
-                #IMAGEM DA CASA
+            #IMAGEM DA CASA
             self.image_evento_exibido = PhotoImage(file="images/casa_052_erinias.png")
             self.label_evento_exibido = tk.Label(
                     self.root,  # Substitua por self.canvas_abre se quiser que o Label seja um filho do Canvas
@@ -2549,16 +2597,16 @@ and lose
             self.label_evento_exibido.place(x=450, y=140, anchor='n')  # Posiciona o Label
             self.widgets_casa_atual.append(self.label_evento_exibido)
 
-            texto_evento = ("""Face the Furies.
-                            
-If you win, 
+            texto_evento_1=("""Face the Furies.
 move forward 
-2 spaces."""
+2 spaces.
+Or lose 
+1 life"""
             )
             # label de descrição do evento
             label_descricao_evento = ctk.CTkLabel(
                 self.root,
-                text=texto_evento,  # Substituir pelo texto dinâmico, se necessário
+                text=texto_evento_1,  # Substituir pelo texto dinâmico, se necessário
                 text_color="white",  
                 fg_color="black",  # Cor de fundo
                 font=("Cambria", 17), # "Gelio Fasolada"
@@ -2567,7 +2615,7 @@ move forward
             self.widgets_casa_atual.append(label_descricao_evento)
             
             #rolagem de dados
-            self.chamada_do_dado_batalha(casas_avanco=2, casas_retrocesso=2, vida=0)
+            self.chamada_do_dado_batalha(casas_avanco=2, casas_retrocesso=2, vida=1)
             self.chamada_cartas_eventos()
 
   
@@ -2699,10 +2747,10 @@ move forward
             texto_evento = ("""Cutting off just 
 one head won't be 
 your salvation.
-
 If you win,
 advance
-2 spaces."""
+2 spaces.
+Or lose 1 life"""
             )
             # label de descrição do evento
             label_descricao_evento = ctk.CTkLabel(
@@ -2716,7 +2764,7 @@ advance
             self.widgets_casa_atual.append(label_descricao_evento)
             
             #rolagem de dados
-            self.chamada_do_dado_batalha(casas_avanco=2, casas_retrocesso=2, vida=0)
+            self.chamada_do_dado_batalha(casas_avanco=2, casas_retrocesso=2, vida=1)
             self.chamada_cartas_eventos()
 
 
@@ -2885,7 +2933,8 @@ space 57"""
 too much wine and 
 have become violent.
 
-Try to defeat them."""
+Try to defeat them.
+Or lose 1 life"""
             )
             # label de descrição do evento
             label_descricao_evento = ctk.CTkLabel(
@@ -2899,7 +2948,7 @@ Try to defeat them."""
             self.widgets_casa_atual.append(label_descricao_evento)
             
             #rolagem de dados
-            self.chamada_do_dado_batalha(casas_avanco=1, casas_retrocesso=1, vida=0)
+            self.chamada_do_dado_batalha(casas_avanco=1, casas_retrocesso=1, vida=1)
             self.chamada_cartas_eventos()
 
    
@@ -2933,8 +2982,8 @@ Try to defeat them."""
 Dionysus' army are returning
 from their campaign in India.
 And they won't let you pass.
-
-Try to defeat them"""
+Try to defeat them.
+Or lose 1 life"""
             )
             # label de descrição do evento
             label_descricao_evento = ctk.CTkLabel(
@@ -2948,7 +2997,7 @@ Try to defeat them"""
             self.widgets_casa_atual.append(label_descricao_evento)
             
             #rolagem de dados
-            self.chamada_do_dado_batalha(casas_avanco=1, casas_retrocesso=1, vida=0)
+            self.chamada_do_dado_batalha(casas_avanco=1, casas_retrocesso=1, vida=1)
             self.chamada_cartas_eventos()
 
    
@@ -3076,11 +3125,14 @@ and advance
             label_descricao_evento.place(x=650, y=140, anchor ="n")
             self.widgets_casa_atual.append(label_descricao_evento)
             
+            print(f'Casa das Sirenes - personagem é: {self.back_end.personagem_escolhido_nome}') # For debug
+            
             # Se atalanta ou Hipolita avança 2 casas
-            if self.back_end.personagem_escolhido_nome == self.back_end.personagens_jogo[0] or self.back_end.personagem_escolhido_nome == self.back_end.personagens_jogo[3]:
+            if self.back_end.personagem_escolhido_nome == "Atalanta" or self.back_end.personagem_escolhido_nome == "Hippolyta":
                 self.botao_vontade_dos_deuses(casas_avanco=2, casas_retrocesso=0, vida_mais=0, vida_menos=0, pontos_mais= 60, pontos_menos=0)
+                print(f'Mulher não é afetada pelo canto das sereias - ESCAPOU!!')
             else:
-                 self.chamada_do_dado_batalha(casas_avanco=2, casas_retrocesso=1, vida=0)
+                 self.chamada_do_dado_batalha(casas_avanco=2, casas_retrocesso=1, vida=1)
             self.chamada_cartas_eventos()
 
      
@@ -3261,7 +3313,8 @@ let you pass without a fight.
 In this battle, the Gods
 will not be able to help you, 
 you cannot use cards,
-if you win, advance 2 spaces."""
+if you win, advance 2 spaces.
+Or lose 1 life."""
             )
             # label de descrição do evento
             label_descricao_evento = ctk.CTkLabel(
@@ -3275,8 +3328,8 @@ if you win, advance 2 spaces."""
             self.widgets_casa_atual.append(label_descricao_evento)
             
             # Dados
-            self.chamada_do_dado_batalha(casas_avanco=2, casas_retrocesso=2, vida=0)
-            self.chamada_cartas_eventos()
+            self.chamada_do_dado_batalha_troia(casas_avanco=2, casas_retrocesso=2, vida=1)
+            #self.chamada_cartas_eventos()
 
     def casa_evento_086(self): # casa em branco
         self.limpar_widgets_casa_atual()        
@@ -3508,9 +3561,42 @@ move forward
             label_descricao_evento.place(x=650, y=140, anchor ="n")
             self.widgets_casa_atual.append(label_descricao_evento)
             
-            # implementar Compre uma carta ou avance 3 casas.
-            self.botao_vontade_dos_deuses(casas_avanco=3, casas_retrocesso=0, vida_mais=0, vida_menos=0, pontos_mais= 45, pontos_menos=0)
-            self.chamada_cartas_eventos()
+            botao_avance= ctk.CTkButton(
+            self.canvas_abre,
+            fg_color='black',
+            width= 70,
+            border_color= "white",
+            border_width= 1,
+            hover_color=self.cor_Layout,
+            text="Advance",
+            font=("Gelio Greek Diner", 18),
+            command=lambda: (self.vontade_dos_deuses(casas_avanco=3, casas_retrocesso=0, vida_mais=0, vida_menos=0, pontos_mais=45, pontos_menos=0),
+                            self.atualizar_cartas(),
+                            self.carregar_casa(self.back_end.casa_atual)))
+            botao_avance.place(x=450, y=370, anchor="center")
+            self.widgets_casa_atual.append(botao_avance)
+        
+            # Botão carta 1
+            botao_carta_dioni = ctk.CTkButton(
+            self.canvas_abre,
+            fg_color='black',
+            width= 50,
+            height= 80,
+            border_width= 1,
+            border_color= "white",
+            hover_color=self.back_end.cor_layout_atual,
+            text="Card",
+            font=("Gelio Greek Diner", 18),
+            command=lambda: (self.back_end.escolher_carta_dionisio(),
+                             self.atualizar_tela(),
+                             self.carregar_casa(self.back_end.casa_atual)) #
+            )
+            botao_carta_dioni .place(x=650, y=350, anchor='n')
+            self.widgets_casa_atual.append(botao_carta_dioni)  # Adiciona o botão à lista 
+            
+            # # implementar Compre uma carta ou avance 3 casas.
+            # self.botao_vontade_dos_deuses(casas_avanco=3, casas_retrocesso=0, vida_mais=0, vida_menos=0, pontos_mais= 45, pontos_menos=0)
+            # #self.chamada_cartas_eventos()
 
 
     def casa_evento_097(self): # casa em branco
@@ -3731,9 +3817,8 @@ lost 1 life"""
             self.widgets_casa_atual.append(self.label_evento_exibido)
             texto_evento = ("""The son of Poseidon
 was furious that you crossed 
-his hunting grounds.                          
+his hunting grounds.
 Face the hunter.
-
 If you lose, 
 you lose a life"""
             )
@@ -3973,7 +4058,6 @@ lose 1 life.."""
 is heavily guarded.
 You cannot use any 
 God's help cards.
- 
 Now, only your skill counts!
 Try to pass its guardians."""
             )
@@ -3988,7 +4072,8 @@ Try to pass its guardians."""
             label_descricao_evento.place(x=650, y=140, anchor ="n")
             self.widgets_casa_atual.append(label_descricao_evento)            
             # Dados
-            self.chamada_do_dado_batalha(casas_avanco=1, casas_retrocesso=2, vida=0)
+            self.chamada_do_dado_batalha_troia(casas_avanco=1, casas_retrocesso=2, vida=1)
+            
 
                
     def casa_evento_120(self): # casa em branco
@@ -4299,7 +4384,7 @@ Try to pass its guardians."""
         hover_color=self.cor_Layout,
         text="Gain one life",
         font=("Gelio Greek Diner", 18),
-        command=lambda: (self.vontade_dos_deuses(casas_avanco=1, casas_retrocesso=0, vida_mais=1, vida_menos=0, pontos_mais=15, pontos_menos=0),
+        command=lambda: (self.vontade_dos_deuses(casas_avanco=0, casas_retrocesso=0, vida_mais=1, vida_menos=0, pontos_mais=15, pontos_menos=0),
                          self.remover_carta('Hades'),
                          self.atualizar_cartas(),
                          self.carregar_casa(self.back_end.casa_atual))
@@ -4334,7 +4419,7 @@ Try to pass its guardians."""
         hover_color=self.cor_Layout,
         text="Gain one life",
         font=("Gelio Greek Diner", 18),
-        command=lambda: (self.vontade_dos_deuses(casas_avanco=1, casas_retrocesso=0, vida_mais=1, vida_menos=0, pontos_mais=15, pontos_menos=0),
+        command=lambda: (self.vontade_dos_deuses(casas_avanco=0, casas_retrocesso=0, vida_mais=1, vida_menos=0, pontos_mais=15, pontos_menos=0),
                          self.remover_carta('Hera'),
                          self.atualizar_cartas(),
                          self.carregar_casa(self.back_end.casa_atual))

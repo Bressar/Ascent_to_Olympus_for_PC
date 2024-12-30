@@ -427,6 +427,15 @@ or advance
             print(f"- {carta['imagem']}: {carta['imagem_pequena']}")
       
 
+    def escolher_carta_dionisio(self):
+        # Sorteia um número aleatório entre 1 e 12
+        numero_sorteado = str(random.randint(1, 12))  # Convertido para string, pois as chaves no dic_cards são strings        
+         # Se a lista estiver vazia, inicializa com a carta sorteada
+        self.cartas_player.append(self.dic_cards[numero_sorteado])
+        
+        # Garante que a lista de cartas do jogador não exceda o limite de 3
+        if len(self.cartas_player) > 3:
+            self.cartas_player = self.cartas_player[:3]  # Mantém apenas os primeiros 3 elementos
 
        
     def load_font(self, font_path):  # Método para carregar fontes personalizadas
@@ -508,6 +517,9 @@ or advance
         print(f"Carta '{nome_carta}' adicionada com sucesso. Lista atual:")
         for carta in self.cartas_player:
             print(f"- {carta['nome']}: {carta['action']}")
+    
+    
+    
     
     
     def retornar_casas(self, numero_casas_retornar):
