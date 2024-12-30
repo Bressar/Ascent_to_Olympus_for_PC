@@ -1031,7 +1031,8 @@ class Tela_Jogo:
         self.back_end.player_pontos += pontos_mais  
         self.back_end.player_xp += vida_mais
         # pro mal
-        self.back_end.casa_atual -= casas_retrocesso
+        if self.back_end.casa_atual > 1:
+            self.back_end.casa_atual -= casas_retrocesso
         self.back_end.player_pontos -= pontos_menos 
         self.back_end.player_xp -= vida_menos
         # Debug for Back end
@@ -3995,11 +3996,7 @@ Try to pass its guardians."""
             print('implementar tela de vitória + placar')
 
 
-     
-
-
-
-# CARTAS DE AÇÃO  # CARTAS DE AÇÃO  # CARTAS DE AÇÃO  # CARTAS DE AÇÃO  # CARTAS DE AÇÃO
+# CARTAS DE AÇÃO  # FUNÇÕES # CARTAS DE AÇÃO  # FUNÇÕES  # CARTAS DE AÇÃO
 
     def chama_foto_carta(self, index_dicionario_deuses): # insere a foto da carta do deus
         try:
@@ -4041,583 +4038,520 @@ Try to pass its guardians."""
         # atualiza a tela apos a remoção
         self.atualizar_tela()
         
-     
+    def chamada_do_dado_batalha_carta_deuses(self, casas_avanco=0, casas_retrocesso=0, vida=0, nome_deus=None):  
+        # Vitoria
+        self.label_vitoria= ctk.CTkLabel(
+            self.root,
+            text= "Victory => advance 1 space", 
+            text_color= 'gray',  
+            bg_color= "black",  
+            font=("Gelio Fasolada", 13),
+            )          
+        self.label_vitoria.place(x=650, y=190, anchor="n")
+        self.widgets_casa_atual.append(self.label_vitoria)
+        # Ganha +4
+        self.label_4_mais = ctk.CTkLabel(
+            self.root,
+            text= "+4", 
+            text_color= 'green',  
+            bg_color= "black",  
+            font=("Gelio Fasolada", 18),
+            )          
+        self.label_4_mais.place(x=710, y=225, anchor="n") 
+        self.widgets_casa_atual.append(self.label_4_mais)
+       # Perde -3
+        self.label_4_mais = ctk.CTkLabel(
+            self.root,
+            text= "-3", 
+            text_color= 'red',  
+            bg_color= "black",  
+            font=("Gelio Fasolada", 18),
+            )          
+        self.label_4_mais.place(x=710, y=250, anchor="n") 
+        self.widgets_casa_atual.append(self.label_4_mais)
+           
+    # Configura o dado no canvas e exibe o botão de rolar.
+        self.animacao_ativa = True
+        # Canvas para o dado
+        self.canvas = tk.Canvas(self.root, width=80, height=80, bg="black", highlightthickness=0)
+        self.canvas.place(x=650, y=210, anchor='n')  # Posição do dado
+        self.widgets_casa_atual.append(self.canvas)  # Adiciona o canvas à lista
+        # Carrega o GIF com PIL
+        self.gif = Image.open(self.imagem_dado)
+        self.frames = []
+        # Extrai os quadros do GIF
+        try:
+            while True:
+                frame = self.gif.copy()
+                frame = frame.convert("RGBA")  # Certificar-se de que está em RGBA
+                # Adicionar fundo preto onde há transparência
+                black_bg = Image.new("RGBA", frame.size, "black")
+                frame = Image.alpha_composite(black_bg, frame)
+                # Redimensionar o quadro
+                frame = frame.resize((80, 80), Image.Resampling.LANCZOS)
+                # Converter para PhotoImage
+                self.frames.append(ImageTk.PhotoImage(frame))
+                self.gif.seek(len(self.frames))  # Avançar para o próximo quadro
+        except EOFError:
+            pass  # Final do GIF
+        # Configuração inicial do Canvas
+        self.image_on_canvas = self.canvas.create_image(0, 0, anchor="nw", image=self.frames[0])
+        self.current_frame = 0       
+        self.play_gif()# Exibe a animação
+        # Botão de rolagem de dados
+        botao_rolar_dados = ctk.CTkButton(
+            self.canvas_abre,
+            fg_color='black',
+            width=100,
+            border_width=1,
+            border_color="white",
+            hover_color=self.back_end.cor_layout_atual,
+            text="Roll a die!",
+            font=("Gelio Greek Diner", 18),
+            command=lambda: (self.rolar_dado_de_batalha(casas_avanco, casas_retrocesso, vida),
+                             self.remover_carta(nome_deus),
+                             self.atualizar_cartas()) 
+        )
+        botao_rolar_dados.place(x=650, y=295, anchor='n')
+        self.widgets_casa_atual.append(botao_rolar_dados)
+        
+        # for battles
+        self.label_battles= ctk.CTkLabel(
+            self.root,
+            text= "For battles only", 
+            text_color= 'gray',  
+            bg_color= "black",  
+            font=("Gelio Fasolada", 13),
+            )          
+        self.label_battles.place(x=650, y=325, anchor="n")
+        self.widgets_casa_atual.append(self.label_battles)
+        
+        
+              
+    def botao_nao_usar_carta(self):
+        botao_naum = ctk.CTkButton(
+        self.canvas_abre,
+        fg_color='black',
+        width= 50,
+        border_color= "white",
+        border_width= 1,
+        hover_color="red",
+        text="NO",
+        font=("Gelio Greek Diner", 18),
+        command= lambda:(self.chamar_casa_evento(),
+                         self.atualizar_tela(),
+                         self.carregar_casa(self.back_end.casa_atual))
+        )
+        botao_naum.place(x=650, y=405, anchor="center")
+        self.widgets_casa_atual.append(botao_naum)
+
+
+ # CARTAS DE AÇÃO   # CARTAS DE AÇÃO  # CARTAS DE AÇÃO  # CARTAS DE AÇÃO  # CARTAS DE AÇÃO
+   
     def use_carta_Aphrodite(self):
         self.limpar_widgets_casa_atual()  
+        
         self.chama_foto_carta(0) # index afrodite  
-        # Título
-        label_nome_actions = ctk.CTkLabel(
-            self.root,
-            text= "Advance\n6 spaces", 
-            text_color="white",  
-            fg_color="black",
-            font=("cambria", 24), # "Olympus"
-            )
-        label_nome_actions.place(x=650, y=200, anchor ="n")
-        self.widgets_dinamicos.append(label_nome_actions)        
-        # Botão SIM
-        botao_sim = ctk.CTkButton(
+        
+        botao_avance= ctk.CTkButton(
         self.canvas_abre,
         fg_color='black',
         width= 70,
         border_color= "white",
         border_width= 1,
         hover_color=self.cor_Layout,
-        text="YES",
-        font=("Gelio Greek Diner", 22),
+        text="Advance 6 spaces",
+        font=("Gelio Greek Diner", 18),
         command=lambda: (self.vontade_dos_deuses(casas_avanco=6, casas_retrocesso=0, vida_mais=0, vida_menos=0, pontos_mais=90, pontos_menos=0),
                          self.remover_carta('Aphrodite'),
-                         self.atualizar_cartas())
-        )
-        botao_sim.place(x=600, y=350, anchor="center")
-        self.widgets_casa_atual.append(botao_sim)
+                         self.atualizar_cartas(),
+                         self.carregar_casa(self.back_end.casa_atual)))
+        botao_avance.place(x=650, y=200, anchor="center")
+        self.widgets_casa_atual.append(botao_avance)
+        
+        self.botao_nao_usar_carta()
+        
+        
+        # self.limpar_widgets_casa_atual()
+        # self.atualizar_tela()
+        # self.carregar_casa(self.back_end.casa_atual)
+        
+        # Título
+        # label_nome_actions = ctk.CTkLabel(
+        #     self.root,
+        #     text= "Advance\n6 spaces", 
+        #     text_color="white",  
+        #     fg_color="black",
+        #     font=("cambria", 21), # "Olympus"
+        #     )
+        # label_nome_actions.place(x=650, y=200, anchor ="n")
+        # self.widgets_dinamicos.append(label_nome_actions)        
+        # # Botão SIM
+        # botao_sim = ctk.CTkButton(
+        # self.canvas_abre,
+        # fg_color='black',
+        # width= 70,
+        # border_color= "white",
+        # border_width= 1,
+        # hover_color=self.cor_Layout,
+        # text="YES",
+        # font=("Gelio Greek Diner", 22),
+        # command=lambda: (self.vontade_dos_deuses(casas_avanco=6, casas_retrocesso=0, vida_mais=0, vida_menos=0, pontos_mais=90, pontos_menos=0),
+        #                  self.remover_carta('Aphrodite'),
+        #                  self.atualizar_cartas())
+        # )
+        # botao_sim.place(x=600, y=350, anchor="center")
+        # self.widgets_casa_atual.append(botao_sim)
+        
+        
         # Botão NÃO
-        botao_naum = ctk.CTkButton(
-        self.canvas_abre,
-        fg_color='black',
-        width= 70,
-        border_color= "white",
-        border_width= 1,
-        hover_color="red",
-        text="NO",
-        font=("Gelio Greek Diner", 22),
-        command= lambda:(self.chamar_casa_evento(),
-                         self.atualizar_tela(),
-                         self.carregar_casa(self.back_end.casa_atual))
-        )
-        botao_naum.place(x=700, y=350, anchor="center")
-        self.widgets_casa_atual.append(botao_naum)
+        # botao_naum = ctk.CTkButton(
+        # self.canvas_abre,
+        # fg_color='black',
+        # width= 70,
+        # border_color= "white",
+        # border_width= 1,
+        # hover_color="red",
+        # text="NO",
+        # font=("Gelio Greek Diner", 22),
+        # command= lambda:(self.chamar_casa_evento(),
+        #                  self.atualizar_tela(),
+        #                  self.carregar_casa(self.back_end.casa_atual))
+        # )
+        # botao_naum.place(x=700, y=350, anchor="center")
+        # self.widgets_casa_atual.append(botao_naum)
         
 
     def use_carta_Apollo(self):
         self.limpar_widgets_casa_atual()  
+        
         self.chama_foto_carta(1) # index Apolo 
-        # Título
-        label_nome_actions = ctk.CTkLabel(
-            self.root,
-            text= "Roll\n1 dice", 
-            text_color="white",  
-            fg_color="black",
-            font=("cambria", 24), # "Olympus"
-            )
-        label_nome_actions.place(x=650, y=200, anchor ="n")
-        self.widgets_dinamicos.append(label_nome_actions)        
-        # Botão SIM
-        botao_sim = ctk.CTkButton(
-        self.canvas_abre,
-        fg_color='black',
-        width= 70,
-        border_color= "white",
-        border_width= 1,
-        hover_color=self.cor_Layout,
-        text="YES",
-        font=("Gelio Greek Diner", 22),
-        command=lambda: (self.vontade_dos_deuses(casas_avanco=6, casas_retrocesso=0, vida_mais=0, vida_menos=0, pontos_mais=90, pontos_menos=0),
-                         self.remover_carta('Apollo'),
-                         self.atualizar_cartas())
-        )
-        botao_sim.place(x=600, y=350, anchor="center")
-        self.widgets_casa_atual.append(botao_sim)
-        # Botão NÃO
-        botao_naum = ctk.CTkButton(
-        self.canvas_abre,
-        fg_color='black',
-        width= 70,
-        border_color= "white",
-        border_width= 1,
-        hover_color="red",
-        text="NO",
-        font=("Gelio Greek Diner", 22),
-        command= lambda:(self.chamar_casa_evento(),
-                         self.atualizar_tela(),
-                         self.carregar_casa(self.back_end.casa_atual))
-        )
-        botao_naum.place(x=700, y=350, anchor="center")
-        self.widgets_casa_atual.append(botao_naum)
-           
+         
+        self.chamada_do_dado_batalha_carta_deuses(1,0,0,"Apollo")     
+        
+        self.botao_nao_usar_carta()
+             
         
     def use_carta_Artemis(self):
         self.limpar_widgets_casa_atual()  
         self.chama_foto_carta(2) # index Artemis 
-         # Título
-        label_nome_actions = ctk.CTkLabel(
-            self.root,
-            text= "Advance 3 spaces,\nor\nroll 1 die", 
-            text_color="white",  
-            fg_color="black",
-            font=("cambria", 24), # "Olympus"
-            )
-        label_nome_actions.place(x=650, y=200, anchor ="n")
-        self.widgets_dinamicos.append(label_nome_actions)        
-        # Botão SIM
-        botao_sim = ctk.CTkButton(
+        
+        self.chamada_do_dado_batalha_carta_deuses(1,0,0,nome_deus="Artemis")  
+                
+        botao_avance= ctk.CTkButton(
         self.canvas_abre,
         fg_color='black',
         width= 70,
         border_color= "white",
         border_width= 1,
         hover_color=self.cor_Layout,
-        text="YES",
-        font=("Gelio Greek Diner", 22),
-        command=lambda: (self.vontade_dos_deuses(casas_avanco=6, casas_retrocesso=0, vida_mais=0, vida_menos=0, pontos_mais=90, pontos_menos=0),
+        text="Advance 3 spaces",
+        font=("Gelio Greek Diner", 18),
+        command=lambda: (self.vontade_dos_deuses(casas_avanco=3, casas_retrocesso=0, vida_mais=0, vida_menos=0, pontos_mais=45, pontos_menos=0),
                          self.remover_carta('Artemis'),
-                         self.atualizar_cartas())
-        )
-        botao_sim.place(x=600, y=350, anchor="center")
-        self.widgets_casa_atual.append(botao_sim)
-        # Botão NÃO
-        botao_naum = ctk.CTkButton(
-        self.canvas_abre,
-        fg_color='black',
-        width= 70,
-        border_color= "white",
-        border_width= 1,
-        hover_color="red",
-        text="NO",
-        font=("Gelio Greek Diner", 22),
-        command= lambda:(self.chamar_casa_evento(),
-                         self.atualizar_tela(),
+                         self.atualizar_cartas(),
                          self.carregar_casa(self.back_end.casa_atual))
         )
-        botao_naum.place(x=700, y=350, anchor="center")
-        self.widgets_casa_atual.append(botao_naum)
-             
-    
+        botao_avance.place(x=650, y=150, anchor="center")
+        self.widgets_casa_atual.append(botao_avance)
+        
+        self.botao_nao_usar_carta()
+           
+                 
     def use_carta_Ares(self):
         self.limpar_widgets_casa_atual()  
+        
         self.chama_foto_carta(3) # index Ares
-         # Título
-        label_nome_actions = ctk.CTkLabel(
-            self.root,
-            text= "Win 1 battle\nor\nroll 1 die", 
-            text_color="white",  
-            fg_color="black",
-            font=("cambria", 24), # "Olympus"
-            )
-        label_nome_actions.place(x=650, y=200, anchor ="n")
-        self.widgets_dinamicos.append(label_nome_actions)        
-        # Botão SIM
-        botao_sim = ctk.CTkButton(
+        
+        self.chamada_do_dado_batalha_carta_deuses(1,0,0,nome_deus="Ares")  
+                
+        botao_avance= ctk.CTkButton(
         self.canvas_abre,
         fg_color='black',
         width= 70,
         border_color= "white",
         border_width= 1,
         hover_color=self.cor_Layout,
-        text="YES",
-        font=("Gelio Greek Diner", 22),
-        command=lambda: (self.vontade_dos_deuses(casas_avanco=6, casas_retrocesso=0, vida_mais=0, vida_menos=0, pontos_mais=90, pontos_menos=0),
+        text="Win 1 battle",
+        font=("Gelio Greek Diner", 18),
+        command=lambda: (self.vontade_dos_deuses(casas_avanco=1, casas_retrocesso=0, vida_mais=0, vida_menos=0, pontos_mais=100, pontos_menos=0),
                          self.remover_carta('Ares'),
-                         self.atualizar_cartas())
-        )
-        botao_sim.place(x=600, y=350, anchor="center")
-        self.widgets_casa_atual.append(botao_sim)
-        # Botão NÃO
-        botao_naum = ctk.CTkButton(
-        self.canvas_abre,
-        fg_color='black',
-        width= 70,
-        border_color= "white",
-        border_width= 1,
-        hover_color="red",
-        text="NO",
-        font=("Gelio Greek Diner", 22),
-        command= lambda:(self.chamar_casa_evento(),
-                         self.atualizar_tela(),
+                         self.atualizar_cartas(),
                          self.carregar_casa(self.back_end.casa_atual))
         )
-        botao_naum.place(x=700, y=350, anchor="center")
-        self.widgets_casa_atual.append(botao_naum)
-              
+        botao_avance.place(x=650, y=150, anchor="center")
+        self.widgets_casa_atual.append(botao_avance)
+        
+        self.botao_nao_usar_carta()
+           
 
     def use_carta_Hades(self): 
-        self.limpar_widgets_casa_atual()  
+        self.limpar_widgets_casa_atual() 
+         
         self.chama_foto_carta(4) # index Hades
-         # Título
-        label_nome_actions = ctk.CTkLabel(
-            self.root,
-            text= "Gain\none life", 
-            text_color="white",  
-            fg_color="black",
-            font=("cambria", 24), # "Olympus"
-            )
-        label_nome_actions.place(x=650, y=200, anchor ="n")
-        self.widgets_dinamicos.append(label_nome_actions)        
-        # Botão SIM
-        botao_sim = ctk.CTkButton(
+                
+        botao_avance= ctk.CTkButton(
         self.canvas_abre,
         fg_color='black',
         width= 70,
         border_color= "white",
         border_width= 1,
         hover_color=self.cor_Layout,
-        text="YES",
-        font=("Gelio Greek Diner", 22),
-        command=lambda: (self.vontade_dos_deuses(casas_avanco=6, casas_retrocesso=0, vida_mais=0, vida_menos=0, pontos_mais=90, pontos_menos=0),
+        text="Gain one life",
+        font=("Gelio Greek Diner", 18),
+        command=lambda: (self.vontade_dos_deuses(casas_avanco=1, casas_retrocesso=0, vida_mais=1, vida_menos=0, pontos_mais=15, pontos_menos=0),
                          self.remover_carta('Hades'),
-                         self.atualizar_cartas())
-        )
-        botao_sim.place(x=600, y=350, anchor="center")
-        self.widgets_casa_atual.append(botao_sim)
-        # Botão NÃO
-        botao_naum = ctk.CTkButton(
-        self.canvas_abre,
-        fg_color='black',
-        width= 70,
-        border_color= "white",
-        border_width= 1,
-        hover_color="red",
-        text="NO",
-        font=("Gelio Greek Diner", 22),
-        command= lambda:(self.chamar_casa_evento(),
-                         self.atualizar_tela(),
+                         self.atualizar_cartas(),
                          self.carregar_casa(self.back_end.casa_atual))
         )
-        botao_naum.place(x=700, y=350, anchor="center")
-        self.widgets_casa_atual.append(botao_naum)
-                          
+        botao_avance.place(x=650, y=200, anchor="center")
+        self.widgets_casa_atual.append(botao_avance)
+        
+        self.botao_nao_usar_carta()
+    
 
     def use_carta_Hephaestus(self):
         self.limpar_widgets_casa_atual()  
+        
         self.chama_foto_carta(5) # index Hefesto 
-         # Título
-        label_nome_actions = ctk.CTkLabel(
-            self.root,
-            text= "Roll\n1 dice", 
-            text_color="white",  
-            fg_color="black",
-            font=("cambria", 24), # "Olympus"
-            )
-        label_nome_actions.place(x=650, y=200, anchor ="n")
-        self.widgets_dinamicos.append(label_nome_actions)        
-        # Botão SIM
-        botao_sim = ctk.CTkButton(
-        self.canvas_abre,
-        fg_color='black',
-        width= 70,
-        border_color= "white",
-        border_width= 1,
-        hover_color=self.cor_Layout,
-        text="YES",
-        font=("Gelio Greek Diner", 22),
-        command=lambda: (self.vontade_dos_deuses(casas_avanco=6, casas_retrocesso=0, vida_mais=0, vida_menos=0, pontos_mais=90, pontos_menos=0),
-                         self.remover_carta('Hephaestus'),
-                         self.atualizar_cartas())
-        )
-        botao_sim.place(x=600, y=350, anchor="center")
-        self.widgets_casa_atual.append(botao_sim)
-        # Botão NÃO
-        botao_naum = ctk.CTkButton(
-        self.canvas_abre,
-        fg_color='black',
-        width= 70,
-        border_color= "white",
-        border_width= 1,
-        hover_color="red",
-        text="NO",
-        font=("Gelio Greek Diner", 22),
-        command= lambda:(self.chamar_casa_evento(),
-                         self.atualizar_tela(),
-                         self.carregar_casa(self.back_end.casa_atual))
-        )
-        botao_naum.place(x=700, y=350, anchor="center")
-        self.widgets_casa_atual.append(botao_naum)
-           
+        
+        self.chamada_do_dado_batalha_carta_deuses(1,0,0,"Hephaestus")     
+        
+        self.botao_nao_usar_carta()
+         
 
     def use_carta_Hera(self):
         self.limpar_widgets_casa_atual()  
-        self.chama_foto_carta(6) # index Hera  
-         # Título
-        label_nome_actions = ctk.CTkLabel(
-            self.root,
-            text= "Gain one life\nor\nroll 1 die", 
-            text_color="white",  
-            fg_color="black",
-            font=("cambria", 24), # "Olympus"
-            )
-        label_nome_actions.place(x=650, y=200, anchor ="n")
-        self.widgets_dinamicos.append(label_nome_actions)        
-        # Botão SIM
-        botao_sim = ctk.CTkButton(
+        
+        self.chama_foto_carta(6) # index Hera
+        
+        botao_avance= ctk.CTkButton(
         self.canvas_abre,
         fg_color='black',
         width= 70,
         border_color= "white",
         border_width= 1,
         hover_color=self.cor_Layout,
-        text="YES",
-        font=("Gelio Greek Diner", 22),
-        command=lambda: (self.vontade_dos_deuses(casas_avanco=6, casas_retrocesso=0, vida_mais=0, vida_menos=0, pontos_mais=90, pontos_menos=0),
+        text="Gain one life",
+        font=("Gelio Greek Diner", 18),
+        command=lambda: (self.vontade_dos_deuses(casas_avanco=1, casas_retrocesso=0, vida_mais=1, vida_menos=0, pontos_mais=15, pontos_menos=0),
                          self.remover_carta('Hera'),
-                         self.atualizar_cartas())
-        )
-        botao_sim.place(x=600, y=350, anchor="center")
-        self.widgets_casa_atual.append(botao_sim)
-        # Botão NÃO
-        botao_naum = ctk.CTkButton(
-        self.canvas_abre,
-        fg_color='black',
-        width= 70,
-        border_color= "white",
-        border_width= 1,
-        hover_color="red",
-        text="NO",
-        font=("Gelio Greek Diner", 22),
-        command= lambda:(self.chamar_casa_evento(),
-                         self.atualizar_tela(),
+                         self.atualizar_cartas(),
                          self.carregar_casa(self.back_end.casa_atual))
         )
-        botao_naum.place(x=700, y=350, anchor="center")
-        self.widgets_casa_atual.append(botao_naum)
-             
+        botao_avance.place(x=650, y=150, anchor="center")
+        self.widgets_casa_atual.append(botao_avance)
+        
+        self.chamada_do_dado_batalha_carta_deuses(1,0,0,nome_deus="Hera")
+        
+        self.botao_nao_usar_carta()
+                   
 
     def use_carta_Hermes(self):
         self.limpar_widgets_casa_atual()  
+        
         self.chama_foto_carta(7) # index Hermes 
-         # Título
-        label_nome_actions = ctk.CTkLabel(
-            self.root,
-            text= "Advance 5 spaces\nor\nskip 1 space", 
-            text_color="white",  
-            fg_color="black",
-            font=("cambria", 24), # "Olympus"
-            )
-        label_nome_actions.place(x=650, y=200, anchor ="n")
-        self.widgets_dinamicos.append(label_nome_actions)        
-        # Botão SIM
-        botao_sim = ctk.CTkButton(
+        
+        botao_avance= ctk.CTkButton(
         self.canvas_abre,
         fg_color='black',
         width= 70,
         border_color= "white",
         border_width= 1,
         hover_color=self.cor_Layout,
-        text="YES",
-        font=("Gelio Greek Diner", 22),
-        command=lambda: (self.vontade_dos_deuses(casas_avanco=6, casas_retrocesso=0, vida_mais=0, vida_menos=0, pontos_mais=90, pontos_menos=0),
+        text="Advance 5 spaces",
+        font=("Gelio Greek Diner", 18),
+        command=lambda: (self.vontade_dos_deuses(casas_avanco=5, casas_retrocesso=0, vida_mais=0, vida_menos=0, pontos_mais=75, pontos_menos=0),
                          self.remover_carta('Hermes'),
-                         self.atualizar_cartas())
-        )
-        botao_sim.place(x=600, y=350, anchor="center")
-        self.widgets_casa_atual.append(botao_sim)
-        # Botão NÃO
-        botao_naum = ctk.CTkButton(
+                         self.atualizar_cartas(),
+                         self.carregar_casa(self.back_end.casa_atual)))
+        botao_avance.place(x=650, y=200, anchor="center")
+        self.widgets_casa_atual.append(botao_avance)
+        
+        # SKIP
+        botao_skip= ctk.CTkButton(
         self.canvas_abre,
         fg_color='black',
         width= 70,
         border_color= "white",
         border_width= 1,
-        hover_color="red",
-        text="NO",
-        font=("Gelio Greek Diner", 22),
-        command= lambda:(self.chamar_casa_evento(),
-                         self.atualizar_tela(),
-                         self.carregar_casa(self.back_end.casa_atual))
-        )
-        botao_naum.place(x=700, y=350, anchor="center")
-        self.widgets_casa_atual.append(botao_naum)
-             
+        hover_color=self.cor_Layout,
+        text="Skip 1 space",
+        font=("Gelio Greek Diner", 18),
+        command=lambda: (self.vontade_dos_deuses(casas_avanco=2, casas_retrocesso=0, vida_mais=0, vida_menos=0, pontos_mais=75, pontos_menos=0),
+                         self.remover_carta('Hermes'),
+                         self.atualizar_cartas(),
+                         self.carregar_casa(self.back_end.casa_atual)))
+        botao_skip.place(x=650, y=300, anchor="center")
+        self.widgets_casa_atual.append(botao_skip)
+
+        self.botao_nao_usar_carta()
+        
 
     def use_carta_Persephone(self):  
-        self.limpar_widgets_casa_atual()  
+        self.limpar_widgets_casa_atual()
+          
         self.chama_foto_carta(8) # index Persefone 
          # Título
         label_nome_actions = ctk.CTkLabel(
             self.root,
-            text= "Go back\n1, 2, or 3\nspaces", 
+            text= "Move back spaces", 
             text_color="white",  
             fg_color="black",
-            font=("cambria", 24), # "Olympus"
+            font=("Gelio Greek Diner", 21), # "Olympus"
             )
         label_nome_actions.place(x=650, y=200, anchor ="n")
-        self.widgets_dinamicos.append(label_nome_actions)        
-        # Botão SIM
-        botao_sim = ctk.CTkButton(
+        self.widgets_dinamicos.append(label_nome_actions)  
+        
+        botao_back1= ctk.CTkButton(
         self.canvas_abre,
         fg_color='black',
-        width= 70,
+        width= 50,
         border_color= "white",
         border_width= 1,
         hover_color=self.cor_Layout,
-        text="YES",
-        font=("Gelio Greek Diner", 22),
-        command=lambda: (self.vontade_dos_deuses(casas_avanco=6, casas_retrocesso=0, vida_mais=0, vida_menos=0, pontos_mais=90, pontos_menos=0),
+        text="I",
+        font=("Gelio Greek Diner", 18),
+        command=lambda: (self.vontade_dos_deuses(casas_avanco=0, casas_retrocesso=1, vida_mais=0, vida_menos=0, pontos_mais=0, pontos_menos=0),
                          self.remover_carta('Persephone'),
-                         self.atualizar_cartas())
-        )
-        botao_sim.place(x=600, y=350, anchor="center")
-        self.widgets_casa_atual.append(botao_sim)
-        # Botão NÃO
-        botao_naum = ctk.CTkButton(
+                         self.atualizar_cartas(),
+                         self.carregar_casa(self.back_end.casa_atual)))
+        botao_back1.place(x=580, y=250, anchor="center")
+        self.widgets_casa_atual.append(botao_back1)
+        
+        botao_back2= ctk.CTkButton(
         self.canvas_abre,
         fg_color='black',
-        width= 70,
+        width= 50,
         border_color= "white",
         border_width= 1,
-        hover_color="red",
-        text="NO",
-        font=("Gelio Greek Diner", 22),
-        command= lambda:(self.chamar_casa_evento(),
-                         self.atualizar_tela(),
-                         self.carregar_casa(self.back_end.casa_atual))
-        )
-        botao_naum.place(x=700, y=350, anchor="center")
-        self.widgets_casa_atual.append(botao_naum)
-                          
- 
+        hover_color=self.cor_Layout,
+        text="I I",
+        font=("Gelio Greek Diner", 18),
+        command=lambda: (self.vontade_dos_deuses(casas_avanco=0, casas_retrocesso=2, vida_mais=0, vida_menos=0, pontos_mais=0, pontos_menos=0),
+                         self.remover_carta('Persephone'),
+                         self.atualizar_cartas(),
+                         self.carregar_casa(self.back_end.casa_atual)))
+        botao_back2.place(x=650, y=250, anchor="center")
+        self.widgets_casa_atual.append(botao_back2)
+        
+        botao_back3= ctk.CTkButton(
+        self.canvas_abre,
+        fg_color='black',
+        width= 50,
+        border_color= "white",
+        border_width= 1,
+        hover_color=self.cor_Layout,
+        text="I I I",
+        font=("Gelio Greek Diner", 18),
+        command=lambda: (self.vontade_dos_deuses(casas_avanco=0, casas_retrocesso=3, vida_mais=0, vida_menos=0, pontos_mais=0, pontos_menos=0),
+                         self.remover_carta('Persephone'),
+                         self.atualizar_cartas(),
+                         self.carregar_casa(self.back_end.casa_atual)))
+        botao_back3.place(x=720, y=250, anchor="center")
+        self.widgets_casa_atual.append(botao_back3)
+  
+        self.botao_nao_usar_carta()
+        
+
     def use_carta_Poseidon(self):
         self.limpar_widgets_casa_atual()  
+        
         self.chama_foto_carta(9) # index Poseidon  
-         # Título
-        label_nome_actions = ctk.CTkLabel(
-            self.root,
-            text= "Advance 4 spaces,\nor\nroll 1 die", 
-            text_color="white",  
-            fg_color="black",
-            font=("cambria", 24), # "Olympus"
-            )
-        label_nome_actions.place(x=650, y=200, anchor ="n")
-        self.widgets_dinamicos.append(label_nome_actions)        
-        # Botão SIM
-        botao_sim = ctk.CTkButton(
+        
+        self.chamada_do_dado_batalha_carta_deuses(1,0,0,nome_deus="Poseidon")  
+                
+        botao_avance= ctk.CTkButton(
         self.canvas_abre,
         fg_color='black',
         width= 70,
         border_color= "white",
         border_width= 1,
         hover_color=self.cor_Layout,
-        text="YES",
-        font=("Gelio Greek Diner", 22),
-        command=lambda: (self.vontade_dos_deuses(casas_avanco=6, casas_retrocesso=0, vida_mais=0, vida_menos=0, pontos_mais=90, pontos_menos=0),
+        text="Advance 4 spaces",
+        font=("Gelio Greek Diner", 18),
+        command=lambda: (self.vontade_dos_deuses(casas_avanco=4, casas_retrocesso=0, vida_mais=0, vida_menos=0, pontos_mais=60, pontos_menos=0),
                          self.remover_carta('Poseidon'),
-                         self.atualizar_cartas())
-        )
-        botao_sim.place(x=600, y=350, anchor="center")
-        self.widgets_casa_atual.append(botao_sim)
-        # Botão NÃO
-        botao_naum = ctk.CTkButton(
-        self.canvas_abre,
-        fg_color='black',
-        width= 70,
-        border_color= "white",
-        border_width= 1,
-        hover_color="red",
-        text="NO",
-        font=("Gelio Greek Diner", 22),
-        command= lambda:(self.chamar_casa_evento(),
-                         self.atualizar_tela(),
+                         self.atualizar_cartas(),
                          self.carregar_casa(self.back_end.casa_atual))
         )
-        botao_naum.place(x=700, y=350, anchor="center")
-        self.widgets_casa_atual.append(botao_naum)
-                
-
+        botao_avance.place(x=650, y=150, anchor="center")
+        self.widgets_casa_atual.append(botao_avance)
+        
+        self.botao_nao_usar_carta()
+           
+               
     def use_carta_Zeus(self):
         self.limpar_widgets_casa_atual()  
+        
         self.chama_foto_carta(10) # index Zeus 
-         # Título
-        label_nome_actions = ctk.CTkLabel(
-            self.root,
-            text= "Advance 6 spaces,\nor\nroll 1 dice", 
-            text_color="white",  
-            fg_color="black",
-            font=("cambria", 24), # "Olympus"
-            )
-        label_nome_actions.place(x=650, y=200, anchor ="n")
-        self.widgets_dinamicos.append(label_nome_actions)        
-        # Botão SIM
-        botao_sim = ctk.CTkButton(
+        
+        self.chamada_do_dado_batalha_carta_deuses(1,0,0,nome_deus="Zeus")  
+                
+        botao_avance= ctk.CTkButton(
         self.canvas_abre,
         fg_color='black',
         width= 70,
         border_color= "white",
         border_width= 1,
         hover_color=self.cor_Layout,
-        text="YES",
-        font=("Gelio Greek Diner", 22),
-        command=lambda: (self.vontade_dos_deuses(casas_avanco=6, casas_retrocesso=0, vida_mais=0, vida_menos=0, pontos_mais=90, pontos_menos=0),
+        text="Advance 6 spaces",
+        font=("Gelio Greek Diner", 18),
+        command=lambda: (self.vontade_dos_deuses(casas_avanco=6, casas_retrocesso=0, vida_mais=0, vida_menos=0, pontos_mais=60, pontos_menos=0),
                          self.remover_carta('Zeus'),
-                         self.atualizar_cartas())
-        )
-        botao_sim.place(x=600, y=350, anchor="center")
-        self.widgets_casa_atual.append(botao_sim)
-        # Botão NÃO
-        botao_naum = ctk.CTkButton(
-        self.canvas_abre,
-        fg_color='black',
-        width= 70,
-        border_color= "white",
-        border_width= 1,
-        hover_color="red",
-        text="NO",
-        font=("Gelio Greek Diner", 22),
-        command= lambda:(self.chamar_casa_evento(),
-                         self.atualizar_tela(),
+                         self.atualizar_cartas(),
                          self.carregar_casa(self.back_end.casa_atual))
         )
-        botao_naum.place(x=700, y=350, anchor="center")
-        self.widgets_casa_atual.append(botao_naum)
-              
+        botao_avance.place(x=650, y=150, anchor="center")
+        self.widgets_casa_atual.append(botao_avance)
+        
+        self.botao_nao_usar_carta()
+        
    
     def use_carta_Athena(self):
         self.limpar_widgets_casa_atual()  
+        
         self.chama_foto_carta(11) # index Atena 
-         # Título
-        label_nome_actions = ctk.CTkLabel(
-            self.root,
-            text= "Win 1 battle,\nor\nadvance 2 spaces", 
-            text_color="white",  
-            fg_color="black",
-            font=("cambria", 24), # "Olympus"
-            )
-        label_nome_actions.place(x=650, y=200, anchor ="n")
-        self.widgets_dinamicos.append(label_nome_actions)        
-        # Botão SIM
-        botao_sim = ctk.CTkButton(
+        
+        botao_win= ctk.CTkButton(
         self.canvas_abre,
         fg_color='black',
         width= 70,
         border_color= "white",
         border_width= 1,
         hover_color=self.cor_Layout,
-        text="YES",
-        font=("Gelio Greek Diner", 22),
-        command=lambda: (self.vontade_dos_deuses(casas_avanco=6, casas_retrocesso=0, vida_mais=0, vida_menos=0, pontos_mais=90, pontos_menos=0),
+        text="Win 1 battle",
+        font=("Gelio Greek Diner", 18),
+        command=lambda: (self.vontade_dos_deuses(casas_avanco=1, casas_retrocesso=0, vida_mais=0, vida_menos=0, pontos_mais=100, pontos_menos=0),
                          self.remover_carta('Athena'),
-                         self.atualizar_cartas())
+                         self.atualizar_cartas(),
+                         self.carregar_casa(self.back_end.casa_atual))
         )
-        botao_sim.place(x=600, y=350, anchor="center")
-        self.widgets_casa_atual.append(botao_sim)
-        # Botão NÃO
-        botao_naum = ctk.CTkButton(
+        botao_win.place(x=650, y=150, anchor="center")
+        self.widgets_casa_atual.append(botao_win)
+        
+        
+        botao_avance= ctk.CTkButton(
         self.canvas_abre,
         fg_color='black',
         width= 70,
         border_color= "white",
         border_width= 1,
-        hover_color="red",
-        text="NO",
-        font=("Gelio Greek Diner", 22),
-        command= lambda:(self.chamar_casa_evento(),
-                         self.atualizar_tela(),
+        hover_color=self.cor_Layout,
+        text="Advance 2 spaces",
+        font=("Gelio Greek Diner", 18),
+        command=lambda: (self.vontade_dos_deuses(casas_avanco=2, casas_retrocesso=0, vida_mais=0, vida_menos=0, pontos_mais=60, pontos_menos=0),
+                         self.remover_carta('Athena'),
+                         self.atualizar_cartas(),
                          self.carregar_casa(self.back_end.casa_atual))
         )
-        botao_naum.place(x=700, y=350, anchor="center")
-        self.widgets_casa_atual.append(botao_naum)
-             
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
+        botao_avance.place(x=650, y=250, anchor="center")
+        self.widgets_casa_atual.append(botao_avance)
+        
+        self.botao_nao_usar_carta()
+        
+        
+
     
     
     

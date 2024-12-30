@@ -20,7 +20,7 @@ class Back_End:
         self.player_pontos = 0    
         self.casa_atual = 1 # Inicializando com a casa 1
         
-        # self.observadores = []  # Lista de observadores
+
         
         self.carta_inicial = [{
             "nome": "No name",
@@ -39,15 +39,20 @@ a card to start""",
             "imagem": "images/carta_persephone.png",
             "imagem_pequena": "images/carta_persephone_p.png"
         }]
+        
         # Só pode ter 1 carta no inicio
         self.cartas_player = [ {
             "nome": "Persephone",
             "action": "Go back 1, 2, or 3 spaces",
-            "action_p": """Return and select
-a card to start""",
+            "action_p": """Return and 
+select a card
+to start""",
             "imagem": "images/carta_persephone.png",
             "imagem_pequena": "images/carta_persephone_p.png"
         }  ] # cartas do jogador na partida, máximo 3 cartas
+             
+             
+             
                 
         self.cores_layout = {
             'branco': "#FFFFFF", # branco
