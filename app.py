@@ -15,7 +15,7 @@ from tela_jogo import Tela_Jogo
 
 from back_end import Back_End
 
-
+# POnto de retorno
 
 class Interface_Jogo:
     def __init__(self, root):
@@ -41,6 +41,91 @@ class Interface_Jogo:
         #self.Telas_iniciais.tela_02()
         #self.Telas_iniciais.tela_03()
         #self.tela_jogo.tela_game()
+        
+    # PARTE NOVA!!!!!!
+       
+    # def atualizar_estado_jogo(self):
+    #     """Atualiza os estados do jogo e verifica condições de vitória ou derrota."""
+    #     estado = self.back_end.verificar_condicoes()  # Verifica o estado do jogo
+        
+    #     if estado == "game_over":
+    #         self.game_over()
+    #     elif estado == "game_win":
+    #         self.game_win()
+        
+    #     # Atualiza a interface se o jogo continuar
+    #     if estado is None:
+    #         self.limpar_widgets_casa_atual()
+    #         self.atualizar_tela()
+    #         self.carregar_casa(self.back_end.casa_atual)
+
+    # def game_over(self):
+    #     """Exibe a tela de Game Over e encerra o jogo."""
+    #     for janela in self.janelas_abertas:
+    #         janela.destroy()
+    #     self.janelas_abertas.clear()
+
+    #     janela_game_over = ctk.CTkToplevel(self.janela)
+    #     janela_game_over.title("Game Over")
+    #     janela_game_over.geometry("400x200")
+    #     janela_game_over.configure(bg="black")
+    #     janela_game_over.wm_attributes("-topmost", True)
+
+    #     texto = ctk.CTkLabel(
+    #         janela_game_over,
+    #         text="Você perdeu todas as suas vidas.\nJogo encerrado.",
+    #         fg_color=None,
+    #         text_color="red",
+    #         font=("Gelio Fasolada", 24),
+    #         justify="center"
+    #     )
+    #     texto.place(relx=0.5, rely=0.4, anchor="center")
+
+    #     botao_encerrar = ctk.CTkButton(
+    #         janela_game_over,
+    #         text="Sair",
+    #         font=("Gelio Fasolada", 18),
+    #         fg_color="darkred",
+    #         text_color="white",
+    #         hover_color="red",
+    #         command=self.janela.destroy
+    #     )
+    #     botao_encerrar.place(relx=0.5, rely=0.7, anchor="center")
+
+    # def game_win(self):
+    #     """Exibe a tela de vitória e encerra o jogo."""
+    #     for janela in self.janelas_abertas:
+    #         janela.destroy()
+    #     self.janelas_abertas.clear()
+
+    #     janela_game_win = ctk.CTkToplevel(self.janela)
+    #     janela_game_win.title("Game Win")
+    #     janela_game_win.geometry("400x200")
+    #     janela_game_win.configure(bg="black")
+    #     janela_game_win.wm_attributes("-topmost", True)
+
+    #     texto = ctk.CTkLabel(
+    #         janela_game_win,
+    #         text="Parabéns! Você venceu!!",
+    #         fg_color=None,
+    #         text_color="green",
+    #         font=("Gelio Fasolada", 24),
+    #         justify="center"
+    #     )
+    #     texto.place(relx=0.5, rely=0.4, anchor="center")
+
+    #     botao_encerrar = ctk.CTkButton(
+    #         janela_game_win,
+    #         text="Sair",
+    #         font=("Gelio Fasolada", 18),
+    #         fg_color="darkgreen",
+    #         text_color="white",
+    #         hover_color="green",
+    #         command=self.janela.destroy
+    #     )
+    #     botao_encerrar.place(relx=0.5, rely=0.7, anchor="center")    
+        
+        
         
     def sair_jogo(self):
         print("Função sair_jogo chamada")  # Verificação

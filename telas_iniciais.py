@@ -26,16 +26,10 @@ class Telas:
         self.back_end = Back_End()
         self.back_end.load_fonts()
 
-        # Cria a instância de Cartas
-        # self.cartas = Cartas(root, self, interface_jogo, self.back_end, None)  # Passa `None` para `tela_jogo` por enquanto
-
         # Passa a instância de Cartas para Tela_Jogo
         self.tela_jogo = Tela_Jogo(root, self, interface_jogo, self.back_end)  # Passa a instância de Cartas
         
-        
-
-# até aqui!      
-             
+            
     def on_button_click_personagem(self, personagem):
         """Lida com o clique no botão, atualiza a imagem e chama o backend."""
         # Atualiza a imagem para o estado de clique

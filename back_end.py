@@ -2,6 +2,8 @@
 # criado:  18/12/24
 # atualizado: 22/12/24
 
+# Ponto de retorno!
+
 import ctypes
 import tkinter as tk
 from tkinter import font
@@ -19,9 +21,7 @@ class Back_End:
         self.player_xp = 3
         self.player_pontos = 0    
         self.casa_atual = 1 # Inicializando com a casa 1
-        
-
-        
+  
         self.carta_inicial = [{
             "nome": "No name",
             "action": "Return and select a card to start",
@@ -50,9 +50,7 @@ to start""",
             "imagem": "images/carta_persephone.png",
             "imagem_pequena": "images/carta_persephone_p.png"
         }  ] # cartas do jogador na partida, máximo 3 cartas
-             
-             
-             
+                         
                 
         self.cores_layout = {
             'branco': "#FFFFFF", # branco
@@ -426,7 +424,7 @@ or advance
             print(f"- {carta['nome']}: {carta['action']}")
             print(f"- {carta['imagem']}: {carta['imagem_pequena']}")
       
-
+    # Falta testar!
     def escolher_carta_dionisio(self):
         # Sorteia um número aleatório entre 1 e 12
         numero_sorteado = str(random.randint(1, 12))  # Convertido para string, pois as chaves no dic_cards são strings        
@@ -517,15 +515,24 @@ or advance
         print(f"Carta '{nome_carta}' adicionada com sucesso. Lista atual:")
         for carta in self.cartas_player:
             print(f"- {carta['nome']}: {carta['action']}")
+  
+  
+  
+    
+    # PARA SABER SE O JOGO ACABOU!!
+    def verificar_condicoes(self):
+        """Verifica as condições de game over ou vitória."""
+        if self.player_xp <= 0:
+            return "game_over"
+        elif self.casa_atual >= 120:
+            return "game_win"
+        return None
     
     
+    # def retornar_casas(self, numero_casas_retornar):
+    #     self.casa_atual - numero_casas_retornar
+    #     return self.casa_atual
     
-    
-    
-    def retornar_casas(self, numero_casas_retornar):
-        self.casa_atual - numero_casas_retornar
-        return self.casa_atual
-    
-    def avancar_casas(self, numero_casas_avancar):
-        self.casa_atual + numero_casas_avancar
-        return self.casa_atual
+    # def avancar_casas(self, numero_casas_avancar):
+    #     self.casa_atual + numero_casas_avancar
+    #     return self.casa_atual

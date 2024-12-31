@@ -72,7 +72,201 @@ class Tela_Jogo:
         # Limpa a lista de widgets dinâmicos da casa atual
         self.widgets_casa_atual = []
 
+
+
+
+ 
+    def atualizar_estado_jogo(self):
+        """Atualiza os estados do jogo e verifica condições de vitória ou derrota."""
+        estado = self.back_end.verificar_condicoes()  # Verifica o estado do jogo
+        print(f"Estado do jogo: {estado}")  # Debug
+        
+        if estado == "game_over":
+            self.game_over()
+        elif estado == "game_win":
+            self.game_win()
+        
+        else:
+            print("O jogo continua...")  # Debug
+        # Atualiza a interface se o jogo continuar
+        # if estado is None:
+        #     self.limpar_widgets_casa_atual()
+        #     self.atualizar_tela()
+        #     self.carregar_casa(self.back_end.casa_atual)
+
+
+    def game_over(self):
+        """Exibe a tela de Game Over e encerra o jogo principal, mantendo apenas a mensagem."""
+        # Fecha a janela principal
+        self.root.destroy()
+
+        # Cria a janela de mensagem
+        janela_game_over = ctk.CTk()
+        janela_game_over.title("Game Over")
+        janela_game_over.geometry("400x200")
+        janela_game_over.configure(bg="black")
+        janela_game_over.wm_attributes("-topmost", True)
+
+        texto = ctk.CTkLabel(
+            janela_game_over,
+            text="Você perdeu todas as suas vidas.\nJogo encerrado.",
+            fg_color=None,
+            text_color="red",
+            font=("Gelio Fasolada", 24),
+            justify="center"
+        )
+        texto.place(relx=0.5, rely=0.4, anchor="center")
+
+        botao_encerrar = ctk.CTkButton(
+            janela_game_over,
+            text="Sair",
+            font=("Gelio Fasolada", 18),
+            fg_color="darkred",
+            text_color="white",
+            hover_color="red",
+            command=janela_game_over.destroy  # Fecha apenas a janela de mensagem
+        )
+        botao_encerrar.place(relx=0.5, rely=0.7, anchor="center")
+
+        # Mantém a janela de mensagem aberta
+        janela_game_over.mainloop()
+
+        
+        
+    
+
+    def game_win(self):
+        """Exibe a tela de vitória e encerra o jogo."""
+        janela_game_win = ctk.CTkToplevel(self.root)
+        janela_game_win.title("Game Win")
+        janela_game_win.geometry("400x200")
+        janela_game_win.configure(bg="black")
+        janela_game_win.wm_attributes("-topmost", True)
+
+        texto = ctk.CTkLabel(
+            janela_game_win,
+            text="Parabéns! Você venceu!!",
+            fg_color=None,
+            text_color="green",
+            font=("Gelio Fasolada", 24),
+            justify="center"
+        )
+        texto.place(relx=0.5, rely=0.4, anchor="center")
+
+        botao_encerrar = ctk.CTkButton(
+            janela_game_win,
+            text="Sair",
+            font=("Gelio Fasolada", 18),
+            fg_color="darkgreen",
+            text_color="white",
+            hover_color="green",
+            command=self.root.destroy  # Fecha o root ao clicar no botão
+        )
+        botao_encerrar.place(relx=0.5, rely=0.7, anchor="center")
+
+
+
+
+
+
+
+
+
+
+
+
+    def game_over_1(self):
+        """Encerrar o jogo no estado de Game Over."""
+        print("Game Over! Encerrando o jogo...")  # Debug
+        self.root.destroy()  # Fecha a janela principal
+
+
+    def game_win_1(self):
+        """Encerrar o jogo no estado de Vitória."""
+        print("Você venceu! Encerrando o jogo...")  # Debug
+        self.root.destroy()  # Fecha a janela principal
+
+
+
+    # def game_over(self):
+    #     """Exibe a tela de Game Over e encerra o jogo."""
+    #     for janela in self.janelas_abertas:
+    #         janela.destroy()
+
+    #     janela_game_over = ctk.CTkToplevel(self.janela)
+    #     janela_game_over.title("Game Over")
+    #     janela_game_over.geometry("400x200")
+    #     janela_game_over.configure(bg="black")
+    #     janela_game_over.wm_attributes("-topmost", True)
+
+    #     texto = ctk.CTkLabel(
+    #         janela_game_over,
+    #         text="Você perdeu todas as suas vidas.\nJogo encerrado.",
+    #         fg_color=None,
+    #         text_color="red",
+    #         font=("Gelio Fasolada", 24),
+    #         justify="center"
+    #     )
+    #     texto.place(relx=0.5, rely=0.4, anchor="center")
+
+    #     botao_encerrar = ctk.CTkButton(
+    #         janela_game_over,
+    #         text="Sair",
+    #         font=("Gelio Fasolada", 18),
+    #         fg_color="darkred",
+    #         text_color="white",
+    #         hover_color="red",
+    #         command=self.janela.destroy
+    #     )
+    #     botao_encerrar.place(relx=0.5, rely=0.7, anchor="center")
+
+    # def game_win(self):
+    #     """Exibe a tela de vitória e encerra o jogo."""
+    #     for janela in self.janelas_abertas:
+    #         janela.destroy()
+
+    #     janela_game_win = ctk.CTkToplevel(self.janela)
+    #     janela_game_win.title("Game Win")
+    #     janela_game_win.geometry("400x200")
+    #     janela_game_win.configure(bg="black")
+    #     janela_game_win.wm_attributes("-topmost", True)
+
+    #     texto = ctk.CTkLabel(
+    #         janela_game_win,
+    #         text="Parabéns! Você venceu!!",
+    #         fg_color=None,
+    #         text_color="green",
+    #         font=("Gelio Fasolada", 24),
+    #         justify="center"
+    #     )
+    #     texto.place(relx=0.5, rely=0.4, anchor="center")
+
+    #     botao_encerrar = ctk.CTkButton(
+    #         janela_game_win,
+    #         text="Sair",
+    #         font=("Gelio Fasolada", 18),
+    #         fg_color="darkgreen",
+    #         text_color="white",
+    #         hover_color="green",
+    #         command=self.janela.destroy
+    #     )
+    #     botao_encerrar.place(relx=0.5, rely=0.7, anchor="center")     
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
      
+# TELA ONDE O JOGO É EXIBIDO !! # TELA ONDE O JOGO É EXIBIDO !! # TELA ONDE O JOGO É EXIBIDO !! 
     def tela_game(self):
         self.canvas_abre = Canvas(self.root, width=800, height=600, bg="black", bd=0, highlightthickness=0)
         self.canvas_abre.place(x=0, y=0) 
@@ -331,8 +525,8 @@ class Tela_Jogo:
     def exibir_casas(self, lista_maior):
         # O número sorteado define de onde os 8 itens devem começar
         # Vamos garantir que o número esteja entre 1 e 120
-        if self.back_end.casa_atual < 1 or self.back_end.casa_atual> 120:
-            raise ValueError("O número deve estar entre 1 e 120.")
+        if self.back_end.casa_atual < 1 or self.back_end.casa_atual> 128:
+            raise ValueError("O número deve estar entre 1 e 128.") # For DEBUG
         
         # Calcular o índice de início para a exibição de 8 itens
         inicio = self.back_end.casa_atual - 1  # O índice começa de 0, então subtrai 1
@@ -414,7 +608,11 @@ class Tela_Jogo:
             self.back_end.player_pontos +=  (15 * numero_sorteado)
             print(f'Pontos do jogador: {self.back_end.player_pontos}')           
             print(f'Casas do tabuleiro no momento:{self.casas_exibidas}')   
-            self.back_end.casa_atual += numero_sorteado            
+            self.back_end.casa_atual += numero_sorteado 
+            
+            self.interface_jogo.atualizar_estado_jogo() # verica o termino do jogo
+            
+                       
             print(f'Casa atual: {self.back_end.casa_atual}')
             
             # Introduz um atraso de 1 segundos antes de continuar
@@ -601,8 +799,8 @@ class Tela_Jogo:
         except Exception as e:
             print(f"Erro ao atualizar a imagem dos tijolinhos: {e}")
 
-    def carregar_carta_da_lista(self):
-        pass
+    # def carregar_carta_da_lista(self):
+    #     pass
         
         
         
@@ -879,6 +1077,7 @@ class Tela_Jogo:
         
         # Introduz um atraso de 2 segundos antes de continuar
         self.root.after(1500, lambda: self._continuar_rolagem_dado(numero_sorteado))
+
         
     def _continuar_rolagem_dado(self, numero_sorteado):
         """Continua as ações após exibir a imagem estática por 2 segundos."""
@@ -887,12 +1086,15 @@ class Tela_Jogo:
         print(f'Pontos do jogador: {self.back_end.player_pontos}')
         print(f'Casas do tabuleiro no momento: {self.casas_exibidas}')
         self.back_end.casa_atual += numero_sorteado
+        
         print(f'Casa atual: {self.back_end.casa_atual}')
         
         # Limpa widgets existentes antes de atualizar a tela
         self.limpar_widgets_casa_atual()
         self.atualizar_tela()  # Atualiza outros elementos da tela
         self.carregar_casa(self.back_end.casa_atual)  # Carrega os gadgets da nova casa
+        
+        self.atualizar_estado_jogo() # verica o termino do jogo
 
 
 # FUNÇÕES DADOS DE BATALHAS E EVENTOS
@@ -915,6 +1117,7 @@ class Tela_Jogo:
 
         # Introduz um atraso de 1.5 segundos antes de processar o resultado
         self.root.after(1500, lambda: self._processar_resultado_batalha(numero_sorteado, casas_avanco, casas_retrocesso, vida))
+
 
     def _processar_resultado_batalha(self, numero_sorteado, casas_avanco, casas_retrocesso, vida):
     # Processa o resultado da batalha após exibir a imagem do dado.
@@ -939,6 +1142,9 @@ class Tela_Jogo:
         self.limpar_widgets_casa_atual()
         self.atualizar_tela()
         self.carregar_casa(self.back_end.casa_atual)
+        
+        self.atualizar_estado_jogo() # verica o termino do jogo
+             
 
     def chamada_do_dado_batalha(self, casas_avanco=0, casas_retrocesso=0, vida=0):
         # Ganha +4
@@ -1017,6 +1223,7 @@ class Tela_Jogo:
         )
         botao_rolar_dados.place(x=400, y=405, anchor='n')
         self.widgets_casa_atual.append(botao_rolar_dados)
+
 
     def chamada_do_dado_batalha_troia(self, casas_avanco=0, casas_retrocesso=0, vida=0):
         # Ganha +4
@@ -1103,6 +1310,9 @@ class Tela_Jogo:
         self.limpar_widgets_casa_atual()
         self.atualizar_tela()
         self.carregar_casa(self.back_end.casa_atual)
+        
+        self.atualizar_estado_jogo() # verica o termino do jogo
+        
            
     def botao_vontade_dos_deuses(self, casas_avanco=0, casas_retrocesso=0, vida_mais=0, vida_menos=0, pontos_mais= 0, pontos_menos=0):
         # OU...             
@@ -4640,112 +4850,112 @@ Try to pass its guardians."""
     
     
     
-    # Daqui pra baixo é lixo....
+#     # Daqui pra baixo é lixo....
     
-    def quadro_de_acao_evento(self):       
-    # label do nome da casa exibida
-        label_nome_casa_evento = ctk.CTkLabel(
-            self.root,
-            text= "Sphinx",  # Substituir pelo texto dinâmico, 
-            text_color="white",  
-            fg_color="black",  # Cor de fundo
-            font=("Olympus", 28), 
-        )
-        label_nome_casa_evento.place(x=550, y=130, anchor ="center")
-        self.widgets_dinamicos.append(label_nome_casa_evento)
+#     def quadro_de_acao_evento(self):       
+#     # label do nome da casa exibida
+#         label_nome_casa_evento = ctk.CTkLabel(
+#             self.root,
+#             text= "Sphinx",  # Substituir pelo texto dinâmico, 
+#             text_color="white",  
+#             fg_color="black",  # Cor de fundo
+#             font=("Olympus", 28), 
+#         )
+#         label_nome_casa_evento.place(x=550, y=130, anchor ="center")
+#         self.widgets_dinamicos.append(label_nome_casa_evento)
                
-        self.image_evento_exibido = PhotoImage(file="images/casa_evento_layout.png")
-        # self.image_carta_escolha_hover1 = PhotoImage(file="images/carta_escolha_hover.png")
-        # self.image_carta_escolha_click1 = PhotoImage(file="images/carta_escolha_click.png")
-        self.img_evento_exibido= self.canvas_abre.create_image(550, 235, image=self.image_evento_exibido)
+#         self.image_evento_exibido = PhotoImage(file="images/casa_evento_layout.png")
+#         # self.image_carta_escolha_hover1 = PhotoImage(file="images/carta_escolha_hover.png")
+#         # self.image_carta_escolha_click1 = PhotoImage(file="images/carta_escolha_click.png")
+#         self.img_evento_exibido= self.canvas_abre.create_image(550, 235, image=self.image_evento_exibido)
         
-        texto_evento = (
-"""She asked you a question.
-Solve the riddle and roll a die.
-If you get 3 or more, move forward 2 spaces.
-If you get 2 or less, move back 2 spaces."""
-        )
-        # label de descrição do evento
-        label_descricao_evento = ctk.CTkLabel(
-            self.root,
-            text=texto_evento,  # Substituir pelo texto dinâmico, se necessário
-            text_color="white",  
-            fg_color="black",  # Cor de fundo
-            font=("Cambria", 17), # "Gelio Fasolada"
-        )
-        label_descricao_evento.place(x=550, y=380, anchor ="center")
-        self.widgets_dinamicos.append(label_descricao_evento)
+#         texto_evento = (
+# """She asked you a question.
+# Solve the riddle and roll a die.
+# If you get 3 or more, move forward 2 spaces.
+# If you get 2 or less, move back 2 spaces."""
+#         )
+#         # label de descrição do evento
+#         label_descricao_evento = ctk.CTkLabel(
+#             self.root,
+#             text=texto_evento,  # Substituir pelo texto dinâmico, se necessário
+#             text_color="white",  
+#             fg_color="black",  # Cor de fundo
+#             font=("Cambria", 17), # "Gelio Fasolada"
+#         )
+#         label_descricao_evento.place(x=550, y=380, anchor ="center")
+#         self.widgets_dinamicos.append(label_descricao_evento)
         
 
-    def quadro_de_acao_carta(self):
-        # Carta
-        try:
-             self.image_carta_exibida = PhotoImage(file=self.back_end.carta_casa_deus[0]['imagem']) 
-             self.img_carta_exibida = self.canvas_abre.create_image(440, 265, image=self.image_carta_exibida)
-        except Exception as e:
-            print(f'Sem imagens nessa carta, usando a imagem default - > {e}')
-            self.image_carta_exibida = PhotoImage(file="images/carta_aphrodite_layout.png")
-            self.img_carta_exibida = self.canvas_abre.create_image(440, 265, image=self.image_carta_exibida)
+#     def quadro_de_acao_carta(self):
+#         # Carta
+#         try:
+#              self.image_carta_exibida = PhotoImage(file=self.back_end.carta_casa_deus[0]['imagem']) 
+#              self.img_carta_exibida = self.canvas_abre.create_image(440, 265, image=self.image_carta_exibida)
+#         except Exception as e:
+#             print(f'Sem imagens nessa carta, usando a imagem default - > {e}')
+#             self.image_carta_exibida = PhotoImage(file="images/carta_aphrodite_layout.png")
+#             self.img_carta_exibida = self.canvas_abre.create_image(440, 265, image=self.image_carta_exibida)
         
-        try:
-            texto_descricao_carta = self.back_end.carta_casa_deus[0]['action']           
-        except Exception as e: 
-            print(f'Semtexto nessa carta, usando o texto default - > {e}')  
-            texto_descricao_carta = """The Aphrodite card has
-the power to move 
-forward 6 spaces.
+#         try:
+#             texto_descricao_carta = self.back_end.carta_casa_deus[0]['action']           
+#         except Exception as e: 
+#             print(f'Semtexto nessa carta, usando o texto default - > {e}')  
+#             texto_descricao_carta = """The Aphrodite card has
+# the power to move 
+# forward 6 spaces.
 
-If you don´t keep
-the card, move forward
-3 spaces"""
-        # label do nome da casa exibida
-        label_descricao_carta_exibida = ctk.CTkLabel(
-            self.root,
-            text= texto_descricao_carta,  # Substituir pelo texto dinâmico, 
-            text_color="white",  
-            fg_color="black",  # Cor de fundo
-            font=("Cambria", 17), 
-        )
-        label_descricao_carta_exibida.place(x=650, y=220, anchor ="center")
-        self.widgets_dinamicos.append(label_descricao_carta_exibida)
+# If you don´t keep
+# the card, move forward
+# 3 spaces"""
+#         # label do nome da casa exibida
+#         label_descricao_carta_exibida = ctk.CTkLabel(
+#             self.root,
+#             text= texto_descricao_carta,  # Substituir pelo texto dinâmico, 
+#             text_color="white",  
+#             fg_color="black",  # Cor de fundo
+#             font=("Cambria", 17), 
+#         )
+#         label_descricao_carta_exibida.place(x=650, y=220, anchor ="center")
+#         self.widgets_dinamicos.append(label_descricao_carta_exibida)
         
-        label_guardar_carta_exibida = ctk.CTkLabel(
-            self.root,
-            text= "Do you keep the card?",  # Substituir pelo texto dinâmico, 
-            text_color=self.cor_Layout,  
-            fg_color="black",  # Cor de fundo
-            font=("Cambria Bold", 17), # Gelio Fasolada
-        )
-        label_guardar_carta_exibida.place(x=650, y=340, anchor ="center")
-        self.widgets_dinamicos.append(label_guardar_carta_exibida)
+#         label_guardar_carta_exibida = ctk.CTkLabel(
+#             self.root,
+#             text= "Do you keep the card?",  # Substituir pelo texto dinâmico, 
+#             text_color=self.cor_Layout,  
+#             fg_color="black",  # Cor de fundo
+#             font=("Cambria Bold", 17), # Gelio Fasolada
+#         )
+#         label_guardar_carta_exibida.place(x=650, y=340, anchor ="center")
+#         self.widgets_dinamicos.append(label_guardar_carta_exibida)
                
-        # Botão SIM
-        botao_sim = ctk.CTkButton(
-        self.canvas_abre,
-        fg_color='black',
-        width= 16,
-        border_color= "white",
-        border_width= 1,
-        hover_color=self.cor_Layout,
-        text="yes",
-        font=("Gelio Greek Diner", 18),
-        command=lambda: self.telas_iniciais.tela_03() # acrescentar função de saída!!!!
-        )
-        botao_sim.place(x=600, y=380, anchor="center")
-        self.widgets_dinamicos.append(botao_sim)
+#         # Botão SIM
+#         botao_sim = ctk.CTkButton(
+#         self.canvas_abre,
+#         fg_color='black',
+#         width= 16,
+#         border_color= "white",
+#         border_width= 1,
+#         hover_color=self.cor_Layout,
+#         text="yes",
+#         font=("Gelio Greek Diner", 18),
+#         command=lambda: self.telas_iniciais.tela_03() # acrescentar função de saída!!!!
+#         )
+#         botao_sim.place(x=600, y=380, anchor="center")
+#         self.widgets_dinamicos.append(botao_sim)
         
-        # Botão NÃO
-        botao_naum = ctk.CTkButton(
-        self.canvas_abre,
-        fg_color='black',
-        width= 16,
-        border_color= "white",
-        border_width= 1,
-        hover_color="red",
-        text="no",
-        font=("Gelio Greek Diner", 18),
-        command=lambda: self.telas_iniciais.tela_03() # acrescentar função de saída!!!!
-        )
-        botao_naum.place(x=700, y=380, anchor="center")
-        self.widgets_dinamicos.append(botao_naum)
+#         # Botão NÃO
+#         botao_naum = ctk.CTkButton(
+#         self.canvas_abre,
+#         fg_color='black',
+#         width= 16,
+#         border_color= "white",
+#         border_width= 1,
+#         hover_color="red",
+#         text="no",
+#         font=("Gelio Greek Diner", 18),
+#         command=lambda: self.telas_iniciais.tela_03() # acrescentar função de saída!!!!
+#         )
+#         botao_naum.place(x=700, y=380, anchor="center")
+#         self.widgets_dinamicos.append(botao_naum)
     
