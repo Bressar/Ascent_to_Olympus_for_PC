@@ -1,6 +1,6 @@
-# tela onde o jogo se desenrola..
-#  criado:  20/12/24
-# atualizado: 30/12/24
+# Tela onde o jogo se desenrola - By Bressar
+# criado:  20/12/24
+# atualizado: 02/01/25
 
 import tkinter as tk
 from tkinter import font
@@ -85,30 +85,31 @@ class Tela_Jogo:
         # Cria a janela de mensagem
         janela_game_over = ctk.CTk()
         janela_game_over.title("Game Over")
-        janela_game_over.geometry("400x200")
-        janela_game_over.configure(bg="black")
+        janela_game_over.geometry("250x150")
+        janela_game_over.configure(fg_color="black") 
         janela_game_over.wm_attributes("-topmost", True)
+               
 
         texto = ctk.CTkLabel(
             janela_game_over,
-            text="Você perdeu todas as suas vidas.\nJogo encerrado.",
-            fg_color=None,
+            text="You lost\nall your lives.\nGame over.",
             text_color="red",
-            font=("Gelio Fasolada", 24),
+            font=("Gelio Fasolada", 20),
             justify="center"
         )
         texto.place(relx=0.5, rely=0.4, anchor="center")
 
         botao_encerrar = ctk.CTkButton(
             janela_game_over,
-            text="Sair",
-            font=("Gelio Fasolada", 18),
+            width= 40,
+            text="EXIT",
+            font=("Gelio Fasolada", 16),
             fg_color="darkred",
             text_color="white",
             hover_color="red",
             command=janela_game_over.destroy  # Fecha apenas a janela de mensagem
         )
-        botao_encerrar.place(relx=0.5, rely=0.7, anchor="center")
+        botao_encerrar.place(relx=0.5, rely=0.8, anchor="center")
 
         janela_game_over.mainloop() # Mantém a janela de mensagem aberta
 
@@ -116,29 +117,29 @@ class Tela_Jogo:
     def game_win(self): # """Exibe a tela de vitória e encerra o jogo.
         janela_game_win = ctk.CTkToplevel(self.root)
         janela_game_win.title("Game Win")
-        janela_game_win.geometry("400x200")
-        janela_game_win.configure(bg="black")
+        janela_game_win.geometry("250x150")
+        janela_game_win.configure(fg_color="black")
         janela_game_win.wm_attributes("-topmost", True)
 
         texto = ctk.CTkLabel(
             janela_game_win,
-            text="Parabéns! Você venceu!!",
-            fg_color=None,
+            text="Congratulations!\nYou win!",
             text_color="green",
-            font=("Gelio Fasolada", 24),
+            font=("Gelio Fasolada", 20),
             justify="center" )
         texto.place(relx=0.5, rely=0.4, anchor="center")
 
         botao_encerrar = ctk.CTkButton(
             janela_game_win,
-            text="Sair",
-            font=("Gelio Fasolada", 18),
+            text="EXIT",
+            width= 40,
+            font=("Gelio Fasolada", 16),
             fg_color="darkgreen",
             text_color="white",
             hover_color="green",
             command=self.root.destroy  # Fecha o root ao clicar no botão
         )
-        botao_encerrar.place(relx=0.5, rely=0.7, anchor="center")
+        botao_encerrar.place(relx=0.5, rely=0.8, anchor="center")
 
      
 # TELA ONDE O JOGO É EXIBIDO !! # TELA ONDE O JOGO É EXIBIDO !! # TELA ONDE O JOGO É EXIBIDO !! 
@@ -962,6 +963,32 @@ class Tela_Jogo:
         self.root.after(1500, lambda: self._processar_resultado_batalha(numero_sorteado, casas_avanco, casas_retrocesso, vida))
         
 
+
+
+    def mostrar_mensagem_vitoria_ou_derrota(self, titulo, mensagem, duracao):
+        """Exibe uma janela de mensagem temporária."""
+        janela_mensagem = tk.Toplevel()
+        janela_mensagem.title(titulo)
+        janela_mensagem.geometry("250x150")
+        janela_mensagem.configure(bg="black")
+        janela_mensagem.wm_attributes("-topmost", True)  # Mantém a janela no topo
+        
+        # Texto da mensagem
+        label = tk.Label(
+            janela_mensagem, 
+            text=mensagem, 
+            fg= self.cor_Layout, # white
+            bg="black", 
+            font=("Gelio Fasolada", 13), 
+            justify="center"
+        )
+        label.pack(expand=True, fill="both", padx=20, pady=20)
+        
+        # Fecha automaticamente após `duracao` milissegundos
+        janela_mensagem.after(duracao, janela_mensagem.destroy)
+
+
+
     def _processar_resultado_batalha(self, numero_sorteado, casas_avanco, casas_retrocesso, vida):
     # Processa o resultado da batalha após exibir a imagem do dado.
         vitoria = numero_sorteado > 3
@@ -987,6 +1014,33 @@ class Tela_Jogo:
 
         print(f'Pontos do jogador depois da batalha: {self.back_end.player_pontos}')  # Debug
         print(f'Casa atual depois da batalha: {self.back_end.casa_atual}')
+        
+        
+                # Uso dentro da função _processar_resultado_batalha
+        if vitoria:
+            self.mostrar_mensagem_vitoria_ou_derrota(
+                "Victory!", 
+                f"""You won!
+                
+Advance to
+space {self.back_end.casa_atual}.""", 
+                duracao=3000  # 3 segundos
+            )
+        else:
+            mensagem = (
+                f"You lost!"
+                f"\nGo back to\nspace {self.back_end.casa_atual}.\n"
+            )
+            if self.back_end.player_xp > 0:
+                mensagem += f"\nYou lost 1 life.\n{self.back_end.player_xp} lives remaining."
+            else:
+                mensagem += "\nYou lost all your lives."
+            
+            self.mostrar_mensagem_vitoria_ou_derrota(
+                "Defeat!\n", 
+                mensagem, 
+                duracao=4000  # 4 segundos
+            )
 
         # Atualiza a interface
         self.limpar_widgets_casa_atual()
@@ -3568,6 +3622,8 @@ and advance
             self.label_evento_exibido.place(x=450, y=140, anchor='n')
             self.widgets_casa_atual.append(self.label_evento_exibido)
             texto_evento = ("""Earn a card
+and advance
+1 space
 or
 move forward
 3 spaces."""
@@ -3610,10 +3666,11 @@ move forward
             text="Card",
             font=("Gelio Greek Diner", 18),
             command=lambda: (self.back_end.escolher_carta_dionisio(),
+                             self.vontade_dos_deuses(casas_avanco=1, casas_retrocesso=0, vida_mais=0, vida_menos=0, pontos_mais=15, pontos_menos=0),
                              self.atualizar_tela(),
                              self.carregar_casa(self.back_end.casa_atual)) #
             )
-            botao_carta_dioni .place(x=650, y=350, anchor='n')
+            botao_carta_dioni.place(x=650, y=350, anchor='n')
             self.widgets_casa_atual.append(botao_carta_dioni)  # Adiciona o botão à lista 
             
             # # implementar Compre uma carta ou avance 3 casas.

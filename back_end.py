@@ -2,8 +2,6 @@
 # criado:  18/12/24
 # atualizado: 22/12/24
 
-# Ponto de retorno!
-
 import ctypes
 import tkinter as tk
 from tkinter import font
@@ -517,8 +515,7 @@ or advance
             print(f"- {carta['nome']}: {carta['action']}")
   
   
-  
-    
+      
     # PARA SABER SE O JOGO ACABOU!!
     def verificar_condicoes(self):
         """Verifica as condições de game over ou vitória."""
@@ -528,11 +525,3 @@ or advance
             return "game_win"
         return None
     
-    
-    # def retornar_casas(self, numero_casas_retornar):
-    #     self.casa_atual - numero_casas_retornar
-    #     return self.casa_atual
-    
-    # def avancar_casas(self, numero_casas_avancar):
-    #     self.casa_atual + numero_casas_avancar
-    #     return self.casa_atual
