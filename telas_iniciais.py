@@ -151,7 +151,7 @@ Use cards to overcome obstacles. Collect up to 3 cards."""
             fg_color='#FF0000',
             hover_color="#FFA500", #self.back_end.cores_layout['laranja']  # "#FFA500"
             text="Become a Legend!", 
-            font= ("Gelio Fasolada", 21),
+            font= ("Gelio Fasolada", 18),
             command=lambda: self.tela_02()
         )
         botao_iniciar.place(relx=0.5, y=550, anchor="n")

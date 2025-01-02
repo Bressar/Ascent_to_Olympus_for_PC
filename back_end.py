@@ -1,6 +1,6 @@
 # Funcionalidades do jogo
 # criado:  18/12/24
-# atualizado: 22/12/24
+# atualizado: 02/01/25
 
 import ctypes
 import tkinter as tk
@@ -14,9 +14,8 @@ class Back_End:
         print(f"Instância de Back_End criada: {id(self)}") # for debug
         self.personagem_escolhido_nome = "No Name"
         self.personagem_escolhido_about = "Return and select a player\nto start"
-        self.personagem_escolhido_imagem = None
-        
-        self.player_xp = 3
+        self.personagem_escolhido_imagem = None       
+        self.player_xp = 10 # tá como XP mas são as vidas do player o certo seria: HP
         self.player_pontos = 0    
         self.casa_atual = 1 # Inicializando com a casa 1
   
@@ -48,8 +47,7 @@ to start""",
             "imagem": "images/carta_persephone.png",
             "imagem_pequena": "images/carta_persephone_p.png"
         }  ] # cartas do jogador na partida, máximo 3 cartas
-                         
-                
+                                        
         self.cores_layout = {
             'branco': "#FFFFFF", # branco
             'azul': "#4DC2F5",   # (0.3, 0.76, 0.96, 1)
@@ -514,8 +512,7 @@ or advance
         for carta in self.cartas_player:
             print(f"- {carta['nome']}: {carta['action']}")
   
-  
-      
+    
     # PARA SABER SE O JOGO ACABOU!!
     def verificar_condicoes(self):
         """Verifica as condições de game over ou vitória."""
@@ -525,3 +522,43 @@ or advance
             return "game_win"
         return None
     
+    
+    def restart_game(self): # reinicializa as variaveis do jogo
+        self.personagem_escolhido_nome = "No Name"
+        self.personagem_escolhido_about = "Return and select a player\nto start"
+        self.personagem_escolhido_imagem = None    
+        self.player_xp = 3 
+        self.player_pontos = 0    
+        self.casa_atual = 1 
+  
+        self.carta_inicial = [{
+            "nome": "No name",
+            "action": "Return and select a card to start",
+            "action_p": """Return and select
+a card to start""",
+            "imagem": "images/carta_default.png",
+            "imagem_pequena": "images/carta_menu.png"
+        }]
+        
+        self.carta_casa_deus = [ {
+            "nome": "Persephone",
+            "action": "Go back 1, 2, or 3 spaces",
+            "action_p": """Return and select
+a card to start""",
+            "imagem": "images/carta_persephone.png",
+            "imagem_pequena": "images/carta_persephone_p.png"
+        }]
+        
+        self.cartas_player = [ {
+            "nome": "Persephone",
+            "action": "Go back 1, 2, or 3 spaces",
+            "action_p": """Return and 
+select a card
+to start""",
+            "imagem": "images/carta_persephone.png",
+            "imagem_pequena": "images/carta_persephone_p.png"
+        }  ] # cartas do jogador na partida, máximo 3 cartas
+        
+        # self.cor_layout_atual = "#4DC2F5" # ['azul'] #"default de layout texto azul
+        
+        

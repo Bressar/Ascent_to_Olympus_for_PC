@@ -35,9 +35,9 @@ class Tela_Jogo:
         self.image_referencias_cartas.clear()
         
                     
-    def atualizar_cor(self, nova_cor):
-        self.cor_Layout = nova_cor
-        self.atualizar_tela()
+    # def atualizar_cor(self, nova_cor):
+    #     self.cor_Layout = nova_cor
+    #     self.atualizar_tela()
    
     
     def play_gif(self):# Reproduz a animação do GIF no canvas
@@ -131,13 +131,13 @@ class Tela_Jogo:
 
         botao_encerrar = ctk.CTkButton(
             janela_game_win,
-            text="EXIT",
+            text="Quer gravar o placar",
             width= 40,
             font=("Gelio Fasolada", 16),
             fg_color="darkgreen",
             text_color="white",
             hover_color="green",
-            command=self.root.destroy  # Fecha o root ao clicar no botão
+            command=self.casa_evento_126() #self.root.destroy  # Fecha o root ao clicar no botão
         )
         botao_encerrar.place(relx=0.5, rely=0.8, anchor="center")
 
@@ -901,6 +901,18 @@ class Tela_Jogo:
             self.casa_evento_119()
         elif casa_atual == 120:
             self.casa_evento_120()
+        elif casa_atual == 121:
+            self.casa_evento_121()
+        elif casa_atual == 122:
+            self.casa_evento_122()
+        elif casa_atual == 123:
+            self.casa_evento_123()
+        elif casa_atual == 124:
+            self.casa_evento_124()
+        elif casa_atual == 125:
+            self.casa_evento_125()
+        elif casa_atual == 126:
+            self.casa_evento_126()
 
         else:
             print(f"Nenhum evento configurado para a casa {casa_atual}.")
@@ -1392,10 +1404,6 @@ space {self.back_end.casa_atual}.""",
                 self.gif.seek(len(self.frames))  # Avançar para o próximo quadro
         except EOFError:
             pass  # Final do GIF
-        # Configuraçºão do Canvas - tamanhao do Dado
-        
-        # self.canvas = tk.Canvas(self.root, width=80, height=80, bg="black", highlightthickness=0)
-        # self.canvas.place(x=550, y=120, anchor='n')  # posição do dado   
           
         # Exibir o primeiro quadro
         self.image_on_canvas = self.canvas.create_image(0, 0, anchor="nw", image=self.frames[0])        
@@ -3679,6 +3687,8 @@ move forward
             botao_carta_dioni.place(x=650, y=350, anchor='n')
             self.widgets_casa_atual.append(botao_carta_dioni)  # Adiciona o botão à lista 
             
+            print(self.back_end.cartas_player) # for debug
+            
             # # implementar Compre uma carta ou avance 3 casas.
             # self.botao_vontade_dos_deuses(casas_avanco=3, casas_retrocesso=0, vida_mais=0, vida_menos=0, pontos_mais= 45, pontos_menos=0)
             # #self.chamada_cartas_eventos()
@@ -4164,30 +4174,103 @@ Try to pass its guardians."""
      # CASA FINAL !!!!          
 
 
+
+
+
     def casa_evento_120(self): # casa em branco
-        self.limpar_widgets_casa_atual()        
-        print('implementar tela de vitória + placar')
+            self.limpar_widgets_casa_atual() 
+            
+            try:
+                # Carrega a imagem usando PIL
+                img = Image.open("images/olimpo.png") # iMAGEM DO MONTE OLIMPO
+                # Converte a imagem para PhotoImage
+                self.image_foto_olimpo= ImageTk.PhotoImage(img)
+                # Cria um Label para exibir a imagem no Canvas
+                self.label_olimpo = tk.Label(self.canvas_abre, image=self.image_foto_olimpo, bg="black")
+                self.label_olimpo.place(x=440, y=275, anchor="center")
+                
+                self.widgets_casa_atual.append(self.label_imagem_carta)
+            except Exception as e:
+                print(f'Imagem não encontrada -> {e}') 
+                
+                
+            label_nome_casa_evento = ctk.CTkLabel(
+                    self.root,
+                    text= "Olympus", 
+                    text_color=self.cor_Layout,  
+                    fg_color="black",
+                    font=("Olympus", 24), 
+                    )
+            label_nome_casa_evento.place(x=670, y=120, anchor ="n")
+            self.widgets_casa_atual.append(label_nome_casa_evento)                
+
+            texto_evento = ("""You have won!"
+"Now you can ask 
+the Gods for 
+your boon!"
+
+"They will grant it 
+to you, or maybe not,
+who knows? "
+
+"The Greek Gods 
+are temperamental."""
+    )
+            # label de descrição do evento
+            label_descricao_evento = ctk.CTkLabel(
+                self.root,
+                text=texto_evento,  
+                text_color="white",  
+                fg_color="black",
+                font=("Cambria", 17), 
+            )
+            label_descricao_evento.place(x=670, y=160, anchor ="n")
+            self.widgets_casa_atual.append(label_descricao_evento) 
+            
+            
+            # Botao restart GAME
+            botao_iniciar = ctk.CTkButton(
+            self.canvas_abre,
+            width= 100,
+            fg_color= self.cor_Layout, #'#FF0000', RED
+            hover_color="#FFA500", #self.back_end.cores_layout['laranja']  # "#FFA500"
+            text="Restart Game", 
+            font= ("Gelio Fasolada", 18),
+            command=lambda: (self.back_end.restart_game(),
+                             self.atualizar_cor_layout(),
+                             self.telas_iniciais.tela_02())
+        )
+            botao_iniciar.place(x=670, y=400, anchor="n")
+            self.widgets_dinamicos.append(botao_iniciar)    
+                
+                        
+
 
 
     def casa_evento_121(self): # casa em branco
-        self.limpar_widgets_casa_atual()        
-        self.casa_evento_120()
+            self.limpar_widgets_casa_atual()        
+            self.casa_evento_120()
             
     def casa_evento_122(self): # casa em branco
-        self.limpar_widgets_casa_atual()        
-        self.casa_evento_120()
+            self.limpar_widgets_casa_atual()        
+            self.casa_evento_120()
                        
     def casa_evento_123(self): # casa em branco
-        self.limpar_widgets_casa_atual()        
-        self.casa_evento_120()
-            
+            self.limpar_widgets_casa_atual()        
+            self.casa_evento_120()
+                
     def casa_evento_124(self): # casa em branco
-        self.limpar_widgets_casa_atual()        
-        self.casa_evento_120()
+            self.limpar_widgets_casa_atual()        
+            self.casa_evento_120()
         
     def casa_evento_125(self): # casa em branco
-        self.limpar_widgets_casa_atual()        
-        self.casa_evento_120()
+            self.limpar_widgets_casa_atual()        
+            self.casa_evento_120()
+            
+            
+    def casa_evento_126(self): # casa em branco
+            self.limpar_widgets_casa_atual()        
+            print('implementar placar!!')
 
 
 
