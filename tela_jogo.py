@@ -175,25 +175,26 @@ class Tela_Jogo:
             text_color= "white",  
             bg_color="black",  
             font=("Gelio Fasolada", 21),)            
-        self.label_titulo_nome.place(x=70, y=75, anchor="center")
+        self.label_titulo_nome.place(x=80, y=75, anchor="center")
         self.widgets_dinamicos.append(self.label_titulo_nome)                
-         # XP            
+         # VIDAS           
         self.label_xp = ctk.CTkLabel(
             self.root,
-            text= f"XP: {str(self.back_end.player_xp)}", 
+            text= f"Lives: {str(self.back_end.player_xp)}", 
             text_color=self.cor_Layout,  
             bg_color="black",  
             font=("Gelio Fasolada", 18),)            
-        self.label_xp.place(x=140, y=60) 
-        self.widgets_dinamicos.append(self.label_xp)           
+        self.label_xp.place(x=335, y=60) 
+        self.widgets_dinamicos.append(self.label_xp) 
+                 
         # PONTOS            
         self.label_pontos = ctk.CTkLabel(
             self.root,
             text= f"POINTS: {self.back_end.player_pontos}", 
-            text_color=self.cor_Layout,  
+            text_color=self.cor_Layout, # self.cor_Layout
             bg_color="black",  
             font=("Gelio Fasolada", 18),)            
-        self.label_pontos.place(x=190, y=60, )
+        self.label_pontos.place(x=430, y=60, )
         self.widgets_dinamicos.append(self.label_pontos)
                 
         # Você está na CASA numero_X
@@ -505,7 +506,7 @@ class Tela_Jogo:
             self.label_pontos.configure(text=f"POINTS: {self.back_end.player_pontos}", text_color=self.cor_Layout)
 
         if hasattr(self, 'label_xp') and self.label_xp.winfo_exists():
-            self.label_xp.configure(text=f"XP: {str(self.back_end.player_xp)}",text_color=self.cor_Layout)
+            self.label_xp.configure(text=f"Lives: {str(self.back_end.player_xp)}",text_color=self.cor_Layout)
             
         if hasattr(self, 'label_esta_na_casa') and self.label_esta_na_casa.winfo_exists():
             self.label_esta_na_casa.configure(text=f"You are\non space:",text_color=self.cor_Layout) 
@@ -1024,7 +1025,7 @@ class Tela_Jogo:
                 
 Advance to
 space {self.back_end.casa_atual}.""", 
-                duracao=3000  # 3 segundos
+                duracao=2000  # 2 segundos
             )
         else:
             mensagem = (
@@ -1039,7 +1040,7 @@ space {self.back_end.casa_atual}.""",
             self.mostrar_mensagem_vitoria_ou_derrota(
                 "Defeat!\n", 
                 mensagem, 
-                duracao=4000  # 4 segundos
+                duracao=3000  # 3 segundos
             )
 
         # Atualiza a interface
@@ -1048,6 +1049,11 @@ space {self.back_end.casa_atual}.""",
         self.carregar_casa(self.back_end.casa_atual)        
         self.atualizar_estado_jogo() # verica o termino do jogo
              
+
+
+
+
+
 
     def chamada_do_dado_batalha(self, casas_avanco=0, casas_retrocesso=0, vida=0):
         # Ganha +4
@@ -3756,7 +3762,8 @@ lose 1 life"""
             self.widgets_casa_atual.append(self.label_evento_exibido)
             texto_evento = ("""Upon hearing his chilling scream,
 you were so scared that you
-almost gave up on reaching Olympus.
+almost gave up on
+reaching Olympus.
 Go back to space 94
 and
 lost 1 life"""
@@ -4181,14 +4188,6 @@ Try to pass its guardians."""
     def casa_evento_125(self): # casa em branco
         self.limpar_widgets_casa_atual()        
         self.casa_evento_120()
-
-
-
-
-
-
-
-
 
 
 

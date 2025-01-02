@@ -1,6 +1,6 @@
-# telas_iniciais do jogo
+# telas_iniciais do jogo - By Bressar
 # criado:  18/12/24
-# atualizado: 
+# atualizado: 02/01/25
 
 
 import ctypes
@@ -228,7 +228,7 @@ Use cards to overcome obstacles. Collect up to 3 cards."""
         # Adiciona a imagem inicial ao Canvas
         self.img_hipolita_id = self.canvas_abre.create_image(400, 240, image=self.image_hipolita_menu)
         # Evento de clique
-        self.canvas_abre.tag_bind(self.img_hipolita_id, '<Button-1>', lambda event: self.on_button_click_personagem("hippolyta"))
+        self.canvas_abre.tag_bind(self.img_hipolita_id, '<Button-1>', lambda event: (self.on_button_click_personagem("hippolyta"),self.canvas_abre.itemconfig(self.img_hipolita_id, image=self.image_hipolita_click)))
         
         # Evento de hover (mouse entra)
         self.canvas_abre.tag_bind(self.img_hipolita_id, '<Enter>', lambda event: self.canvas_abre.itemconfig(self.img_hipolita_id, image=self.image_hipolita_hover))
@@ -251,9 +251,10 @@ Use cards to overcome obstacles. Collect up to 3 cards."""
         self.image_odisseu_click = PhotoImage(file="images/carinha_odisseu_click.png")
 
         self.img_odisseu_id = self.canvas_abre.create_image(280, 240, image=self.image_odisseu_menu)
-        self.canvas_abre.tag_bind(self.img_odisseu_id, '<Button-1>', lambda event: self.on_button_click_personagem("odysseus"))
+        self.canvas_abre.tag_bind(self.img_odisseu_id, '<Button-1>', lambda event: (self.on_button_click_personagem("odysseus"),self.canvas_abre.itemconfig(self.img_odisseu_id, image=self.image_odisseu_click)))
         self.canvas_abre.tag_bind(self.img_odisseu_id, '<Enter>', lambda event: self.canvas_abre.itemconfig(self.img_odisseu_id, image=self.image_odisseu_hover))
         self.canvas_abre.tag_bind(self.img_odisseu_id, '<Leave>', lambda event: self.canvas_abre.itemconfig(self.img_odisseu_id, image=self.image_odisseu_menu))
+        
 
         label_botao_odisseu = ctk.CTkLabel(
             self.root,
@@ -271,7 +272,7 @@ Use cards to overcome obstacles. Collect up to 3 cards."""
         self.image_aquiles_click = PhotoImage(file="images/carinha_aquiles_click.png")
 
         self.img_aquiles_id = self.canvas_abre.create_image(160, 240, image=self.image_aquiles_menu)
-        self.canvas_abre.tag_bind(self.img_aquiles_id, '<Button-1>', lambda event: self.on_button_click_personagem("achilles"))
+        self.canvas_abre.tag_bind(self.img_aquiles_id, '<Button-1>', lambda event: (self.on_button_click_personagem("achilles"),  self.canvas_abre.itemconfig(self.img_aquiles_id, image=self.image_aquiles_click)))
         self.canvas_abre.tag_bind(self.img_aquiles_id, '<Enter>', lambda event: self.canvas_abre.itemconfig(self.img_aquiles_id, image=self.image_aquiles_hover))
         self.canvas_abre.tag_bind(self.img_aquiles_id, '<Leave>', lambda event: self.canvas_abre.itemconfig(self.img_aquiles_id, image=self.image_aquiles_menu))
 
@@ -291,10 +292,11 @@ Use cards to overcome obstacles. Collect up to 3 cards."""
         self.image_atalanta_click = PhotoImage(file="images/carinha_atalanta_click.png")
 
         self.img_atalanta_id = self.canvas_abre.create_image(520, 240, image=self.image_atalanta_menu)
-        self.canvas_abre.tag_bind(self.img_atalanta_id, '<Button-1>', lambda event: self.on_button_click_personagem("atalanta"))
+        self.canvas_abre.tag_bind(self.img_atalanta_id, '<Button-1>', lambda event: (self.on_button_click_personagem("atalanta"), self.canvas_abre.itemconfig(self.img_atalanta_id, image=self.image_atalanta_click)))
         self.canvas_abre.tag_bind(self.img_atalanta_id, '<Enter>', lambda event: self.canvas_abre.itemconfig(self.img_atalanta_id, image=self.image_atalanta_hover))
         self.canvas_abre.tag_bind(self.img_atalanta_id, '<Leave>', lambda event: self.canvas_abre.itemconfig(self.img_atalanta_id, image=self.image_atalanta_menu))
-
+        
+        
         label_botao_atalanta = ctk.CTkLabel(
             self.root,
             text="Atalanta",
@@ -311,7 +313,7 @@ Use cards to overcome obstacles. Collect up to 3 cards."""
         self.image_teseu_click = PhotoImage(file="images/carinha_teseu_click.png")
 
         self.img_teseu_id = self.canvas_abre.create_image(640, 240, image=self.image_teseu_menu)
-        self.canvas_abre.tag_bind(self.img_teseu_id, '<Button-1>', lambda event: self.on_button_click_personagem("theseus"))
+        self.canvas_abre.tag_bind(self.img_teseu_id, '<Button-1>', lambda event: (self.on_button_click_personagem("theseus"), self.canvas_abre.itemconfig(self.img_teseu_id, image=self.image_teseu_click)))
         self.canvas_abre.tag_bind(self.img_teseu_id, '<Enter>', lambda event: self.canvas_abre.itemconfig(self.img_teseu_id, image=self.image_teseu_hover))
         self.canvas_abre.tag_bind(self.img_teseu_id, '<Leave>', lambda event: self.canvas_abre.itemconfig(self.img_teseu_id, image=self.image_teseu_menu))
 
