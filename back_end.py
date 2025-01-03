@@ -12,10 +12,10 @@ from random import randint
 class Back_End:
     def __init__(self):
         print(f"Instância de Back_End criada: {id(self)}") # for debug
-        self.personagem_escolhido_nome = "No Name"
+        self.personagem_escolhido_nome = "Helena of Troy"
         self.personagem_escolhido_about = "Return and select a player\nto start"
         self.personagem_escolhido_imagem = None       
-        self.player_xp = 10 # tá como XP mas são as vidas do player o certo seria: HP
+        self.player_xp = 30 # tá como XP mas são as vidas do player o certo seria: HP
         self.player_pontos = 0    
         self.casa_atual = 1 # Inicializando com a casa 1
   
@@ -106,17 +106,21 @@ the status of a demigod.""",
         self.cartas_deuses = [
         {
             "nome": "Aphrodite",
-            "action": "Advance 6 spaces",
+            "action": "Advance 6 spaces or Go back 1 space",
             "action_p": """Advance
-6 spaces""",
+6 spaces
+or go back 
+1 space""",
             "imagem": "images/carta_aphrodite.png",
             "imagem_pequena": "images/carta_aphrodite_p.png"
         },
         {
             "nome": "Apollo",
-            "action": "Roll 1 dice",
+            "action": "Roll 1 dice or skip 1 space",
             "action_p": """Roll
-1 dice""",
+1 dice,
+or skip
+1 space""",
             "imagem": "images/carta_apollo.png",
             "imagem_pequena": "images/carta_apollo_p.png"
         },
@@ -142,17 +146,21 @@ or roll
         },
         {
             "nome": "Hades",
-            "action": "Gain one life",
+            "action": "Gain one life or skip 1 space",
             "action_p": """Gain
-1 life""",
+1 life
+or skip
+1 space""",
             "imagem": "images/carta_hades.png",
             "imagem_pequena": "images/carta_hades_p.png"
         },
         {
             "nome": "Hephaestus",
-            "action": "Roll 1 dice",
+            "action": "Roll 1 dice or Go back 1 space",
             "action_p": """Roll
-1 dice""",
+1 dice,
+or go back
+1 space""",
             "imagem": "images/carta_hephaestus.png",
             "imagem_pequena": "images/carta_hephaestus_p.png"
         },
@@ -529,8 +537,7 @@ or advance
         self.personagem_escolhido_imagem = None    
         self.player_xp = 3 
         self.player_pontos = 0    
-        self.casa_atual = 1 
-  
+        self.casa_atual = 1   
         self.carta_inicial = [{
             "nome": "No name",
             "action": "Return and select a card to start",
@@ -538,8 +545,7 @@ or advance
 a card to start""",
             "imagem": "images/carta_default.png",
             "imagem_pequena": "images/carta_menu.png"
-        }]
-        
+        }]       
         self.carta_casa_deus = [ {
             "nome": "Persephone",
             "action": "Go back 1, 2, or 3 spaces",
@@ -547,8 +553,7 @@ a card to start""",
 a card to start""",
             "imagem": "images/carta_persephone.png",
             "imagem_pequena": "images/carta_persephone_p.png"
-        }]
-        
+        }]        
         self.cartas_player = [ {
             "nome": "Persephone",
             "action": "Go back 1, 2, or 3 spaces",
@@ -558,7 +563,4 @@ to start""",
             "imagem": "images/carta_persephone.png",
             "imagem_pequena": "images/carta_persephone_p.png"
         }  ] # cartas do jogador na partida, máximo 3 cartas
-        
-        # self.cor_layout_atual = "#4DC2F5" # ['azul'] #"default de layout texto azul
-        
         

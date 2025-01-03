@@ -1,6 +1,6 @@
 # Tela onde o jogo se desenrola - By Bressar
 # criado:  20/12/24
-# atualizado: 02/01/25
+# atualizado: 03/01/25
 
 import tkinter as tk
 from tkinter import font
@@ -66,15 +66,15 @@ class Tela_Jogo:
         
         self.widgets_casa_atual = [] # Limpa a lista de widgets dinâmicos da casa atual
 
- 
+    # removi o o game win!! 
     def atualizar_estado_jogo(self): # """Atualiza os estados do jogo e verifica condições de vitória ou derrota.
         estado = self.back_end.verificar_condicoes()  # Verifica o estado do jogo
         print(f"Estado do jogo: {estado}")  # Debug
         
         if estado == "game_over":
             self.game_over()
-        elif estado == "game_win":
-            self.game_win()        
+        # elif estado == "game_win":
+        #     self.game_win()        
         else:
             print("O jogo continua...") # Debug
 
@@ -113,7 +113,7 @@ class Tela_Jogo:
 
         janela_game_over.mainloop() # Mantém a janela de mensagem aberta
 
-        
+    # Removi a função.... deixar o placar na opção do final...
     def game_win(self): # """Exibe a tela de vitória e encerra o jogo.
         janela_game_win = ctk.CTkToplevel(self.root)
         janela_game_win.title("Game Win")
@@ -655,7 +655,7 @@ class Tela_Jogo:
         except Exception as e:
             print(f"Erro ao atualizar a imagem dos tijolinhos: {e}")
       
-
+    # Jogo até a casa 120, depois disso é função de back...
     def carregar_casa(self, casa_atual):# Carrega os widgets da casa especificada.
         
         self.limpar_widgets_casa_atual() # Limpa os widgets da casa anterior
@@ -976,9 +976,7 @@ class Tela_Jogo:
         self.root.after(1500, lambda: self._processar_resultado_batalha(numero_sorteado, casas_avanco, casas_retrocesso, vida))
         
 
-
-
-    def mostrar_mensagem_vitoria_ou_derrota(self, titulo, mensagem, duracao):
+    def mostrar_mensagem_vitoria_ou_derrota(self, titulo, mensagem, duracao): # abre a janelinha GANHOU! / PERDEU!
         """Exibe uma janela de mensagem temporária."""
         janela_mensagem = tk.Toplevel()
         janela_mensagem.title(titulo)
@@ -1029,7 +1027,7 @@ class Tela_Jogo:
         print(f'Casa atual depois da batalha: {self.back_end.casa_atual}')
         
         
-                # Uso dentro da função _processar_resultado_batalha
+        # Uso dentro da função _processar_resultado_batalha
         if vitoria:
             self.mostrar_mensagem_vitoria_ou_derrota(
                 "Victory!", 
@@ -1221,15 +1219,48 @@ space {self.back_end.casa_atual}.""",
             self.back_end.casa_atual -= casas_retrocesso
         self.back_end.player_pontos -= pontos_menos 
         self.back_end.player_xp -= vida_menos
+        
+        
+        # TESTE DENTRO DESSA FUNÇÃO!!
+        if casas_avanco  >= 1:
+            self.mostrar_mensagem_vitoria_ou_derrota(
+                "Advance!", 
+                f"""The gods command:
+                
+Advance to
+space {self.back_end.casa_atual}.""", 
+                duracao=2000  # 2 segundos
+            )
+
+        elif casas_retrocesso >=1:
+            mensagem = (
+                f"The gods command:"
+                f"\nGo back to\nspace {self.back_end.casa_atual}.\n"
+            )
+            if vida_menos >= 1:
+                mensagem += f"\nYou lost 1 life.\n{self.back_end.player_xp} lives remaining."
+            elif self.back_end.player_xp <= 0:
+                mensagem += "\nYou lost all your lives."
+                
+            if vida_mais == 1:  
+                mensagem += f"\nYou gain 1 life.\n{self.back_end.player_xp} lives remaining."  
+            
+            self.mostrar_mensagem_vitoria_ou_derrota(
+                "Defeat!\n", 
+                mensagem, 
+                duracao=3000  # 3 segundos
+            )
+            
+        # TESTE ATÉ AQUI!!!
+          
         # Debug for Back end
         print(f'Pontos do jogador depois da vontade dos deuses: {self.back_end.player_pontos}') # Debug
         print(f'Casa atual depois da vontade dos deuses: {self.back_end.casa_atual}')# Debug
         # Atualiza a interface
         self.limpar_widgets_casa_atual()
         self.atualizar_tela()
-        self.carregar_casa(self.back_end.casa_atual)
-        
-        self.atualizar_estado_jogo() # verica o termino do jogo
+        self.carregar_casa(self.back_end.casa_atual)       
+        self.atualizar_estado_jogo() # verifica o termino do jogo
         
            
     def botao_vontade_dos_deuses(self, casas_avanco=0, casas_retrocesso=0, vida_mais=0, vida_menos=0, pontos_mais= 0, pontos_menos=0):
@@ -3218,7 +3249,7 @@ and advance
             print(f'Casa das Sirenes - personagem é: {self.back_end.personagem_escolhido_nome}') # For debug
             
             # Se atalanta ou Hipolita avança 2 casas
-            if self.back_end.personagem_escolhido_nome == "Atalanta" or self.back_end.personagem_escolhido_nome == "Hippolyta":
+            if self.back_end.personagem_escolhido_nome == "Atalanta" or self.back_end.personagem_escolhido_nome == "Hippolyta" or self.back_end.personagem_escolhido_nome == "Helena of Troy":
                 self.botao_vontade_dos_deuses(casas_avanco=2, casas_retrocesso=0, vida_mais=0, vida_menos=0, pontos_mais= 60, pontos_menos=0)
                 print(f'Mulher não é afetada pelo canto das sereias - ESCAPOU!!')
             else:
@@ -3635,7 +3666,7 @@ and advance
                 )
             self.label_evento_exibido.place(x=450, y=140, anchor='n')
             self.widgets_casa_atual.append(self.label_evento_exibido)
-            texto_evento = ("""Earn a card
+            texto_evento = ("""Gain 300 points
 and advance
 1 space
 or
@@ -3672,26 +3703,21 @@ move forward
             botao_carta_dioni = ctk.CTkButton(
             self.canvas_abre,
             fg_color='black',
-            width= 50,
-            height= 80,
+            width= 70,
             border_width= 1,
             border_color= "white",
             hover_color=self.back_end.cor_layout_atual,
-            text="Card",
+            text="Gain 300 points",
             font=("Gelio Greek Diner", 18),
-            command=lambda: (self.back_end.escolher_carta_dionisio(),
-                             self.vontade_dos_deuses(casas_avanco=1, casas_retrocesso=0, vida_mais=0, vida_menos=0, pontos_mais=15, pontos_menos=0),
+            command=lambda: (self.vontade_dos_deuses(casas_avanco=1, casas_retrocesso=0, vida_mais=0, vida_menos=0, pontos_mais=300, pontos_menos=0),
                              self.atualizar_tela(),
                              self.carregar_casa(self.back_end.casa_atual)) #
             )
-            botao_carta_dioni.place(x=650, y=350, anchor='n')
-            self.widgets_casa_atual.append(botao_carta_dioni)  # Adiciona o botão à lista 
+            botao_carta_dioni.place(x=650, y=370, anchor='center')
+            self.widgets_casa_atual.append(botao_carta_dioni)  
             
-            print(self.back_end.cartas_player) # for debug
+
             
-            # # implementar Compre uma carta ou avance 3 casas.
-            # self.botao_vontade_dos_deuses(casas_avanco=3, casas_retrocesso=0, vida_mais=0, vida_menos=0, pontos_mais= 45, pontos_menos=0)
-            # #self.chamada_cartas_eventos()
 
 
     def casa_evento_097(self): # casa em branco
@@ -4174,9 +4200,6 @@ Try to pass its guardians."""
      # CASA FINAL !!!!          
 
 
-
-
-
     def casa_evento_120(self): # casa em branco
             self.limpar_widgets_casa_atual() 
             
@@ -4187,7 +4210,7 @@ Try to pass its guardians."""
                 self.image_foto_olimpo= ImageTk.PhotoImage(img)
                 # Cria um Label para exibir a imagem no Canvas
                 self.label_olimpo = tk.Label(self.canvas_abre, image=self.image_foto_olimpo, bg="black")
-                self.label_olimpo.place(x=440, y=275, anchor="center")
+                self.label_olimpo.place(x=330, y=120)
                 
                 self.widgets_casa_atual.append(self.label_imagem_carta)
             except Exception as e:
@@ -4196,23 +4219,21 @@ Try to pass its guardians."""
                 
             label_nome_casa_evento = ctk.CTkLabel(
                     self.root,
-                    text= "Olympus", 
-                    text_color=self.cor_Layout,  
+                    text= "Welcome to\nOlympus", 
+                    text_color= "#FFA500", # LARANJA - > self.cor_Layout,  
                     fg_color="black",
                     font=("Olympus", 24), 
                     )
-            label_nome_casa_evento.place(x=670, y=120, anchor ="n")
+            label_nome_casa_evento.place(x=680, y=130, anchor ="n")
             self.widgets_casa_atual.append(label_nome_casa_evento)                
 
             texto_evento = ("""You have won!"
 "Now you can ask 
 the Gods for 
 your boon!"
-
 "They will grant it 
 to you, or maybe not,
 who knows? "
-
 "The Greek Gods 
 are temperamental."""
     )
@@ -4224,15 +4245,46 @@ are temperamental."""
                 fg_color="black",
                 font=("Cambria", 17), 
             )
-            label_descricao_evento.place(x=670, y=160, anchor ="n")
+            label_descricao_evento.place(x=680, y=190, anchor ="n")
             self.widgets_casa_atual.append(label_descricao_evento) 
             
+            # Score
+            botao_score = ctk.CTkButton(
+            self.canvas_abre,
+            width= 100,
+            fg_color= self.cor_Layout, #'#FF0000', RED
+            hover_color="#FFA500", #self.back_end.cores_layout['laranja']  # "#FFA500"
+            text="View score",
+            text_color="black",  
+            font= ("Gelio Fasolada", 18),
+            command=lambda: (self.atualizar_cor_layout(),
+                             self.casa_evento_126() )
+        )
+            botao_score.place(x=420, y=405, anchor="n")
+            self.widgets_dinamicos.append(botao_score)
             
+            
+            # registrar_vitoria
+            botao_registrar_vitoria = ctk.CTkButton(
+            self.canvas_abre,
+            width= 100,
+            fg_color= self.cor_Layout, #'#FF0000', RED
+            hover_color="#FFA500", #self.back_end.cores_layout['laranja']  # "#FFA500"
+            text="Record victory", 
+            font= ("Gelio Fasolada", 18),
+            text_color="black", 
+            command=lambda: (self.atualizar_cor_layout(),
+                             self.casa_evento_126() )
+        )
+            botao_registrar_vitoria.place(x=550, y=405, anchor="n")
+            self.widgets_dinamicos.append(botao_registrar_vitoria)    
+            
+             
             # Botao restart GAME
             botao_iniciar = ctk.CTkButton(
             self.canvas_abre,
             width= 100,
-            fg_color= self.cor_Layout, #'#FF0000', RED
+            fg_color= '#FF0000', #'#FF0000', RED
             hover_color="#FFA500", #self.back_end.cores_layout['laranja']  # "#FFA500"
             text="Restart Game", 
             font= ("Gelio Fasolada", 18),
@@ -4240,7 +4292,7 @@ are temperamental."""
                              self.atualizar_cor_layout(),
                              self.telas_iniciais.tela_02())
         )
-            botao_iniciar.place(x=670, y=400, anchor="n")
+            botao_iniciar.place(x=690, y=405, anchor="n")
             self.widgets_dinamicos.append(botao_iniciar)    
                 
                         
@@ -4450,6 +4502,23 @@ are temperamental."""
         botao_avance.place(x=650, y=200, anchor="center")
         self.widgets_casa_atual.append(botao_avance)
         
+        
+        botao_skip= ctk.CTkButton(
+        self.canvas_abre,
+        fg_color='black',
+        width= 70,
+        border_color= "white",
+        border_width= 1,
+        hover_color=self.cor_Layout,
+        text="Go back 1 space",
+        font=("Gelio Greek Diner", 18),
+        command=lambda: (self.vontade_dos_deuses(casas_avanco=0, casas_retrocesso=1, vida_mais=0, vida_menos=0, pontos_mais=0, pontos_menos=0),
+                         self.remover_carta('Aphrodite'),
+                         self.atualizar_cartas(),
+                         self.carregar_casa(self.back_end.casa_atual)))
+        botao_skip.place(x=650, y=300, anchor="center")
+        self.widgets_casa_atual.append(botao_skip)  
+        
         self.botao_nao_usar_carta()
         
         
@@ -4508,8 +4577,24 @@ are temperamental."""
         
         self.chama_foto_carta(1) # index Apolo 
          
-        self.chamada_do_dado_batalha_carta_deuses(1,0,0,"Apollo")     
+        self.chamada_do_dado_batalha_carta_deuses(1,0,0,"Apollo")  
         
+         # SKIP
+        botao_skip= ctk.CTkButton(
+        self.canvas_abre,
+        fg_color='black',
+        width= 70,
+        border_color= "white",
+        border_width= 1,
+        hover_color=self.cor_Layout,
+        text="Skip 1 space",
+        font=("Gelio Greek Diner", 18),
+        command=lambda: (self.vontade_dos_deuses(casas_avanco=1, casas_retrocesso=0, vida_mais=0, vida_menos=0, pontos_mais=15, pontos_menos=0),
+                         self.remover_carta('Apollo'),
+                         self.atualizar_cartas(),
+                         self.carregar_casa(self.back_end.casa_atual)))
+        botao_skip.place(x=650, y=140, anchor="center")
+        self.widgets_casa_atual.append(botao_skip)   
         self.botao_nao_usar_carta()
              
         
@@ -4580,13 +4665,31 @@ are temperamental."""
         hover_color=self.cor_Layout,
         text="Gain one life",
         font=("Gelio Greek Diner", 18),
-        command=lambda: (self.vontade_dos_deuses(casas_avanco=0, casas_retrocesso=0, vida_mais=1, vida_menos=0, pontos_mais=15, pontos_menos=0),
+        command=lambda: (self.vontade_dos_deuses(casas_avanco=1, casas_retrocesso=0, vida_mais=1, vida_menos=0, pontos_mais=15, pontos_menos=0),
                          self.remover_carta('Hades'),
                          self.atualizar_cartas(),
                          self.carregar_casa(self.back_end.casa_atual))
         )
         botao_avance.place(x=650, y=200, anchor="center")
         self.widgets_casa_atual.append(botao_avance)
+        
+        # SKIP
+        botao_skip= ctk.CTkButton(
+        self.canvas_abre,
+        fg_color='black',
+        width= 70,
+        border_color= "white",
+        border_width= 1,
+        hover_color=self.cor_Layout,
+        text="Skip 1 space",
+        font=("Gelio Greek Diner", 18),
+        command=lambda: (self.vontade_dos_deuses(casas_avanco=1, casas_retrocesso=0, vida_mais=0, vida_menos=0, pontos_mais=15, pontos_menos=0),
+                         self.remover_carta('Hades'),
+                         self.atualizar_cartas(),
+                         self.carregar_casa(self.back_end.casa_atual)))
+        botao_skip.place(x=650, y=300, anchor="center")
+        self.widgets_casa_atual.append(botao_skip)
+
         
         self.botao_nao_usar_carta()
     
@@ -4596,7 +4699,24 @@ are temperamental."""
         
         self.chama_foto_carta(5) # index Hefesto 
         
-        self.chamada_do_dado_batalha_carta_deuses(1,0,0,"Hephaestus")     
+        self.chamada_do_dado_batalha_carta_deuses(1,0,0,"Hephaestus")   
+        
+        # SKIP
+        botao_skip= ctk.CTkButton(
+        self.canvas_abre,
+        fg_color='black',
+        width= 70,
+        border_color= "white",
+        border_width= 1,
+        hover_color=self.cor_Layout,
+        text="Go back 1 space",
+        font=("Gelio Greek Diner", 18),
+        command=lambda: (self.vontade_dos_deuses(casas_avanco=0, casas_retrocesso=1, vida_mais=0, vida_menos=0, pontos_mais=0, pontos_menos=0),
+                         self.remover_carta('Hephaestus'),
+                         self.atualizar_cartas(),
+                         self.carregar_casa(self.back_end.casa_atual)))
+        botao_skip.place(x=650, y=140, anchor="center")
+        self.widgets_casa_atual.append(botao_skip)     
         
         self.botao_nao_usar_carta()
          
@@ -4615,7 +4735,7 @@ are temperamental."""
         hover_color=self.cor_Layout,
         text="Gain one life",
         font=("Gelio Greek Diner", 18),
-        command=lambda: (self.vontade_dos_deuses(casas_avanco=0, casas_retrocesso=0, vida_mais=1, vida_menos=0, pontos_mais=15, pontos_menos=0),
+        command=lambda: (self.vontade_dos_deuses(casas_avanco=1, casas_retrocesso=0, vida_mais=1, vida_menos=0, pontos_mais=15, pontos_menos=0),
                          self.remover_carta('Hera'),
                          self.atualizar_cartas(),
                          self.carregar_casa(self.back_end.casa_atual))
