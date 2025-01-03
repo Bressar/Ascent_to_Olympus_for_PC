@@ -2,18 +2,24 @@
 # criado:  18/12/24
 # atualizado: 02/01/25
 
+# até aqui sem BD!!
+
 import ctypes
 import tkinter as tk
 from tkinter import font
 from tkinter import filedialog, messagebox, Label, Tk, Canvas, PhotoImage
 import random
 from random import randint
+import sqlite3
+
 
 class Back_End:
     def __init__(self):
         print(f"Instância de Back_End criada: {id(self)}") # for debug
         self.personagem_escolhido_nome = "Helena of Troy"
-        self.personagem_escolhido_about = "Return and select a player\nto start"
+        self.personagem_escolhido_about = """The woman whose beauty sparked a war,
+She dreams of peace after a decade of strife,
+but her name echoes through time as a legend."""
         self.personagem_escolhido_imagem = None       
         self.player_xp = 30 # tá como XP mas são as vidas do player o certo seria: HP
         self.player_pontos = 0    
@@ -428,17 +434,6 @@ or advance
             print(f"- {carta['nome']}: {carta['action']}")
             print(f"- {carta['imagem']}: {carta['imagem_pequena']}")
       
-    # Falta testar!
-    def escolher_carta_dionisio(self):
-        # Sorteia um número aleatório entre 1 e 12
-        numero_sorteado = str(random.randint(1, 12))  # Convertido para string, pois as chaves no dic_cards são strings        
-         # Se a lista estiver vazia, inicializa com a carta sorteada
-        self.cartas_player.append(self.dic_cards[numero_sorteado])
-        
-        # Garante que a lista de cartas do jogador não exceda o limite de 3
-        if len(self.cartas_player) > 3:
-            self.cartas_player = self.cartas_player[:3]  # Mantém apenas os primeiros 3 elementos
-
        
     def load_font(self, font_path):  # Método para carregar fontes personalizadas
         FR_PRIVATE = 0x10
@@ -564,3 +559,21 @@ to start""",
             "imagem_pequena": "images/carta_persephone_p.png"
         }  ] # cartas do jogador na partida, máximo 3 cartas
         
+    # def create_banco_de_dados(self):
+    #     with sqlite3.connect(self.db_path) as conn:
+    #         cursor = conn.cursor()
+    #         cursor.execute("""
+    #             CREATE TABLE IF NOT EXISTS placar (
+    #                 id INTEGER PRIMARY KEY AUTOINCREMENT,
+    #                 name_user TEXT NOT NULL UNIQUE = > virá de um campo para o user preencher
+    #                 character used TEXT NOT NULL UNIQUE, => recebe de self.personagem_escolhido_nome
+    #                 points INTEGER NOT NULL, => recebe de self.player_pontos
+    #                 lives INTEGER NOT NULL, => recebe de self.player_xp 
+                    
+    #             )
+    #         """)
+        
+        
+    #     self.personagem_escolhido_nome = None       
+    #     self.player_xp = 0 # tá como XP mas são as vidas do player o certo seria: HP
+    #     self.player_pontos = 0    

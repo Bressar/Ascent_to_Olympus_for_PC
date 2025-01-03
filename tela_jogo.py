@@ -437,7 +437,7 @@ class Tela_Jogo:
             self.back_end.cor_layout_atual = self.back_end.cores_layout["laranja"]
         elif self.back_end.casa_atual <= 80:
             self.back_end.cor_layout_atual = self.back_end.cores_layout["vermelho"]
-        elif self.back_end.casa_atual <= 96:
+        elif self.back_end.casa_atual <= 95:
             self.back_end.cor_layout_atual = self.back_end.cores_layout["rosa"]
         elif self.back_end.casa_atual <= 112:
             self.back_end.cor_layout_atual = self.back_end.cores_layout["roxo"]
@@ -3666,6 +3666,7 @@ and advance
                 )
             self.label_evento_exibido.place(x=450, y=140, anchor='n')
             self.widgets_casa_atual.append(self.label_evento_exibido)
+            
             texto_evento = ("""Gain 300 points
 and advance
 1 space
@@ -3691,12 +3692,12 @@ move forward
             border_color= "white",
             border_width= 1,
             hover_color=self.cor_Layout,
-            text="Advance",
+            text="Advance 3 spaces",
             font=("Gelio Greek Diner", 18),
             command=lambda: (self.vontade_dos_deuses(casas_avanco=3, casas_retrocesso=0, vida_mais=0, vida_menos=0, pontos_mais=45, pontos_menos=0),
                             self.atualizar_cartas(),
                             self.carregar_casa(self.back_end.casa_atual)))
-            botao_avance.place(x=450, y=370, anchor="center")
+            botao_avance.place(x=650, y=320, anchor="n")
             self.widgets_casa_atual.append(botao_avance)
         
             # Botão carta 1
@@ -3713,12 +3714,9 @@ move forward
                              self.atualizar_tela(),
                              self.carregar_casa(self.back_end.casa_atual)) #
             )
-            botao_carta_dioni.place(x=650, y=370, anchor='center')
+            botao_carta_dioni.place(x=650, y=400, anchor='n')
             self.widgets_casa_atual.append(botao_carta_dioni)  
             
-
-            
-
 
     def casa_evento_097(self): # casa em branco
         self.limpar_widgets_casa_atual()        
@@ -4203,20 +4201,18 @@ Try to pass its guardians."""
     def casa_evento_120(self): # casa em branco
             self.limpar_widgets_casa_atual() 
             
-            try:
-                # Carrega a imagem usando PIL
-                img = Image.open("images/olimpo.png") # iMAGEM DO MONTE OLIMPO
-                # Converte a imagem para PhotoImage
-                self.image_foto_olimpo= ImageTk.PhotoImage(img)
-                # Cria um Label para exibir a imagem no Canvas
-                self.label_olimpo = tk.Label(self.canvas_abre, image=self.image_foto_olimpo, bg="black")
-                self.label_olimpo.place(x=330, y=120)
-                
-                self.widgets_casa_atual.append(self.label_imagem_carta)
-            except Exception as e:
-                print(f'Imagem não encontrada -> {e}') 
-                
-                
+            
+           #IMAGEM DA CASA # iMAGEM DO MONTE OLIMPO
+            self.image_evento_exibido = PhotoImage(file="images/olimpo.png")
+            self.label_evento_exibido = tk.Label(
+                    self.root,
+                    image=self.image_evento_exibido,
+                    bg="black"
+                )
+            self.label_evento_exibido.place(x=330, y=120)
+            self.widgets_casa_atual.append(self.label_evento_exibido)
+            
+            # titulo welcome to olimpo       
             label_nome_casa_evento = ctk.CTkLabel(
                     self.root,
                     text= "Welcome to\nOlympus", 
@@ -4252,32 +4248,29 @@ are temperamental."""
             botao_score = ctk.CTkButton(
             self.canvas_abre,
             width= 100,
-            fg_color= self.cor_Layout, #'#FF0000', RED
-            hover_color="#FFA500", #self.back_end.cores_layout['laranja']  # "#FFA500"
+            fg_color= "#4DC2F5", # AZUL     
+            hover_color= "#FFA500", # Laranja
             text="View score",
-            text_color="black",  
-            font= ("Gelio Fasolada", 18),
+            font= ("Gelio Fasolada", 18), # text_color="black",  
             command=lambda: (self.atualizar_cor_layout(),
                              self.casa_evento_126() )
         )
             botao_score.place(x=420, y=405, anchor="n")
-            self.widgets_dinamicos.append(botao_score)
-            
-            
+            self.widgets_casa_atual.append(botao_score)
+                        
             # registrar_vitoria
             botao_registrar_vitoria = ctk.CTkButton(
             self.canvas_abre,
             width= 100,
-            fg_color= self.cor_Layout, #'#FF0000', RED
-            hover_color="#FFA500", #self.back_end.cores_layout['laranja']  # "#FFA500"
+            fg_color= "#2DCD70", # VERDE      #'#FF0000', RED
+            hover_color= "#FFA500", #self.back_end.cores_layout['laranja']  # "#FFA500"
             text="Record victory", 
-            font= ("Gelio Fasolada", 18),
-            text_color="black", 
+            font= ("Gelio Fasolada", 18), # text_color="black", 
             command=lambda: (self.atualizar_cor_layout(),
                              self.casa_evento_126() )
         )
             botao_registrar_vitoria.place(x=550, y=405, anchor="n")
-            self.widgets_dinamicos.append(botao_registrar_vitoria)    
+            self.widgets_casa_atual.append(botao_registrar_vitoria)    
             
              
             # Botao restart GAME
@@ -4293,7 +4286,7 @@ are temperamental."""
                              self.telas_iniciais.tela_02())
         )
             botao_iniciar.place(x=690, y=405, anchor="n")
-            self.widgets_dinamicos.append(botao_iniciar)    
+            self.widgets_casa_atual.append(botao_iniciar)    
                 
                         
 
