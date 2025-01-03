@@ -11,11 +11,15 @@ from tkinter import filedialog, messagebox, Label, Tk, Canvas, PhotoImage
 import random
 from random import randint
 import sqlite3
+import os
 
 
 class Back_End:
     def __init__(self):
-        print(f"Instância de Back_End criada: {id(self)}") # for debug
+        self.db_path = "banco_de_dados/score.db"
+        
+        self.name_user = 'None'
+        
         self.personagem_escolhido_nome = "Helena of Troy"
         self.personagem_escolhido_about = """The woman whose beauty sparked a war,
 She dreams of peace after a decade of strife,
@@ -522,7 +526,7 @@ or advance
         if self.player_xp <= 0:
             return "game_over"
         elif self.casa_atual >= 120:
-            return "game_win"
+            return "game_win"            
         return None
     
     
@@ -559,21 +563,57 @@ to start""",
             "imagem_pequena": "images/carta_persephone_p.png"
         }  ] # cartas do jogador na partida, máximo 3 cartas
         
-    # def create_banco_de_dados(self):
+   
+    def create_banco_de_dados(self):
+        os.makedirs(os.path.dirname(self.db_path), exist_ok=True)
+        with sqlite3.connect(self.db_path) as conn:
+            cursor = conn.cursor()
+            cursor.execute("""
+                CREATE TABLE IF NOT EXISTS placar (
+                    id INTEGER PRIMARY KEY AUTOINCREMENT,
+                    name_user TEXT UNIQUE,
+                    character_used TEXT NOT NULL,
+                    points INTEGER NOT NULL,
+                    lives INTEGER NOT NULL
+                )
+            """)
+
+
+    def inserir_dados_placar(self):
+        with sqlite3.connect(self.db_path) as conn:
+            cursor = conn.cursor()
+            cursor.execute("""
+                INSERT OR REPLACE INTO placar (id, name_user, character_used, points, lives)
+                VALUES (
+                    (SELECT id FROM placar WHERE name_user = ?),
+                    ?, ?, ?, ?
+                )
+            """, (self.name_user, self.name_user, self.personagem_escolhido_nome, self.player_pontos, self.player_xp))
+            conn.commit()
+
+    # def inserir_dados_placar(self):
     #     with sqlite3.connect(self.db_path) as conn:
     #         cursor = conn.cursor()
     #         cursor.execute("""
-    #             CREATE TABLE IF NOT EXISTS placar (
-    #                 id INTEGER PRIMARY KEY AUTOINCREMENT,
-    #                 name_user TEXT NOT NULL UNIQUE = > virá de um campo para o user preencher
-    #                 character used TEXT NOT NULL UNIQUE, => recebe de self.personagem_escolhido_nome
-    #                 points INTEGER NOT NULL, => recebe de self.player_pontos
-    #                 lives INTEGER NOT NULL, => recebe de self.player_xp 
-                    
-    #             )
-    #         """)
+    #             INSERT INTO placar (name_user, character_used, points, lives)
+    #             VALUES (?, ?, ?, ?)
+    #         """, (self.name_user, self.personagem_escolhido_nome, self.player_pontos, self.player_xp))
+    #         conn.commit()
+
+   
+    def exibir_placar(self):
+        with sqlite3.connect(self.db_path) as conn:
+            cursor = conn.cursor()
+            cursor.execute("""
+                SELECT * FROM placar
+                ORDER BY points DESC
+            """)
+            resultados = cursor.fetchall()
+            for row in resultados:
+                name_user = row[1] if row[1] else ""
+                print(f"ID: {row[0]}, Nome: {name_user}, Personagem: {row[2]}, Pontos: {row[3]}, Vidas: {row[4]}")
+                
+                
+    def inserir_name_user(self, nome):
+        self.name_user = nome
         
-        
-    #     self.personagem_escolhido_nome = None       
-    #     self.player_xp = 0 # tá como XP mas são as vidas do player o certo seria: HP
-    #     self.player_pontos = 0    

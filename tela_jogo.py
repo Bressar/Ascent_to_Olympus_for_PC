@@ -3,6 +3,8 @@
 # atualizado: 03/01/25
 
 import tkinter as tk
+from tkinter import ttk # treview pra janela de exibição do BD
+
 from tkinter import font
 from tkinter import filedialog, messagebox, Label, Tk, Canvas, PhotoImage
 import customtkinter as ctk
@@ -10,6 +12,7 @@ from customtkinter import CTkImage, CTkFont
 from PIL import Image, ImageDraw, ImageFont, ImageTk
 import random
 from back_end import Back_End
+import sqlite3
 
 class Tela_Jogo:
     def __init__(self, root, telas_iniciais, interface_jogo, back_end):
@@ -73,8 +76,8 @@ class Tela_Jogo:
         
         if estado == "game_over":
             self.game_over()
-        # elif estado == "game_win":
-        #     self.game_win()        
+        elif estado == "game_win":
+            self.back_end.create_banco_de_dados() # quando o jogo acaba cria um banco de dados se não existir...    
         else:
             print("O jogo continua...") # Debug
 
@@ -913,6 +916,8 @@ class Tela_Jogo:
             self.casa_evento_125()
         elif casa_atual == 126:
             self.casa_evento_126()
+        elif casa_atual == 127:
+            self.casa_evento_127()
 
         else:
             print(f"Nenhum evento configurado para a casa {casa_atual}.")
@@ -1059,11 +1064,6 @@ space {self.back_end.casa_atual}.""",
         self.carregar_casa(self.back_end.casa_atual)        
         self.atualizar_estado_jogo() # verica o termino do jogo
              
-
-
-
-
-
 
     def chamada_do_dado_batalha(self, casas_avanco=0, casas_retrocesso=0, vida=0):
         # Ganha +4
@@ -4267,7 +4267,7 @@ are temperamental."""
             text="Record victory", 
             font= ("Gelio Fasolada", 18), # text_color="black", 
             command=lambda: (self.atualizar_cor_layout(),
-                             self.casa_evento_126() )
+                             self.casa_evento_127() )
         )
             botao_registrar_vitoria.place(x=550, y=405, anchor="n")
             self.widgets_casa_atual.append(botao_registrar_vitoria)    
@@ -4312,10 +4312,196 @@ are temperamental."""
             self.limpar_widgets_casa_atual()        
             self.casa_evento_120()
             
+  
+  
+    def casa_evento_126(self):  # Exibe o placar geral do banco de dados
+        self.limpar_widgets_casa_atual()
+        
+        with sqlite3.connect(self.back_end.db_path) as conn:
+            cursor = conn.cursor()
+            cursor.execute("""
+                SELECT points, character_used, name_user
+                FROM placar
+                ORDER BY points DESC
+            """)
+            resultados = cursor.fetchall()
+
+        # Frame para conter a tabela
+        frame = ctk.CTkFrame(self.root, width=420, height=270, fg_color="#2c2c2c")  # Fundo cinza escuro
+        frame.place(x=340, y=120)  # Define a posição e tamanho do frame
+        self.widgets_casa_atual.append(frame)
+
+        # Criar Treeview com CustomTkinter para estilo
+        tree = ttk.Treeview(
+            frame,
+            columns=("Pontos", "Personagem", "Nome"),
+            show="headings",
+            style="Custom.Treeview"
+        )
+        tree.heading("Pontos", text="Points")
+        tree.heading("Personagem", text="Player")
+        tree.heading("Nome", text="Name")
+        
+        
+        # Definir larguras fixas para cada coluna
+        tree.column("Pontos", width=50, anchor="center")  # Largura de 100 pixels
+        tree.column("Personagem", width=60, anchor="center")  # Largura de 150 pixels
+        tree.column("Nome", width=160, anchor="center")  # Largura de 150 pixels
+        
+
+        # Estilizar Treeview
+        style = ttk.Style()
+        style.theme_use("clam")  # Usa um tema mais personalizável
+        
+        # até aqui
+        style.configure(
+            "Custom.Treeview",
+            background= "#2c2c2c",  # Fundo cinza escuro "black",
+            foreground="white",
+            rowheight=25,
+            fieldbackground= "#2c2c2c",  # Fundo cinza escuro"black",
+            font=("Cambria", 12),  # Define a fonte das linhas
+            borderwidth=0  # Remove bordas das células
+        )
+        
+        # Ocultar bordas do frame ao redor da Treeview
+        style.layout(
+            "Custom.Treeview",
+            [("Treeview.treearea", {"sticky": "nswe"})]  # Oculta as bordas externas
+        )
+                
+            # Estilo para cabeçalhos
+        style.configure(
+            "Custom.Treeview.Heading",
+            background="#2c2c2c",  # Fundo cinza escuro "black",
+            foreground= "orange", #self.cor_Layout, #"orange",  # Cor do texto dos cabeçalhos
+            font=("Gelio Fasolada", 15),  # Fonte dos cabeçalhos
+            relief="flat"  # Remove a borda ao redor dos cabeçalhos
+        )
+        
+        style.map(
+            "Custom.Treeview",
+            background=[("selected", "#444444")],  # Cor de seleção #  "#333333"
+            foreground=[("selected", "white")],
+        )
+
+        # Adicionar barra de rolagem
+        scrollbar = ttk.Scrollbar(frame, orient="vertical", command=tree.yview)
+        tree.configure(yscroll=scrollbar.set)
+        scrollbar.place(relx=0.95, rely=0, relheight=1)  # Posiciona a barra de rolagem
+        tree.place(relx=0, rely=0, relwidth=0.95, relheight=1)  # Treeview ocupa o restante do espaço
+
+        # Inserir dados na Treeview
+        for row in resultados:
+            tree.insert("", "end", values=row)
+
+        # Botão de restart
+        botao_iniciar = ctk.CTkButton(
+            self.canvas_abre,
+            width=100,
+            fg_color='#FF0000',
+            hover_color="#FFA500",
+            text="Restart Game",
+            font=("Gelio Fasolada", 18),
+            command=lambda: (self.back_end.restart_game(),
+                            self.atualizar_cor_layout(),
+                            self.telas_iniciais.tela_02())
+        )
+        botao_iniciar.place(x=550, y=405, anchor="n")
+        self.widgets_casa_atual.append(botao_iniciar)
+
+    
+    
+        
+                        
+    def casa_evento_127(self): # Gravar Vitoria no banco de dados
+            self.limpar_widgets_casa_atual() 
             
-    def casa_evento_126(self): # casa em branco
-            self.limpar_widgets_casa_atual()        
-            print('implementar placar!!')
+            # Label NAME
+            label_name = ctk.CTkLabel(self.root,
+                                    text="Enter your name:",
+                                    text_color="white",
+                                    fg_color="black",
+                                    font=("Gelio Fasolada", 20)
+                                    )
+            label_name.place(x= 550, y= 140, anchor='n')
+            self.widgets_casa_atual.append(label_name) 
+
+            # Campo de entrada (CTkEntry)
+            quadro_entry = ctk.CTkEntry(self.root, width=200)
+            quadro_entry.place(x= 550, y= 175, anchor='n')
+            self.widgets_casa_atual.append(quadro_entry) 
+            
+            # Botão para salvar o nome
+            save_button = ctk.CTkButton(
+                self.root,
+                width= 100,
+                text="Save Name",
+                text_color="white",
+                fg_color=self.cor_Layout,
+                hover_color= "#FFA500", # Laranja
+                font=("Gelio Fasolada",16),               
+                command=lambda: [
+            self.back_end.inserir_name_user(quadro_entry.get()),
+            self.back_end.inserir_dados_placar(),
+            print(f'Nome do user salvo: {self.back_end.name_user}')  # Para debug
+             ])
+            save_button.place(x=550, y=215, anchor='n')
+            self.widgets_casa_atual.append(save_button)
+            
+            # Para debug, exiba o nome salvo após o clique no botão
+            print("Botão configurado. Clique para salvar o nome.")
+            
+             
+            # Score
+            botao_score = ctk.CTkButton(
+            self.canvas_abre,
+            width= 100,
+            fg_color= "#4DC2F5", # AZUL     
+            hover_color= "#FFA500", # Laranja
+            text="View score",
+            font= ("Gelio Fasolada", 18), # text_color="black",  
+            command=lambda: (self.atualizar_cor_layout(),
+                             self.casa_evento_126() )
+        )
+            botao_score.place(x=465, y=405, anchor="n")
+            self.widgets_casa_atual.append(botao_score)
+                        
+            # Botao restart GAME
+            botao_iniciar = ctk.CTkButton(
+            self.canvas_abre,
+            width= 100,
+            fg_color= '#FF0000', #'#FF0000', RED
+            hover_color="#FFA500", #self.back_end.cores_layout['laranja']  # "#FFA500"
+            text="Restart Game", 
+            font= ("Gelio Fasolada", 18),
+            command=lambda: (self.back_end.restart_game(),
+                             self.atualizar_cor_layout(),
+                             self.telas_iniciais.tela_02())
+        )
+            botao_iniciar.place(x=635, y=405, anchor="n")
+            self.widgets_casa_atual.append(botao_iniciar)    
+            
+
+    def casa_evento_128(self): # You Loose!!
+            self.limpar_widgets_casa_atual() 
+            
+            # Botao restart GAME
+            botao_iniciar = ctk.CTkButton(
+            self.canvas_abre,
+            width= 100,
+            fg_color= '#FF0000', #'#FF0000', RED
+            hover_color="#FFA500", #self.back_end.cores_layout['laranja']  # "#FFA500"
+            text="Restart Game", 
+            font= ("Gelio Fasolada", 18),
+            command=lambda: (self.back_end.restart_game(),
+                             self.atualizar_cor_layout(),
+                             self.telas_iniciais.tela_02())
+        )
+            botao_iniciar.place(x=635, y=405, anchor="n")
+            self.widgets_casa_atual.append(botao_iniciar)   
+                    
+            
 
 
 
