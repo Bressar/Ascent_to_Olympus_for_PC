@@ -1,50 +1,37 @@
 # telas_iniciais do jogo - By Bressar
 # criado:  18/12/24
-# atualizado: 02/01/25
+# atualizado: 04/01/25
 
-
-import ctypes
-import tkinter as tk
-from tkinter import font
-from tkinter import filedialog, messagebox, Label, Tk, Canvas, PhotoImage
+from tkinter import  Canvas, PhotoImage
 import customtkinter as ctk
-from customtkinter import CTkImage, CTkFont 
-from PIL import Image, ImageDraw, ImageFont, ImageTk
-
+from PIL import Image, ImageTk
 from back_end import Back_End
 from tela_jogo import Tela_Jogo
 import webbrowser
-# from cartas import Cartas
-
 
 class Telas:
     def __init__(self, root, interface_jogo):
         self.root = root  # Referência à janela principal
-        self.interface_jogo = interface_jogo  # Referência à instância de Interface_Jogo
-
-        self.widgets_dinamicos = []  # Lista para armazenar widgets dinâmicos
-          
+        self.interface_jogo = interface_jogo  # Referência à instância de Interface_Jogo -> app.py
+        self.widgets_dinamicos = []  # Lista para armazenar widgets dinâmicos        
         self.back_end = Back_End()
         self.back_end.load_fonts()
-
-        # Passa a instância de Cartas para Tela_Jogo
-        self.tela_jogo = Tela_Jogo(root, self, interface_jogo, self.back_end)  # Passa a instância de Cartas
+        self.tela_jogo = Tela_Jogo(root, self, interface_jogo, self.back_end) 
         
             
-    def on_button_click_personagem(self, personagem):
+    def on_button_click_personagem(self, personagem): # escolher personagem
         """Lida com o clique no botão, atualiza a imagem e chama o backend."""
         # Atualiza a imagem para o estado de clique
         image_click = getattr(self, f"image_{personagem.lower()}_click", None)
         img_id = getattr(self, f"img_{personagem.lower()}_id", None)
         if img_id and image_click:
             self.canvas_abre.itemconfig(img_id, image=image_click)
-
         # Atualiza o personagem no backend
         self.back_end.escolher_personagem(personagem)        
         print(f"Personagem {personagem} clicado e selecionado!")
       
-        
-    def on_button_click_carta(self, carta_num):
+         
+    def on_button_click_carta(self, carta_num): # escolher carta
         """Lida com o clique na carta, atualiza a imagem e chama o backend."""
         # Seleciona a imagem de clique com base no número da carta
         image_click = getattr(self, f"image_carta_escolha_click{carta_num}", None)  # Usando o número da carta
@@ -52,43 +39,37 @@ class Telas:
         if img_id and image_click: # Verifica se as imagens e IDs existem
             # Atualiza a imagem para o estado de clique da carta
             self.canvas_abre.itemconfig(img_id, image=image_click)       
-        # Chama a função do backend para escolher a carta
-        self.back_end.escolher_carta()
+        
+        self.back_end.escolher_carta()# Chama a função do backend para escolher a carta
+        
         print(f"Carta {carta_num} Escolhida!")
         print(f'carta inicial: {self.back_end.carta_inicial}')
         print(f'cartas do jogador: {self.back_end.cartas_player}')
  
 
-
-
-# TELAS
+ # TELAS INICIAIS   # TELAS INICIAIS   # TELAS INICIAIS 
     def tela_01(self):
         self.canvas_abre = Canvas(self.root, width=800, height=600, bg="black", bd=0, highlightthickness=0)
         self.canvas_abre.place(x=0, y=0)  # Posição do Canvas na tela
-        self.widgets_dinamicos.append(self.canvas_abre)
-        
+        self.widgets_dinamicos.append(self.canvas_abre)        
         # Titulo                
         label_titulo = ctk.CTkLabel(
             self.root,
             text= "Ascent To Olympus",
-            text_color='#DAA520',  # Cor do texto
-            bg_color="black",  # Cor de fundo
-            font=("Gelio Fasolada", 45)) # Fonte e tamanho
-           
+            text_color='#DAA520', 
+            bg_color="black",  
+            font=("Gelio Fasolada", 45))           
         label_titulo.place(relx=0.5, y=20, anchor="n")
         self.widgets_dinamicos.append(label_titulo)
-        
         # SubTitulo    
         label_subtitulo = ctk.CTkLabel(
             self.root,
             text= "The Ancient Greek Game",
             text_color='#FF0000',  # Cor do texto vermelho
             bg_color="black",
-            font=("Gelio Greek Diner", 25) )
-                   
+            font=("Gelio Greek Diner", 25) )                   
         label_subtitulo.place(relx=0.5, y=65, anchor="n")
-        self.widgets_dinamicos.append(label_subtitulo)
-        
+        self.widgets_dinamicos.append(label_subtitulo)        
         # Linha           
         self.canvas_abre.create_text(
             400,  # Coordenada X (centralizado na tela)
@@ -98,7 +79,7 @@ class Telas:
             font=("Arial", 12),  # Fonte e Tamanho
             anchor="center")  # Alinhamento centralizado   
                 
-        self.imagem_abre = "images/abre.jpg"
+        self.imagem_abre = "images/abre.jpg"# caminho da imagem do abre
         
         try:
             imagem_tela_01 = Image.open(self.imagem_abre) # Carrega a imagem com Pillow
@@ -109,7 +90,7 @@ class Telas:
             self.canvas_abre.create_image(220, 120, anchor="nw", image=self.imagem_canvas) # posição da imagem
         except FileNotFoundError:
             print("Erro: Não foi possível carregar a imagem:", self.imagem_abre)  
-                    
+        # linha            
         self.canvas_abre.create_text(
             400,  # Coordenada X 
             387,   # Coordenada Y 
@@ -124,33 +105,22 @@ class Telas:
 Roll the dice, collect cards, overcome challenges,and conquer Olympus!
 Move across the board by rolling the dice. Win battles by rolling 4 or more.
 Use cards to overcome obstacles. Collect up to 3 cards."""
-               )
-        
+               )        
         label_texto_abertura = ctk.CTkLabel(
             self.root,
             text=texto_abertura,
-            text_color="white",  # Cor do texto
-            bg_color="black",  # Cor de fundo
-            font=("Cambria", 16)) # Fonte e tamanho      "Olympus" 
+            text_color="white",  
+            bg_color="black", 
+            font=("Cambria", 16))
 
         label_texto_abertura.place(relx=0.5, y=405, anchor="n")
-        self.widgets_dinamicos.append(label_texto_abertura)
-        
-        # # linha        
-        # self.canvas_abre.create_text(
-        #     400,  
-        #     530,   
-        #     text="<><><><><><><><><><><><><><><><><><><><>", 
-        #     fill='#B8860B',  
-        #     font=("Arial", 12),  
-        #     anchor="center")  
+        self.widgets_dinamicos.append(label_texto_abertura)        
                
-        # Botão iniciar
         botao_iniciar = ctk.CTkButton(
             self.canvas_abre,
             width= 100,
             fg_color='#FF0000',
-            hover_color="#FFA500", #self.back_end.cores_layout['laranja']  # "#FFA500"
+            hover_color="#FFA500", # 'laranja'  # "#FFA500"
             text="Become a Legend!", 
             font= ("Gelio Fasolada", 18),
             command=lambda: self.tela_02()
@@ -158,13 +128,12 @@ Use cards to overcome obstacles. Collect up to 3 cards."""
         botao_iniciar.place(relx=0.5, y=520, anchor="n")
         self.widgets_dinamicos.append(botao_iniciar)  
         
-        
         botao_about = ctk.CTkButton(
             self.canvas_abre,
             width= 100,
             text_color= 'gray',
             fg_color='black',
-            hover_color="#FFA500", #self.back_end.cores_layout['laranja']  # "#FFA500"
+            hover_color="#FFA500",
             text="About this game", 
             font= ("Gelio Fasolada", 16),
             command=lambda: self.janela_about()
@@ -172,7 +141,7 @@ Use cards to overcome obstacles. Collect up to 3 cards."""
         botao_about.place(relx=0.5, y=560, anchor="n")
         self.widgets_dinamicos.append(botao_about)    
  
- 
+    # funções do botão ABOUT da Tela 01
     def abrir_link(self):
         webbrowser.open("https://paypal.me/bressargames")
            
@@ -206,7 +175,6 @@ github.com/Bressar
             justify="center" )
         texto.place(relx=0.5, rely=0.4, anchor="center")
                 
-        # Botão para abrir o link
         botao_doar = ctk.CTkButton(
             janela_game_about,
             text="Donate",
@@ -245,22 +213,18 @@ github.com/Bressar
             text= "Ascent To Olympus",
             text_color='#DAA520',  # Cor do texto amarela
             bg_color="black",  
-            font=("Gelio Fasolada", 28)) 
-           
+            font=("Gelio Fasolada", 28))            
         label_titulo.place(relx=0.5, y=10, anchor="n")
-        self.widgets_dinamicos.append(label_titulo)
-        
+        self.widgets_dinamicos.append(label_titulo)        
         # SubTitulo    
         label_subtitulo = ctk.CTkLabel(
             self.root,
             text= "The Ancient Greek Game",
             text_color='#FF0000',  # Cor do texto vermelho
             bg_color="black",
-            font=("Gelio Greek Diner", 17) )
-                   
+            font=("Gelio Greek Diner", 17) )                   
         label_subtitulo.place(relx=0.5, y=40, anchor="n")
-        self.widgets_dinamicos.append(label_subtitulo)
-        
+        self.widgets_dinamicos.append(label_subtitulo)       
         # Linha           
         self.canvas_abre.create_text(
             400,  
@@ -275,7 +239,7 @@ github.com/Bressar
             100,  
             text="Reach Mount Olympus and receive the Gods' gift!",  
             fill='white',
-            font=("Cambria", 15), # Olympus
+            font=("Cambria", 15), 
             anchor="center") 
         
         self.canvas_abre.create_text(
@@ -294,8 +258,7 @@ github.com/Bressar
             font=("Gelio Fasolada", 20),  
             anchor="center") 
                 
-        # Botões Players        
-        
+        # Botões Players                
         # Botão Hippolita
         self.image_hipolita_menu = PhotoImage(file="images/carinha_hipolita_menu.png")
         self.image_hipolita_hover = PhotoImage(file="images/carinha_hipolita_hover.png")
@@ -304,8 +267,7 @@ github.com/Bressar
         # Adiciona a imagem inicial ao Canvas
         self.img_hipolita_id = self.canvas_abre.create_image(400, 240, image=self.image_hipolita_menu)
         # Evento de clique
-        self.canvas_abre.tag_bind(self.img_hipolita_id, '<Button-1>', lambda event: (self.on_button_click_personagem("hippolyta"),self.canvas_abre.itemconfig(self.img_hipolita_id, image=self.image_hipolita_click)))
-        
+        self.canvas_abre.tag_bind(self.img_hipolita_id, '<Button-1>', lambda event: (self.on_button_click_personagem("hippolyta"),self.canvas_abre.itemconfig(self.img_hipolita_id, image=self.image_hipolita_click)))        
         # Evento de hover (mouse entra)
         self.canvas_abre.tag_bind(self.img_hipolita_id, '<Enter>', lambda event: self.canvas_abre.itemconfig(self.img_hipolita_id, image=self.image_hipolita_hover))
         # Evento de hover (mouse sai)
@@ -331,7 +293,6 @@ github.com/Bressar
         self.canvas_abre.tag_bind(self.img_odisseu_id, '<Enter>', lambda event: self.canvas_abre.itemconfig(self.img_odisseu_id, image=self.image_odisseu_hover))
         self.canvas_abre.tag_bind(self.img_odisseu_id, '<Leave>', lambda event: self.canvas_abre.itemconfig(self.img_odisseu_id, image=self.image_odisseu_menu))
         
-
         label_botao_odisseu = ctk.CTkLabel(
             self.root,
             text="Odysseus",
@@ -371,8 +332,7 @@ github.com/Bressar
         self.canvas_abre.tag_bind(self.img_atalanta_id, '<Button-1>', lambda event: (self.on_button_click_personagem("atalanta"), self.canvas_abre.itemconfig(self.img_atalanta_id, image=self.image_atalanta_click)))
         self.canvas_abre.tag_bind(self.img_atalanta_id, '<Enter>', lambda event: self.canvas_abre.itemconfig(self.img_atalanta_id, image=self.image_atalanta_hover))
         self.canvas_abre.tag_bind(self.img_atalanta_id, '<Leave>', lambda event: self.canvas_abre.itemconfig(self.img_atalanta_id, image=self.image_atalanta_menu))
-        
-        
+                
         label_botao_atalanta = ctk.CTkLabel(
             self.root,
             text="Atalanta",
@@ -402,9 +362,8 @@ github.com/Bressar
         )
         label_botao_teseu.place(x=640, y=290, anchor="n")
         self.widgets_dinamicos.append(label_botao_teseu)
-        
-                
-        # CARTAS       
+                        
+        # CARTAS   # CARTAS   # CARTAS   # CARTAS   # CARTAS        
          # Escolha uma carta
         self.canvas_abre.create_text(
         400,  
@@ -447,7 +406,6 @@ github.com/Bressar
         self.canvas_abre.tag_bind(self.img_carta_escolhida_id3, '<Enter>', lambda event: self.canvas_abre.itemconfig(self.img_carta_escolhida_id3 , image=self.image_carta_escolha_hover3))
         self.canvas_abre.tag_bind(self.img_carta_escolhida_id3, '<Leave>', lambda event: self.canvas_abre.itemconfig(self.img_carta_escolhida_id3 , image=self.image_carta_escolha_menu3))
 
-
         # Botão de voltar
         botao_voltar = ctk.CTkButton(
         self.canvas_abre,
@@ -458,12 +416,10 @@ github.com/Bressar
         hover_color="black",
         text="<-",
         font=("Gelio Fasolada", 25),
-        command=lambda: self.tela_01()
-        
+        command=lambda: self.tela_01()        
         )
         botao_voltar.place(x=20, y=550)
         self.widgets_dinamicos.append(botao_voltar)
-
 
     # Botão de avançar
         botao_avancar = ctk.CTkButton(
@@ -475,8 +431,7 @@ github.com/Bressar
         hover_color="black",
         text="->",
         font=("Gelio Fasolada", 25),
-        command=lambda: self.tela_03()
-        
+        command=lambda: self.tela_03()        
         )
         botao_avancar.place(x=730, y=550)
         self.widgets_dinamicos.append(botao_avancar)
@@ -487,7 +442,7 @@ github.com/Bressar
         self.canvas_abre.place(x=0, y=0) 
         self.widgets_dinamicos.append(self.canvas_abre)
             
- # Botão de voltar
+        # Botão de voltar
         botao_voltar = ctk.CTkButton(
         self.canvas_abre,
         width=50,
@@ -510,7 +465,7 @@ github.com/Bressar
             hover_color="#FFA500",
             text="START GAME",
             font=("Gelio Fasolada", 20),
-            command=lambda: self.tela_jogo.tela_game()# vai pra Tela de jogo e carregga a primeira imagem
+            command=lambda: self.tela_jogo.tela_game() # vai pra Tela de jogo e carregga a primeira imagem e carta escolhida
         )
         botao_start.place(x=400, y=550, anchor="n")
         self.widgets_dinamicos.append(botao_start)
@@ -538,8 +493,7 @@ github.com/Bressar
             bg_color="black",  
             font=("Gelio Fasolada", 28))           
         label_titulo.place(relx=0.5, y=10, anchor="n")
-        self.widgets_dinamicos.append(label_titulo)
-        
+        self.widgets_dinamicos.append(label_titulo)       
         # SubTitulo    
         label_subtitulo = ctk.CTkLabel(
             self.root,
@@ -548,8 +502,7 @@ github.com/Bressar
             bg_color="black",
             font=("Gelio Greek Diner", 17) )                   
         label_subtitulo.place(relx=0.5, y=40, anchor="n")
-        self.widgets_dinamicos.append(label_subtitulo)
-        
+        self.widgets_dinamicos.append(label_subtitulo)       
         # Linha           
         self.canvas_abre.create_text(
             400,  
@@ -573,7 +526,7 @@ github.com/Bressar
         # Titulo nome  player             
         label_titulo_nome = ctk.CTkLabel(
             self.root,
-            text= (f"Your player is: {self.back_end.personagem_escolhido_nome}"), # trocar o nome pela variável de sistema
+            text= (f"Your player is: {self.back_end.personagem_escolhido_nome}"), 
             text_color='#FF8C00',  # Cor 255/255, 140/255, 0/255, 1  # DarkOrange
             bg_color="black",  
             font=("Gelio Fasolada", 22),
@@ -594,12 +547,11 @@ github.com/Bressar
         )
         label_descricao_player.place(x=480, y=130, anchor="n")
         self.widgets_dinamicos.append(label_descricao_player)
-
-     
+    
     # Titulo carta              
         label_titulo_carta = ctk.CTkLabel(
             self.root,
-            text= (f'Your initial card is: {self.back_end.carta_inicial[0]["nome"]}'), # Variável de sistema
+            text= (f'Your initial card is: {self.back_end.carta_inicial[0]["nome"]}'), 
             text_color='#FF8C00',  # Cor 255/255, 140/255, 0/255, 1  # DarkOrange
             bg_color="black",  
             font=("Gelio Fasolada", 22),
@@ -609,16 +561,16 @@ github.com/Bressar
         self.widgets_dinamicos.append(label_titulo_carta)
         
         # Texto carta     
-        texto_carta = f'Card abilities: {self.back_end.carta_inicial[0]["action"]} '# "Card abilities: Advance 6 spaces, or roll 2 dice"      
+        texto_carta = f'Card abilities: {self.back_end.carta_inicial[0]["action"]} '# ex.: "Card abilities: Advance 6 spaces, or roll 2 dice"      
           
         label_descricao_carta = ctk.CTkLabel(
             self.root,
-            text= texto_carta, # trocar o nome pela variável de sistema
-            text_color='white',  # Cor 255/255, 140/255, 0/255, 1  # DarkOrange
+            text= texto_carta, 
+            text_color='white', 
             bg_color="black",  
             font=("Cambria", 17) ) 
            
-        label_descricao_carta.place(x=400, y=265, anchor="n") # relx=0.5, y=10, anchor="n"
+        label_descricao_carta.place(x=400, y=265, anchor="n") 
         self.widgets_dinamicos.append(label_descricao_carta)
         
         # Imagem Carta
@@ -641,22 +593,6 @@ github.com/Bressar
             self.image_carta_jogador = PhotoImage(file="images/carta_default.png")
             self.img_carta_layout = self.canvas_abre.create_image(400, 400, image=self.image_carta_jogador)
 
-
-        # try:
-        #     # Carrega a imagem original
-        #     imagem_original = Image.open(self.back_end.carta_inicial[0]["imagem"])           
-        #     # Redimensiona a imagem para 130x200 pixels
-        #     imagem_redimensionada = imagem_original.resize((130, 200), Image.Resampling.LANCZOS)           
-        #     # Converte a imagem redimensionada para PhotoImage (compatível com o Tkinter)
-        #     self.image_carta_jogador = ImageTk.PhotoImage(imagem_redimensionada)           
-        #     # Adiciona a imagem no canvas
-        #     self.img_carta_layout = self.canvas_abre.create_image(400, 400, image=self.image_carta_jogador)
-
-        # except Exception as e:
-        #     print(f"Erro ao carregar ou redimensionar a imagem: {e}")
-        #     self.image_carta_jogador = PhotoImage(file="images/carta_default.png")# Carrega uma imagem padrão em caso de erro
-        #     self.img_carta_layout = self.canvas_abre.create_image(400, 400, image=self.image_carta_jogador)
-
         # Linha           
         self.canvas_abre.create_text(
             400,  
@@ -666,18 +602,3 @@ github.com/Bressar
             font=("Arial", 12), 
             anchor="center")        
  
- 
- 
-
-
-
-
-
-
-
-
-
-
-
-
-

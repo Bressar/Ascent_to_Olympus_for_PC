@@ -1,25 +1,16 @@
 # Funcionalidades do jogo
 # criado:  18/12/24
-# atualizado: 03/01/25
-
-# até aqui sem BD!!
+# atualizado: 04/01/25
 
 import ctypes
-import tkinter as tk
-from tkinter import font
-from tkinter import filedialog, messagebox, Label, Tk, Canvas, PhotoImage
 import random
-from random import randint
 import sqlite3
 import os
 
-
 class Back_End:
     def __init__(self):
-        self.db_path = "banco_de_dados/score.db"
-        
-        self.name_user = 'None'
-        
+        self.db_path = "banco_de_dados/score.db"        
+        self.name_user = 'None'        
         self.personagem_escolhido_nome = "Helena of Troy"
         self.personagem_escolhido_about = """The woman whose beauty sparked a war,
 She dreams of peace after a decade of strife,
@@ -28,7 +19,7 @@ but her name echoes through time as a legend."""
         self.player_xp = 3 # VIDAS ->  tá como XP mas são as vidas do player o certo seria: HP
         self.player_pontos = 0    
         self.casa_atual = 1 # Inicializando com a casa 1
-  
+ 
         self.carta_inicial = [{
             "nome": "No name",
             "action": "Return and select a card to start",
@@ -69,9 +60,8 @@ to start""",
             'roxo': "#9575CD",   # (149/255, 117/255, 205/255)
             'agua': "#5FD3C1",
         }
-        # deixar no default quando terminar o layout
         
-        self.cor_layout_atual = self.cores_layout['azul'] #"default de layout texto azul
+        self.cor_layout_atual = self.cores_layout['azul'] #"default de layout texto azul no inicio
         
         # dicionário dos personagens em jogo
         self.personagens_jogo = [
@@ -453,8 +443,7 @@ or advance
         #print("Fontes disponíveis:", font.families())  # Opcional: listar todas as fontes disponíveis 
         
 
-    def escolher_personagem(self, nome_personagem):
-        # Busca os dados do personagem no dicionário
+    def escolher_personagem(self, nome_personagem): # Busca os dados do personagem no dicionário
         personagem = next(
             (p for p in self.personagens_jogo if p["nome"].lower() == nome_personagem.lower()), None
         )
@@ -469,8 +458,7 @@ or advance
             print(f"Personagem {nome_personagem} não encontrado!")
      
          
-    def remove_carta_usada(self, nome_carta):
-        # Itera sobre as cartas do jogador para encontrar a carta com o nome fornecido
+    def remove_carta_usada(self, nome_carta):# Itera sobre as cartas do jogador para encontrar a carta com o nome fornecido
         print(f'Cartas do player antes de usar a carta: {self.cartas_player}') #Debug
         for carta in self.cartas_player:
             if carta['nome'] == nome_carta:
@@ -500,19 +488,16 @@ or advance
         
         if not carta_selecionada:
             print(f"Erro: Carta com nome '{nome_carta}' não encontrada.")
-            return
-        
+            return        
         # Verifica se a carta já está na lista
         if any(carta["nome"] == nome_carta for carta in self.cartas_player):
             print(f"Erro: A carta '{nome_carta}' já está na lista.")
             return
-
         # Verifica se a lista está cheia
         if len(self.cartas_player) >= 3:
             # Remove o primeiro item (substituição)
             carta_removida = self.cartas_player.pop(0)
             print(f"A lista está cheia. Substituindo a carta '{carta_removida['nome']}' pela nova carta '{nome_carta}'.")
-
         # Adiciona a nova carta à lista
         self.cartas_player.append(carta_selecionada)
         print(f"Carta '{nome_carta}' adicionada com sucesso. Lista atual:")
@@ -520,8 +505,7 @@ or advance
             print(f"- {carta['nome']}: {carta['action']}")
   
     
-    # PARA SABER SE O JOGO ACABOU!!
-    def verificar_condicoes(self):
+    def verificar_condicoes(self): # PARA SABER SE O JOGO ACABOU!!
         """Verifica as condições de game over ou vitória."""
         if self.player_xp <= 0:
             return "game_over"
@@ -530,7 +514,7 @@ or advance
         return None
     
     
-    def restart_game(self): # reinicializa as variaveis do jogo
+    def restart_game(self): # reinicializa as variaveis do jogo p/ default
         self.personagem_escolhido_nome = "No Name"
         self.personagem_escolhido_about = "Return and select a player\nto start"
         self.personagem_escolhido_imagem = None    
@@ -579,7 +563,7 @@ to start""",
             """)
 
 
-    def inserir_dados_placar(self):
+    def inserir_dados_placar(self): # envia o resultado do jogo p/ bancode dados
         with sqlite3.connect(self.db_path) as conn:
             cursor = conn.cursor()
             cursor.execute("""
@@ -591,16 +575,7 @@ to start""",
             """, (self.name_user, self.name_user, self.personagem_escolhido_nome, self.player_pontos, self.player_xp))
             conn.commit()
 
-    # def inserir_dados_placar(self):
-    #     with sqlite3.connect(self.db_path) as conn:
-    #         cursor = conn.cursor()
-    #         cursor.execute("""
-    #             INSERT INTO placar (name_user, character_used, points, lives)
-    #             VALUES (?, ?, ?, ?)
-    #         """, (self.name_user, self.personagem_escolhido_nome, self.player_pontos, self.player_xp))
-    #         conn.commit()
 
-   
     def exibir_placar(self):
         with sqlite3.connect(self.db_path) as conn:
             cursor = conn.cursor()
