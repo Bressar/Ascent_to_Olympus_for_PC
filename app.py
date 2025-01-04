@@ -1,19 +1,19 @@
 # Versão do Jogo Grécia Antiga, para desktop - By Bressar
 # Implementação do jogo
 # criado:  18/12/24
-# atualizado: 02/01/25
+# atualizado: 04/01/25
 
+import pygame
 from PIL import Image, ImageDraw, ImageFont, ImageTk
-
 import tkinter as tk
 from tkinter import filedialog, messagebox, Label, Tk, Canvas
 import customtkinter as ctk
 from customtkinter import CTkImage, CTkFont 
 from telas_iniciais import Telas
 from tela_jogo import Tela_Jogo
-
 from back_end import Back_End
 
+pygame.mixer.init() # Inicializar pygame mixer
 
 class Interface_Jogo:
     def __init__(self, root):
@@ -39,6 +39,18 @@ class Interface_Jogo:
         #self.Telas_iniciais.tela_02()
         #self.Telas_iniciais.tela_03()
         #self.tela_jogo.tela_game()
+        
+        # Iniciar música em loop
+        self.iniciar_musica()
+        
+        
+    def iniciar_musica(self):
+        try:
+            pygame.mixer.music.load("music/mars.mp3")  #  música do G. Holst
+            pygame.mixer.music.play(-1, start=9)  # -1 para tocar em loop infinito
+            print("Música iniciada em loop.")
+        except pygame.error as e:
+            print(f"Erro ao carregar a música: {e}")
         
         
     def sair_jogo(self):
@@ -91,6 +103,14 @@ class Interface_Jogo:
         janela_confirmacao.destroy()
         self.janela.destroy()  # Fecha a janela principal e encerra o programa
 
+            
+if __name__ == "__main__":
+    root = ctk.CTk()
+    app = Interface_Jogo(root)
+    root.mainloop() 
+    
+    
+
         
 # def sair_jogo(self): # versão com janela de sistema - SIMPLES!
 #     resposta = messagebox.askyesno("Confirmação", "Tem certeza de que deseja sair do jogo?")
@@ -98,10 +118,5 @@ class Interface_Jogo:
 #         print("Encerrando programa...")
 #         self.janela.destroy()  # Fecha a janela principal e encerra o programa 
     
-            
-if __name__ == "__main__":
-    root = ctk.CTk()
-    app = Interface_Jogo(root)
-    root.mainloop() 
     
     

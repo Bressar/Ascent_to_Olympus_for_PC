@@ -13,6 +13,7 @@ from PIL import Image, ImageDraw, ImageFont, ImageTk
 
 from back_end import Back_End
 from tela_jogo import Tela_Jogo
+import webbrowser
 # from cartas import Cartas
 
 
@@ -130,7 +131,7 @@ Use cards to overcome obstacles. Collect up to 3 cards."""
             text=texto_abertura,
             text_color="white",  # Cor do texto
             bg_color="black",  # Cor de fundo
-            font=("Cambria", 18)) # Fonte e tamanho      "Olympus" 
+            font=("Cambria", 16)) # Fonte e tamanho      "Olympus" 
 
         label_texto_abertura.place(relx=0.5, y=405, anchor="n")
         self.widgets_dinamicos.append(label_texto_abertura)
@@ -154,9 +155,84 @@ Use cards to overcome obstacles. Collect up to 3 cards."""
             font= ("Gelio Fasolada", 18),
             command=lambda: self.tela_02()
         )
-        botao_iniciar.place(relx=0.5, y=550, anchor="n")
-        self.widgets_dinamicos.append(botao_iniciar)    
+        botao_iniciar.place(relx=0.5, y=520, anchor="n")
+        self.widgets_dinamicos.append(botao_iniciar)  
+        
+        
+        botao_about = ctk.CTkButton(
+            self.canvas_abre,
+            width= 100,
+            text_color= 'gray',
+            fg_color='black',
+            hover_color="#FFA500", #self.back_end.cores_layout['laranja']  # "#FFA500"
+            text="About this game", 
+            font= ("Gelio Fasolada", 16),
+            command=lambda: self.janela_about()
+        )
+        botao_about.place(relx=0.5, y=560, anchor="n")
+        self.widgets_dinamicos.append(botao_about)    
+ 
+ 
+    def abrir_link(self):
+        webbrowser.open("https://paypal.me/bressargames")
+           
+    def janela_about(self):
+        janela_game_about = ctk.CTkToplevel(self.root)
+        janela_game_about.title("About this game")
+        janela_game_about.geometry("400x400")
+        janela_game_about.configure(fg_color="black")
+        janela_game_about.wm_attributes("-topmost", True)
+        
+        texto_about = """Ascent to Olympus
+The Ancient Greece Game
+Version 1.0 - Beta
+Developed by Hermes & Bressar Games
+2025
 
+If you enjoyed the game, please consider donating 
+to support the development of the final version.
+If you didn’t enjoy it, feel free to send 
+your suggestions to:
+
+bressargames@gmail.com
+or
+github.com/Bressar
+        """
+        texto = ctk.CTkLabel(
+            janela_game_about,
+            text= texto_about,
+            text_color="gray",
+            font=("Cambria", 16),
+            justify="center" )
+        texto.place(relx=0.5, rely=0.4, anchor="center")
+                
+        # Botão para abrir o link
+        botao_doar = ctk.CTkButton(
+            janela_game_about,
+            text="Donate",
+            width= 100,
+            font=("Gelio Fasolada", 16),
+            fg_color="green",
+            text_color="white",
+            hover_color="orange",
+            command=self.abrir_link
+            )
+        botao_doar.place(relx=0.5, rely=0.80, anchor="center")
+        
+        botao_encerrar = ctk.CTkButton(
+            janela_game_about,
+            width=40,
+            fg_color='black',
+            border_width= 1,
+            text_color= "gray",
+            border_color= "gray",
+            hover_color="orange",
+            text="EXIT",
+            font=("Gelio Fasolada", 14),
+            command=janela_game_about.destroy
+        )
+        botao_encerrar.place(relx=0.5, rely=0.92, anchor="center")
+        
 
     def tela_02(self):
         self.canvas_abre = Canvas(self.root, width=800, height=600, bg="black", bd=0, highlightthickness=0)

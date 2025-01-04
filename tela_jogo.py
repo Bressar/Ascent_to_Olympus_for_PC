@@ -1293,7 +1293,9 @@ space {self.back_end.casa_atual}.""",
              # Verifica se a carta existe na mão (índice válido)
             if carta_numero < 1 or carta_numero > len(cartas_mao):
                 # Exibe uma mensagem de alerta caso o índice seja inválido
-                messagebox.showerror("Error", "This position does not have any cards!")
+                self.mostrar_mensagem_vitoria_ou_derrota(titulo="No cards!",
+                                                         mensagem="This position\ndoes not\nhave any cards!", duracao=1200)
+                #messagebox.showerror("Error", "This position does not have any cards!")
                 return
             
             nome_carta_escolhida = cartas_mao[carta_numero -1]['nome']
@@ -4276,7 +4278,7 @@ are temperamental."""
             font= ("Gelio Fasolada", 18),
             command=lambda: (self.back_end.restart_game(),
                              self.atualizar_cor_layout(),
-                             self.telas_iniciais.tela_02())
+                             self.telas_iniciais.tela_01())
         )
             botao_iniciar.place(x=690, y=405, anchor="n")
             self.widgets_casa_atual.append(botao_iniciar)    
@@ -4391,7 +4393,7 @@ are temperamental."""
             font=("Gelio Fasolada", 18),
             command=lambda: (self.back_end.restart_game(),
                             self.atualizar_cor_layout(),
-                            self.telas_iniciais.tela_02())
+                            self.telas_iniciais.tela_01())
         )
         botao_iniciar.place(x=550, y=405, anchor="n")
         self.widgets_casa_atual.append(botao_iniciar)
@@ -4459,7 +4461,7 @@ are temperamental."""
             font= ("Gelio Fasolada", 18),
             command=lambda: (self.back_end.restart_game(),
                              self.atualizar_cor_layout(),
-                             self.telas_iniciais.tela_02())
+                             self.telas_iniciais.tela_01())
         )
             botao_iniciar.place(x=635, y=405, anchor="n")
             self.widgets_casa_atual.append(botao_iniciar)    
