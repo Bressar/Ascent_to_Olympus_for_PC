@@ -1,6 +1,6 @@
 # Tela onde o jogo se desenrola - By Bressar
 # criado:  20/12/24
-# atualizado: 03/01/25
+# atualizado: 04/01/25
 
 import tkinter as tk
 from tkinter import ttk # treview pra janela de exibição do BD
@@ -37,11 +37,6 @@ class Tela_Jogo:
     def limpar_referencias_cartas(self):# Método de limpeza PARA AS CARTINHAS QUE NÂO ATUALIZAVAM.....
         self.image_referencias_cartas.clear()
         
-                    
-    # def atualizar_cor(self, nova_cor):
-    #     self.cor_Layout = nova_cor
-    #     self.atualizar_tela()
-   
     
     def play_gif(self):# Reproduz a animação do GIF no canvas
         if not hasattr(self, "image_on_canvas") or self.image_on_canvas is None: # verifica o canvas
@@ -75,13 +70,16 @@ class Tela_Jogo:
         print(f"Estado do jogo: {estado}")  # Debug
         
         if estado == "game_over":
-            self.game_over()
+            self.casa_evento_128() # janela game_over
+            #self.game_over()
         elif estado == "game_win":
             self.back_end.create_banco_de_dados() # quando o jogo acaba cria um banco de dados se não existir...    
         else:
             print("O jogo continua...") # Debug
 
 
+
+# função_removida
     def game_over(self): #  """Exibe a tela de Game Over e encerra o jogo principal, mantendo apenas a mensagem.
         # Fecha a janela principal
         self.root.destroy()
@@ -143,6 +141,9 @@ class Tela_Jogo:
             command=self.casa_evento_126() #self.root.destroy  # Fecha o root ao clicar no botão
         )
         botao_encerrar.place(relx=0.5, rely=0.8, anchor="center")
+
+
+
 
      
 # TELA ONDE O JOGO É EXIBIDO !! # TELA ONDE O JOGO É EXIBIDO !! # TELA ONDE O JOGO É EXIBIDO !! 
@@ -944,7 +945,7 @@ class Tela_Jogo:
         self.canvas.itemconfig(self.image_on_canvas, image=self.imagem_estatica)  # Exibe a imagem estática imediatamente
         
         # Introduz um atraso de 1.5 segundos antes de continuar
-        self.root.after(1500, lambda: self._continuar_rolagem_dado(numero_sorteado))
+        self.root.after(1000, lambda: self._continuar_rolagem_dado(numero_sorteado))
 
         
     def _continuar_rolagem_dado(self, numero_sorteado): # """Continua as ações após exibir a imagem estática por 1.5 segundos."""
@@ -977,8 +978,8 @@ class Tela_Jogo:
         nova_imagem = Image.open(self.imagem_dado).resize((80, 80), Image.Resampling.LANCZOS)
         self.imagem_estatica = ImageTk.PhotoImage(nova_imagem)
         self.canvas.itemconfig(self.image_on_canvas, image=self.imagem_estatica)  # Exibe a imagem estática imediatamente
-        # Introduz um atraso de 1.5 segundos antes de processar o resultado
-        self.root.after(1500, lambda: self._processar_resultado_batalha(numero_sorteado, casas_avanco, casas_retrocesso, vida))
+        # Introduz um atraso de 1 segundos antes de processar o resultado
+        self.root.after(1000, lambda: self._processar_resultado_batalha(numero_sorteado, casas_avanco, casas_retrocesso, vida))
         
 
     def mostrar_mensagem_vitoria_ou_derrota(self, titulo, mensagem, duracao): # abre a janelinha GANHOU! / PERDEU!
@@ -1040,7 +1041,7 @@ class Tela_Jogo:
                 
 Advance to
 space {self.back_end.casa_atual}.""", 
-                duracao=2000  # 2 segundos
+                duracao=1500  # 1.5 segundos
             )
         else:
             mensagem = (
@@ -1048,14 +1049,12 @@ space {self.back_end.casa_atual}.""",
                 f"\nGo back to\nspace {self.back_end.casa_atual}.\n"
             )
             if self.back_end.player_xp > 0:
-                mensagem += f"\nYou lost 1 life.\n{self.back_end.player_xp} lives remaining."
-            else:
-                mensagem += "\nYou lost all your lives."
+                mensagem += f"\nYou lost 1 life."
             
             self.mostrar_mensagem_vitoria_ou_derrota(
                 "Defeat!\n", 
                 mensagem, 
-                duracao=3000  # 3 segundos
+                duracao=2000  # 2 segundos
             )
 
         # Atualiza a interface
@@ -1229,7 +1228,7 @@ space {self.back_end.casa_atual}.""",
                 
 Advance to
 space {self.back_end.casa_atual}.""", 
-                duracao=2000  # 2 segundos
+                duracao=1500  # 1.5 segundos
             )
 
         elif casas_retrocesso >=1:
@@ -1248,11 +1247,9 @@ space {self.back_end.casa_atual}.""",
             self.mostrar_mensagem_vitoria_ou_derrota(
                 "Defeat!\n", 
                 mensagem, 
-                duracao=3000  # 3 segundos
+                duracao=2000  # 2 segundos
             )
             
-        # TESTE ATÉ AQUI!!!
-          
         # Debug for Back end
         print(f'Pontos do jogador depois da vontade dos deuses: {self.back_end.player_pontos}') # Debug
         print(f'Casa atual depois da vontade dos deuses: {self.back_end.casa_atual}')# Debug
@@ -1407,8 +1404,6 @@ space {self.back_end.casa_atual}.""",
         botao_carta_3 .place(x=730, y=330, anchor='n')
         self.widgets_casa_atual.append(botao_carta_3)
 
-
-     
 
  # !!!!! EVENTOS DAS CASAS COMEÇAM AQUI !!!!!!!
  
@@ -4198,10 +4193,9 @@ Try to pass its guardians."""
      # CASA FINAL !!!!          
 
 
-    def casa_evento_120(self): # casa em branco
+    def casa_evento_120(self): # CASA FINAL !!!
             self.limpar_widgets_casa_atual() 
-            
-            
+                        
            #IMAGEM DA CASA # iMAGEM DO MONTE OLIMPO
             self.image_evento_exibido = PhotoImage(file="images/olimpo.png")
             self.label_evento_exibido = tk.Label(
@@ -4272,7 +4266,6 @@ are temperamental."""
             botao_registrar_vitoria.place(x=550, y=405, anchor="n")
             self.widgets_casa_atual.append(botao_registrar_vitoria)    
             
-             
             # Botao restart GAME
             botao_iniciar = ctk.CTkButton(
             self.canvas_abre,
@@ -4289,31 +4282,27 @@ are temperamental."""
             self.widgets_casa_atual.append(botao_iniciar)    
                 
                         
-
-
-
-    def casa_evento_121(self): # casa em branco
+    def casa_evento_121(self): # Leva pra casa 120
             self.limpar_widgets_casa_atual()        
             self.casa_evento_120()
             
-    def casa_evento_122(self): # casa em branco
+    def casa_evento_122(self): # Leva pra casa 120
             self.limpar_widgets_casa_atual()        
             self.casa_evento_120()
                        
-    def casa_evento_123(self): # casa em branco
+    def casa_evento_123(self): # Leva pra casa 120
             self.limpar_widgets_casa_atual()        
             self.casa_evento_120()
                 
-    def casa_evento_124(self): # casa em branco
+    def casa_evento_124(self): # Leva pra casa 120
             self.limpar_widgets_casa_atual()        
             self.casa_evento_120()
         
-    def casa_evento_125(self): # casa em branco
+    def casa_evento_125(self): # Leva pra casa 120
             self.limpar_widgets_casa_atual()        
             self.casa_evento_120()
             
-  
-  
+    
     def casa_evento_126(self):  # Exibe o placar geral do banco de dados
         self.limpar_widgets_casa_atual()
         
@@ -4341,19 +4330,16 @@ are temperamental."""
         tree.heading("Pontos", text="Points")
         tree.heading("Personagem", text="Player")
         tree.heading("Nome", text="Name")
-        
-        
+               
         # Definir larguras fixas para cada coluna
         tree.column("Pontos", width=50, anchor="center")  # Largura de 100 pixels
         tree.column("Personagem", width=60, anchor="center")  # Largura de 150 pixels
         tree.column("Nome", width=160, anchor="center")  # Largura de 150 pixels
         
-
         # Estilizar Treeview
         style = ttk.Style()
         style.theme_use("clam")  # Usa um tema mais personalizável
         
-        # até aqui
         style.configure(
             "Custom.Treeview",
             background= "#2c2c2c",  # Fundo cinza escuro "black",
@@ -4410,10 +4396,7 @@ are temperamental."""
         botao_iniciar.place(x=550, y=405, anchor="n")
         self.widgets_casa_atual.append(botao_iniciar)
 
-    
-    
-        
-                        
+                            
     def casa_evento_127(self): # Gravar Vitoria no banco de dados
             self.limpar_widgets_casa_atual() 
             
@@ -4451,8 +4434,7 @@ are temperamental."""
             
             # Para debug, exiba o nome salvo após o clique no botão
             print("Botão configurado. Clique para salvar o nome.")
-            
-             
+                         
             # Score
             botao_score = ctk.CTkButton(
             self.canvas_abre,
@@ -4483,30 +4465,48 @@ are temperamental."""
             self.widgets_casa_atual.append(botao_iniciar)    
             
 
-    def casa_evento_128(self): # You Loose!!
-            self.limpar_widgets_casa_atual() 
-            
-            # Botao restart GAME
-            botao_iniciar = ctk.CTkButton(
-            self.canvas_abre,
-            width= 100,
-            fg_color= '#FF0000', #'#FF0000', RED
-            hover_color="#FFA500", #self.back_end.cores_layout['laranja']  # "#FFA500"
-            text="Restart Game", 
-            font= ("Gelio Fasolada", 18),
-            command=lambda: (self.back_end.restart_game(),
-                             self.atualizar_cor_layout(),
-                             self.telas_iniciais.tela_02())
+    def casa_evento_128(self): # CASA GAME OVER! You Loose!!
+        self.limpar_widgets_casa_atual() 
+        
+        texto_lost = ctk.CTkLabel(
+        self.canvas_abre,
+        text="You lost\nall your lives.",
+        text_color="gray",
+        font=("Gelio Fasolada", 18),
+        justify="center"
         )
-            botao_iniciar.place(x=635, y=405, anchor="n")
-            self.widgets_casa_atual.append(botao_iniciar)   
-                    
+        texto_lost.place(x=550, y=190, anchor="n")
+        self.widgets_casa_atual.append(texto_lost)
+        
+              
+        texto_game_over = ctk.CTkLabel(
+        self.canvas_abre,
+        text="Game over",
+        text_color="red",
+        font=("Gelio Fasolada", 36),
+        justify="center"
+        )
+        texto_game_over.place(x=550, y=250, anchor="n")
+        self.widgets_casa_atual.append(texto_game_over)
+        
+        
+        
             
-
-
-
-
-
+        # Botao restart GAME
+        botao_iniciar = ctk.CTkButton(
+        self.canvas_abre,
+        width= 100,
+        fg_color= self.cor_Layout,# '#FF0000', #'#FF0000', RED
+        hover_color="#FFA500", #self.back_end.cores_layout['laranja']  # "#FFA500"
+        text="Restart Game", 
+        font= ("Gelio Fasolada", 18),
+        command=lambda: (self.back_end.restart_game(),
+                            self.atualizar_cor_layout(),
+                            self.telas_iniciais.tela_02())
+    )
+        botao_iniciar.place(x=550, y=320, anchor="n")
+        self.widgets_casa_atual.append(botao_iniciar)   
+                
 
 # CARTAS DE AÇÃO  # FUNÇÕES # CARTAS DE AÇÃO  # FUNÇÕES  # CARTAS DE AÇÃO
 
@@ -4638,8 +4638,7 @@ are temperamental."""
         self.label_battles.place(x=650, y=325, anchor="n")
         self.widgets_casa_atual.append(self.label_battles)
         
-        
-              
+                      
     def botao_nao_usar_carta(self):
         botao_naum = ctk.CTkButton(
         self.canvas_abre,

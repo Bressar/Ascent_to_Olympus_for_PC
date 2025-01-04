@@ -1,6 +1,6 @@
 # Funcionalidades do jogo
 # criado:  18/12/24
-# atualizado: 02/01/25
+# atualizado: 03/01/25
 
 # até aqui sem BD!!
 
@@ -25,7 +25,7 @@ class Back_End:
 She dreams of peace after a decade of strife,
 but her name echoes through time as a legend."""
         self.personagem_escolhido_imagem = None       
-        self.player_xp = 30 # tá como XP mas são as vidas do player o certo seria: HP
+        self.player_xp = 3 # VIDAS ->  tá como XP mas são as vidas do player o certo seria: HP
         self.player_pontos = 0    
         self.casa_atual = 1 # Inicializando com a casa 1
   
