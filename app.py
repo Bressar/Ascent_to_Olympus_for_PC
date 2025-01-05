@@ -3,6 +3,10 @@
 # criado:  18/12/24
 # atualizado: 04/01/25
 
+# Publicada versão 1.0 Beta para download em:
+# https://bressar.itch.io/ascent-to-olympus 
+
+
 import pygame
 import customtkinter as ctk
 from telas_iniciais import Telas
