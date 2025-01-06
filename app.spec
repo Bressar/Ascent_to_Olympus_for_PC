@@ -5,7 +5,7 @@ a = Analysis(
     ['app.py'],
     pathex=[],
     binaries=[],
-    datas=[],
+    datas=[('fonts\\\\*', 'fonts'), ('imagens_casas\\\\*', 'imagens_casas'), ('images\\\\*', 'images'), ('music\\\\*', 'music')],
     hiddenimports=[],
     hookspath=[],
     hooksconfig={},

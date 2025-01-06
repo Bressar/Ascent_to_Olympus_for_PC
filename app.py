@@ -1,10 +1,27 @@
 # Versão do Jogo Grécia Antiga, para desktop - By Bressar
 # Implementação do jogo
 # criado:  18/12/24
-# atualizado: 04/01/25
+# atualizado: 05/01/25
 
 # Publicada versão 1.0 Beta para download em:
 # https://bressar.itch.io/ascent-to-olympus 
+
+# comando pyinstaller:
+
+# pyinstaller --onefile --windowed --add-data "fonts/*;fonts" nome_arquivo.py # -> windowns
+
+# pyinstaller --onefile --add-data "images;images" --add-data "imagens_casas;imagens_casas" --add-data "fonts;fonts" --add-data "music;music" app.py
+
+# pyinstaller --onefile --add-data "fonts/*;fonts" --add-data "images/*;images" --add-data "music/*;music" --add-data "imagens_casas/*;imagens_casas" --add-data "banco_de_dados/*;banco_de_dados" app.py
+
+
+""" pyinstaller --onefile --add-data "fonts/*;fonts" --add-data "images/*;images" --add-data "music/*;music" --add-data "imagens_casas/*;imagens_casas"  app.py """
+
+
+
+# pyinstaller --onefile --windowed --add-data "fonts\\*;fonts" --add-data "imagens_casas\\*;imagens_casas" --add-data "images\\*;images"  --add-data "music\\*;music"   app.py
+
+
 
 
 import pygame

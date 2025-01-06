@@ -438,7 +438,8 @@ or advance
 
     def load_fonts(self):  # Método para inicializar e verificar fontes
         self.load_font("fonts/Gelio Fasolada.ttf")
-        self.load_font("fonts/OlympusBold.ttf")        
+        self.load_font("fonts/OlympusBold.ttf")  
+        self.load_font("fonts/cambria.ttc")      
         # Verifica as fontes carregadas
         #print("Fontes disponíveis:", font.families())  # Opcional: listar todas as fontes disponíveis 
         
