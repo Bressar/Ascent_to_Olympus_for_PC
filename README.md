@@ -1,3 +1,5 @@
+![](publi.jpg)
+
 # Ascent to Olympus ( Game for Desktop - Windows )
 Embark on a Greek Mythology Adventure!
 Roll the dice, collect cards, overcome challenges,and conquer Olympus!
@@ -7,3 +9,8 @@ Use cards to overcome obstacles. Collect up to 3 cards.
 
 [Download free here!](https://bressar.itch.io/ascent-to-olympus)
 
+![](telas1.jpg)
+![](telas2.jpg)
+![](telas3.jpg)
+![](telas4.jpg)
+![](telas5.jpg)
