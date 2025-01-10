@@ -9,3 +9,8 @@ Use cards to overcome obstacles. Collect up to 3 cards.
 
 [Download free here!](https://bressar.itch.io/ascent-to-olympus)
 
+![](telas1.jpg)
+![](telas2.jpg)
+![](telas3.jpg)
+![](telas4.jpg)
+![](telas5.jpg)
