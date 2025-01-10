@@ -1,3 +1,5 @@
+![](publi.jpg)
+
 # Ascent to Olympus ( Game for Desktop - Windows )
 Embark on a Greek Mythology Adventure!
 Roll the dice, collect cards, overcome challenges,and conquer Olympus!
